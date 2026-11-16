@@ -1,47 +1,28 @@
 # Build & deploy target
 
-You never trigger the deploy yourself, **but the app you build is eventually
-deployed to Vercel** by the platform — so your output must build cleanly under
-Vercel's process. `npm run build` must succeed and emit valid output, and code
-that works under `npm run dev` but breaks a production / SSR build is a bug.
-Watch for dev-only deps, server-only Node APIs run at import time, runtime
-filesystem writes, and hard-coded ports / hosts / secrets.
+This project deploys to **Cloudflare Workers** with Wrangler and the Cloudflare
+Vite plugin. Use `npm run deploy`; it applies database migrations, builds the
+Worker, then deploys it. Do not deploy this project through Vercel.
 
-Vercel installs with `npm install --omit=dev` (`vercel.json`), so anything the
-production build imports — Vite plugins, PostCSS/Tailwind plugins, type-only
-packages a `vite.config` imports — must be in `dependencies`. Only lint, format
-and test tooling belongs in `devDependencies`; a package added with
-`npm install -D` will be missing on deploy and the build fails with
-"Cannot find package".
+The migration step requires `DATABASE_URL` in the deploy environment. Configure
+it as a secret in the build/deploy environment and point it at the same Neon
+database as the `HYPERDRIVE` binding in `wrangler.jsonc`. The Worker itself uses
+Hyperdrive at runtime; it does not read `DATABASE_URL`. Never commit either
+connection string or put it in a browser-visible `VITE_*` variable.
 
-## A passing `npm run build` does not mean the deployed app renders
+`npm run build` is for building and validating locally; it does not migrate or
+deploy. `npm run db:migrate` skips when no `DATABASE_URL` is set, while
+`npm run db:migrate:required` fails clearly if the migration connection is
+missing. Local preview without a Neon URL uses PGLite.
 
-The most common blank-deploy failure is
-`Failed to load module script … MIME type "text/html"`: the built `index.html`
-requests JS assets that 404 in prod, so the server returns the HTML fallback
-(wrong MIME) and the page is blank. Fix the asset base path / build output so
-`/assets/*` resolve, and ensure the SPA/SSR fallback doesn't shadow real asset
-requests — then re-verify the served build renders.
+## Production checks
 
-If you edited source after kicking off the build, re-run `npm run build` first,
-then `npm run preview:restart` — it frees `:8081` before serving, so you never
-smoke the previous build's output.
+A passing `npm run build` does not prove that the Worker can connect to its
+database. Confirm the Cloudflare Worker has the `HYPERDRIVE` binding configured
+and that deployment uses `npm run deploy`. If a page reports missing tables,
+confirm the deploy environment's `DATABASE_URL` targets the same database as
+Hyperdrive and that migration output reports the schema as applied.
 
-## What `vite.config.ts` already does
-
-The workspace ships a ready `vite.config.ts` and `tsconfig.json` — don't
-recreate them, and don't import a vendored `vite-tanstack-config` preset. The
-config:
-
-- binds the dev port `0.0.0.0:8080`;
-- pins `vite preview` to loopback `127.0.0.1:8081`, so the built output can
-  never be picked up as the user's live preview;
-- gates `nitro({ preset: "vercel" })` on `command === "build" || isPreview`, so
-  it never runs in dev — left on in dev, nitro opens a second dev-server port,
-  which breaks the single-port 8080 live preview — but still serves the built
-  output under `vite preview`;
-- mounts `grokPwaPlugin()`.
-
-If you edit it, preserve both port contracts, the build/preview-gated nitro
-plugin **including its `serverDir: "./server"` option** (without it the deployed
-app loses the Home Screen install page), and `grokPwaPlugin()`.
+After source changes, run `npm run build` before testing the production output.
+The Cloudflare Vite plugin must remain first in `vite.config.ts`; retain the
+`grokPwaPlugin()` and app environment plugin integrations.

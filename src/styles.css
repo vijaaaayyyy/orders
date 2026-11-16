@@ -86,7 +86,7 @@
     overflow-x: clip;
   }
 
-  /* Fixed layer of coloured squares that drift across the sketch grid. */
+  /* Fixed decorative grid; keep it still while the page scrolls. */
   .bg-grid-colour {
     position: fixed;
     inset: -12%;
@@ -97,36 +97,7 @@
       url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='156' height='156'%3E%3Crect x='2' y='54' width='22' height='22' rx='5' fill='%23f43f5e' opacity='0.34'/%3E%3Crect x='80' y='2' width='22' height='22' rx='5' fill='%2314b8a6' opacity='0.34'/%3E%3Crect x='132' y='80' width='22' height='22' rx='5' fill='%23a855f7' opacity='0.34'/%3E%3Crect x='54' y='132' width='22' height='22' rx='5' fill='%23f59e0b' opacity='0.34'/%3E%3Crect x='106' y='28' width='22' height='22' rx='5' fill='%230ea5e9' opacity='0.3'/%3E%3C/svg%3E");
     background-size: 104px 104px, 156px 156px;
     background-position: 0 0, 0 0;
-    opacity: 0.6;
-    animation:
-      grid-fill 34s linear infinite,
-      grid-glow 7s ease-in-out infinite;
-  }
-
-  @keyframes grid-fill {
-    0% {
-      background-position: 0 0, 0 0;
-    }
-    100% {
-      background-position: 104px 104px, -156px 156px;
-    }
-  }
-
-  @keyframes grid-glow {
-    0%,
-    100% {
-      opacity: 0.38;
-    }
-    50% {
-      opacity: 0.72;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .bg-grid-colour {
-      animation: none;
-      opacity: 0.45;
-    }
+    opacity: 0.45;
   }
 
   /* Hand-drawn doodles on top of the grid; colour comes from --fg via a mask. */

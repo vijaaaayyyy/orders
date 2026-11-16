@@ -9,3 +9,7 @@ scripts/tmp-*
 .DS_Store
 
 .vercel
+.neon
+.env.local
+.tanstack/
+.wrangler/

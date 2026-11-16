@@ -12,15 +12,17 @@ import { auth, authConfigured } from "./server";
  * client-supplied user id — only the result of this verification.
  */
 
-/** True when a real database is configured server-side. */
-const databaseConfigured = Boolean(process.env.DATABASE_URL?.trim());
+import { getNodeDatabaseUrl } from "../runtime-db-url";
+
+/** Best-effort: true when a real Postgres DB is configured in Node/local contexts. */
+const databaseConfigured = Boolean(getNodeDatabaseUrl());
 
 /** Re-export so callers can branch on it without importing `server.ts`. */
 export { authConfigured };
 
 if (databaseConfigured && !authConfigured) {
   console.error(
-    "[auth] DATABASE_URL is set but auth is disabled (VITE_AUTH_ENABLED=false) " +
+    "[auth] A Postgres database URL is set but auth is disabled (VITE_AUTH_ENABLED=false) " +
       "— requireUserId() will reject every request (fail closed) rather than " +
       "share one dev user on a real database.",
   );
@@ -76,16 +78,28 @@ export async function getSessionUser(
  * - Auth enabled -> the verified session user id; throws
  *   `UnauthorizedError` when signed out. Works in the sandbox preview too (real
  *   sign-in via the baked preview client).
- * - Auth disabled (`VITE_AUTH_ENABLED=false`) + `DATABASE_URL` set -> throw (fail
+ * - Auth disabled (`VITE_AUTH_ENABLED=false`) + a real database configured
+ *   through `HYPERDRIVE` or `DATABASE_URL` -> throw (fail
  *   closed): one shared dev user on a real database would let every visitor
  *   read/write everyone's rows.
  * - Auth disabled + no database -> the shared dev user id.
  */
 export async function requireUserId(bearerToken?: string): Promise<string> {
   if (!authConfigured && !gateIdentityEnabled()) {
-    if (databaseConfigured) {
+    // In Cloudflare Workers, Postgres may be provided via Hyperdrive binding
+    // (not process.env.DATABASE_URL). Resolve at request time for safety.
+    let hasPostgres = databaseConfigured;
+    if (!hasPostgres) {
+      try {
+        const { getRuntimePostgresUrl } = await import("../runtime-db-url");
+        hasPostgres = Boolean(await getRuntimePostgresUrl());
+      } catch {
+        hasPostgres = false;
+      }
+    }
+    if (hasPostgres) {
       throw new Error(
-        "Auth is disabled (VITE_AUTH_ENABLED=false) but DATABASE_URL is set — " +
+        "Auth is disabled (VITE_AUTH_ENABLED=false) but a Neon database is configured — " +
           "refusing to fall back to the shared dev user against a real database.",
       );
     }

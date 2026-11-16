@@ -11,8 +11,9 @@ Full guides + snippets: the **`neon` skill** (database) and the **`auth` skill**
 
 - `const sql = await getSql()` from `@/lib/db`. Use it **only** inside
   `createServerFn` handlers / server loaders.
-- Dual-mode: a regular Postgres driver (node-postgres, `pg`) when `DATABASE_URL`
-  is set, else a local **PGLite** fallback — so the preview always renders.
+- Dual-mode: Neon Postgres through the Cloudflare `HYPERDRIVE` binding in
+  production or `DATABASE_URL` in Node, else a local **PGLite** fallback — so
+  the preview always renders.
 - In preview, PGLite **bootstraps at server start** (`ensureDbReady`) once the
   app has migrations. Do not remove that.
 - A deployed app is provisioned a real database when it ships `migrations/*.sql`
@@ -21,9 +22,9 @@ Full guides + snippets: the **`neon` skill** (database) and the **`auth` skill**
 
 ## Migrations
 
-- `migrations/*.sql` is the single schema source: applied to **Neon on deploy**
-  (`npm run build` runs `npm run db:migrate`, so Vercel ships with the schema
-  ready) and to the **PGLite** preview automatically on startup.
+- `migrations/*.sql` is the single schema source: applied to Neon before
+  deploy by `npm run deploy` using the required `DATABASE_URL`, and to the
+  **PGLite** preview automatically on startup.
 - Add the app's tables as ordered files (`migrations/0002_*.sql`), not inline.
 - An app that needs no database adds no `.sql` file, and then no migration runs
   anywhere.
@@ -75,8 +76,10 @@ flag (exit 0 agree, 1 diverged, 2 could not observe).
 
 ## Env
 
-On deploy the platform injects `DATABASE_URL` + per-app auth creds; live preview
-needs neither (baked preview client, PGLite fallback). Deployed behind the gate,
+At runtime Cloudflare provides Neon through the `HYPERDRIVE` binding and
+per-app auth credentials. The deploy environment also needs a secret `DATABASE_URL`
+for the migration step; it must target the same database. Live preview needs
+neither (baked preview client, PGLite fallback). Deployed behind the gate,
 signed-in Grok viewers get the app session automatically from `x-grok-identity`
 (see the `auth` skill — `references/grok-identity.md`); the broker federation
 covers anonymous viewers and no-gate contexts.

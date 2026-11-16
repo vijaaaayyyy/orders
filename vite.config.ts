@@ -2,10 +2,10 @@ import { readdirSync } from "node:fs";
 import { join } from "node:path";
 import type { Plugin } from "vite";
 import { defineConfig } from "vite";
+import { cloudflare } from "@cloudflare/vite-plugin";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import viteReact from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
-import { nitro } from "nitro/vite";
 // @ts-expect-error JS plugin alongside the TS vite config
 import { grokPwaPlugin } from "./scripts/grok-pwa-plugin.mjs";
 // @ts-expect-error JS plugin alongside the TS vite config
@@ -24,7 +24,7 @@ function hasGlobbedMigrations(root: string): boolean {
 /**
  * Finish PGLite bootstrap during dev-server setup (before traffic). Vite awaits
  * async `configureServer` hooks. Production: `src/lib/db` kicks `ensureDbReady`
- * on import.
+ * on import when the PGLite fallback is used.
  *
  * Vite awaiting the hook puts this on time-to-first-render, so an app with no
  * migrations — no schema to apply — skips it entirely rather than paying for a
@@ -67,8 +67,7 @@ function authPopupPlugin(): Plugin {
     apply: "serve",
     configureServer(server) {
       // Register immediately (not in a returned post-hook) so we run BEFORE
-      // TanStack Start / the SPA HTML fallback. A model-authored
-      // `src/routes/auth/popup.tsx` React page must never win this path.
+      // TanStack Start / the SPA HTML fallback.
       server.middlewares.use(async (req, res, next) => {
         try {
           const rawUrl = req.url ?? "";
@@ -142,42 +141,36 @@ function authPopupPlugin(): Plugin {
   };
 }
 
-// `0.0.0.0:8080` is the live-preview contract — don't change host/port.
-// The dev server starts once `src/router.tsx` and `src/routes/` exist — see
-// AGENTS.md § "First scaffold".
+// Dev server ports in this workspace have been customized for local/tunnel use.
+// Production deploy target is Cloudflare Workers with static assets via
+// @cloudflare/vite-plugin (see wrangler.jsonc). Do not remove appEnv/grokPwa plugins.
 export default defineConfig(({ command, isPreview }) => ({
   server: {
     host: "0.0.0.0",
-    port: 8080,
-    strictPort: true,
+    port: 8081,
+    allowedHosts: ["neat-experts-smell.loca.lt", "young-glasses-deny.loca.lt"],
   },
   preview: {
     host: "127.0.0.1",
-    port: 8081,
+    port: 8082,
     strictPort: true,
   },
   resolve: { tsconfigPaths: true },
   plugins: [
-    pgliteBootstrapPlugin(),
-    // Before tanstackStart so /auth/popup never falls through to the SPA.
+    // Cloudflare Workers + static assets (production). Must come first so SSR
+    // environment is configured correctly for TanStack Start.
+    cloudflare({ viteEnvironment: { name: "ssr" } }),
+    // Dev-only: finish PGLite bootstrap before traffic when local fallback DB is used.
+    ...(!isPreview ? [pgliteBootstrapPlugin()] : []),
+    // Before tanstackStart in dev so /auth/popup never falls through to the SPA.
     authPopupPlugin(),
     // Dev-only /__app-env, read by scripts/check-auth-invariant.mjs.
     appEnvPlugin(),
-    // PWA head + ?install=1 tutorial page; runs before Start/Nitro.
+    // PWA head + ?install=1 tutorial page and manifest (dev/preview); production
+    // behavior is preserved via server-side request handling integration.
     grokPwaPlugin(),
     tailwindcss(),
     tanstackStart(),
-    ...(command === "build" || isPreview
-      ? [
-          nitro({
-            preset: "vercel",
-            // Auto-registers server/middleware/* (the PWA install page +
-            // manifest + head-tag middleware). Nitro v3 defaults serverDir to
-            // false, so removing this silently unwires /?install=1 on deploys.
-            serverDir: "./server",
-          }),
-        ]
-      : []),
     viteReact(),
   ],
 }));

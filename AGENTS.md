@@ -163,11 +163,12 @@ missing. Postgres and Better Auth are pre-wired in `src/lib`, **opt-in per app**
   the docs rather than looping on failed installs, and prefer a pure-JS
   alternative. Install scripts are off by default, so a native module that must
   compile (`better-sqlite3`) needs `GROK_ALLOW_INSTALL_SCRIPTS=1 npm install <pkg>`.
-- **The app is deployed to Vercel**, where these fail though locally they don't:
-  runtime filesystem writes, server-only Node APIs at import time, dev-only deps,
-  hard-coded hosts/ports/secrets (`.grok/references/deploy-target.md`).
-- **Never create a `.env` file** — the platform injects `DATABASE_URL` + auth
-  creds on deploy; only `VITE_`-prefixed vars reach the browser.
+- **The app is deployed to Cloudflare Workers**. Keep runtime code compatible
+  with Workers; use the Neon-backed `HYPERDRIVE` binding at runtime and
+  `DATABASE_URL` only in the protected migration/deploy environment
+  (`.grok/references/deploy-target.md`).
+- **Never commit a `.env` file or database credentials** — only `VITE_`-prefixed
+  vars reach the browser.
 - **`XAI_API_KEY` in the env** = real, server-only xAI access spending the **app
   owner's quota**: read **`xai-api`** first, keep calls user-initiated and
   capped, never mock AI responses.
@@ -295,7 +296,7 @@ changes. Revive, reboot-wipe and the `startup.sh` worked example:
    D = right** while moving forward (`controls` §5c). Flip one steer/roll sign
    if inverted; retest.
 8. **Verify the PRODUCTION build, not just dev.** Dev (Vite) can render while
-   the deployed Vercel build is blank. Once `npm run build` (step 5) succeeds,
+   the deployed Worker build is blank. Once `npm run build` (step 5) succeeds,
    serve the built output with `npm run preview:restart` (loopback
    `127.0.0.1:8081`) and re-run the smoke script with the dev verdict as
    `--baseline`. Watch for

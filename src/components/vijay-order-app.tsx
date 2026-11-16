@@ -54,7 +54,13 @@ export function VijayOrderApp({ initial }: { initial: Board }) {
   const invalidate = () => queryClient.invalidateQueries({ queryKey: ["board"] });
 
   const place = useMutation({
-    mutationFn: (input: { item: string; token: number }) => placeOrderAt({ data: input }),
+    mutationFn: async (input: { item: string; token: number }) => {
+      const result = await placeOrderAt({ data: input });
+      if (!result?.order) {
+        throw new Error("The order was not saved. Check the connection and try again.");
+      }
+      return result;
+    },
     onSuccess: async (result) => {
       setSlip({ token: result.order.token, item: result.order.item, ahead: result.ahead });
       setActionError("");
@@ -319,7 +325,7 @@ function Lane({
   tone: "cook" | "ready";
 }) {
   return (
-    <section>
+    <section className="rounded-2xl border border-solid border-border bg-surface p-4 sm:p-5">
       <div className="mb-3 flex items-center gap-2">
         {icon}
         <h2 className="font-display text-3xl leading-none font-semibold italic">{title}</h2>
@@ -337,7 +343,7 @@ function Lane({
             return (
               <div
                 key={order.id}
-                className="pinterest-card mb-3 break-inside-avoid overflow-hidden rounded-xl border border-border bg-surface"
+                className="pinterest-card mb-3 break-inside-avoid overflow-hidden rounded-3xl border border-border bg-surface"
               >
                 <div
                   className={`flex items-center justify-between bg-gradient-to-br px-3 py-2 text-white ${stationStyle.grad}`}
