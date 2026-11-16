@@ -174,12 +174,6 @@
     display: block;
   }
 
-  @media (max-width: 900px) {
-    .bg-eng {
-      display: none;
-    }
-  }
-
   @media (max-width: 640px) {
     .bg-eq {
       opacity: 0.13;
