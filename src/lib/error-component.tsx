@@ -1,5 +1,5 @@
 import type { ErrorComponentProps } from "@tanstack/react-router";
-import { TriangleAlert } from "lucide-react";
+import { SearchX, TriangleAlert } from "lucide-react";
 
 const FALLBACK_MESSAGE = "An unexpected error occurred. Try reloading the page.";
 
@@ -23,6 +23,25 @@ export function AppErrorComponent({ error }: ErrorComponentProps) {
       <h1 className="text-lg font-semibold">Something went wrong</h1>
       <p className="max-w-md text-sm break-words text-zinc-500 dark:text-zinc-400">
         {errorMessage(error)}
+      </p>
+    </main>
+  );
+}
+
+export function AppNotFoundComponent() {
+  return (
+    <main
+      className={
+        "flex min-h-screen flex-col items-center justify-center gap-3 px-6 text-center " +
+        "bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50"
+      }
+    >
+      <span className="text-zinc-400" aria-hidden="true">
+        <SearchX className="size-10" strokeWidth={2} />
+      </span>
+      <h1 className="text-lg font-semibold">Page not found</h1>
+      <p className="max-w-md text-sm text-zinc-500 dark:text-zinc-400">
+        The page you’re looking for doesn’t exist.
       </p>
     </main>
   );
