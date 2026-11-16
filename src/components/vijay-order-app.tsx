@@ -288,10 +288,6 @@ export function VijayOrderApp({ initial }: { initial: Board }) {
             tone="ready"
           />
         </div>
-
-        <div className="lg:col-span-full">
-          <CompileBox />
-        </div>
       </main>
     </div>
   );
