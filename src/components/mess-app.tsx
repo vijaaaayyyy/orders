@@ -364,7 +364,7 @@ function BoardView({
         <img
           src={featured ? "/now-serving.jpg" : "/no-order.jpg"}
           alt={featured ? `Now serving token ${featured.token}` : "Window is clear"}
-          className="w-full h-auto object-cover rounded-2xl"
+          className="w-full max-w-2xl mx-auto h-auto object-cover rounded-2xl"
           loading="lazy"
         />
         {featured && (
