@@ -491,6 +491,18 @@ function BoardView({
                   <div
                     className={`relative flex h-32 items-center justify-center bg-gradient-to-br ${tone.grad} px-4 text-white`}
                   >
+                    {/* Background sketch text */}
+                    <div className="absolute inset-0 overflow-hidden opacity-20 pointer-events-none">
+                      <span className="absolute top-1 left-2 text-[10px] font-mono italic text-white/60 rotate-[-5deg]">
+                        F = ma
+                      </span>
+                      <span className="absolute bottom-2 right-2 text-[10px] font-mono italic text-white/60 rotate-[3deg]">
+                        $ vite build
+                      </span>
+                      <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[9px] font-mono text-white/40 rotate-[8deg]">
+                        ∮B·dl=μ₀I
+                      </span>
+                    </div>
                     <div className="absolute inset-x-3 top-3 flex items-center justify-between text-[11px] font-semibold tracking-widest uppercase">
                       <span className="inline-flex items-center gap-1 rounded-full bg-white/20 px-2 py-0.5 backdrop-blur-sm">
                         <span className="size-1.5 rounded-full bg-white" />
