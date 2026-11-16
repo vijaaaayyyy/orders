@@ -394,7 +394,7 @@ function BoardView({
         {board.ready.length === 0 ? (
           <EmptyPanel
             icon={<Ticket className="size-5" />}
-            title="Window is clear"
+            title="nothing to take"
             body="Nothing is waiting. Stay where you are,your number will light up here."
           />
         ) : (
