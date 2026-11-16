@@ -471,19 +471,20 @@ function BoardView({
               body="New tokens show up here the moment the counter takes an order."
             />
           ) : (
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 [grid-auto-rows:_minmax(0,1fr)]">
+            <div className="columns-2 gap-3 sm:columns-3 [column-fill:_balance]">
               {board.preparing.map((order, index) => {
+                const pinHeight = ["h-20 sm:h-24", "h-28 sm:h-36", "h-24 sm:h-28", "h-36 sm:h-44", "h-28 sm:h-32", "h-32 sm:h-40"][index % 6];
                 const station = STATION_BY_ITEM.get(order.item);
                 const tone = stationTone(station);
                 return (
                 <article
                   key={order.id}
-                  className={`pinterest-card break-inside-avoid overflow-hidden rounded-xl border border-border bg-surface ${
+                  className={`pinterest-card mb-4 break-inside-avoid overflow-hidden rounded-2xl border border-border bg-surface ring-1 ring-black/5 ${
                     watch === order.token ? "ring-4 ring-primary ring-offset-2 ring-offset-bg" : ""
                   }`}
                 >
                   <div
-                    className={`relative flex h-32 items-center justify-center bg-gradient-to-br ${tone.grad} px-4 text-white`}
+                    className={`relative flex ${pinHeight} items-center justify-center bg-gradient-to-br ${tone.grad} px-4 text-white pt-8`}
                   >
                     {/* Background sketch text */}
                     <div className="absolute inset-0 overflow-hidden opacity-20 pointer-events-none">
@@ -506,7 +507,7 @@ function BoardView({
                         {minutesAgo(order.createdAt, now)}
                       </span>
                     </div>
-                    <p className="font-display text-5xl sm:text-6xl leading-none font-semibold tabular-nums lining-nums drop-shadow-sm">
+                    <p className="font-display text-5xl sm:text-7xl leading-none font-semibold tabular-nums lining-nums drop-shadow-sm">
                       {order.token}
                     </p>
                   </div>
