@@ -535,10 +535,10 @@ function BoardView({
           )}
         </section>
 
-        <section className={`fixed bottom-4 left-1/2 -translate-x-1/2 z-20 rounded-3xl border border-border bg-surface/95 backdrop-blur-md shadow-[0_8px_32px_-8px_color-mix(in_oklab,var(--fg)_30%,transparent)] overflow-hidden transition-all duration-300 ${live ? "w-[calc(100%-2rem)] max-w-lg" : "w-auto max-w-sm"}`}
+        <section className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-20 rounded-3xl border border-border bg-surface/95 backdrop-blur-md shadow-[0_8px_32px_-8px_color-mix(in_oklab,var(--fg)_30%,transparent)] overflow-hidden transition-all duration-300 ${live ? "w-[calc(100%-2rem)] max-w-lg" : "w-auto max-w-sm"}`}
           aria-labelledby="track-heading"
         >
-          <div className="-mx-[3px] pl-px pr-3 py-2">
+          <div className="-mx-[3px] mt-px mb-px pl-px pr-3 pt-2 pb-[5px]">
             <div className="flex items-center justify-between gap-2">
               <h2 id="track-heading" className="sr-only">Track a token</h2>
             </div>
