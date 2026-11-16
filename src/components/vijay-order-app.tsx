@@ -54,7 +54,13 @@ export function VijayOrderApp({ initial }: { initial: Board }) {
   const invalidate = () => queryClient.invalidateQueries({ queryKey: ["board"] });
 
   const place = useMutation({
-    mutationFn: (input: { item: string; token: number }) => placeOrderAt({ data: input }),
+    mutationFn: async (input: { item: string; token: number }) => {
+      const result = await placeOrderAt({ data: input });
+      if (!result?.order) {
+        throw new Error("The order was not saved. Check the connection and try again.");
+      }
+      return result;
+    },
     onSuccess: async (result) => {
       setSlip({ token: result.order.token, item: result.order.item, ahead: result.ahead });
       setActionError("");

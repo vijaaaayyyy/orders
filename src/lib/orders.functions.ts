@@ -1,5 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
-import { dbSource, getSql } from "@/lib/db";
+import { dbSource, withSql, type Sql } from "@/lib/db";
 import { MENU_NAMES } from "@/lib/menu";
 
 export type OrderStatus = "preparing" | "ready" | "collected";
@@ -21,9 +21,7 @@ export type Board = {
   serverNow: string;
 };
 
-export type Lookup =
-  | { found: false }
-  | { found: true; order: Order; ahead: number };
+export type Lookup = { found: false } | { found: true; order: Order; ahead: number };
 
 const TZ = "Asia/Kolkata";
 
@@ -67,7 +65,7 @@ function mapOrder(row: RawOrder): Order {
   };
 }
 
-async function seedIfPreview(sql: Awaited<ReturnType<typeof getSql>>) {
+async function seedIfPreview(sql: Sql) {
   if (dbSource !== "pglite") return;
   await sql`
     insert into orders (token, item, status, created_at, ready_at)
@@ -98,43 +96,44 @@ async function seedIfPreview(sql: Awaited<ReturnType<typeof getSql>>) {
   `;
 }
 
-export const getBoard = createServerFn({ method: "GET" }).handler(async (): Promise<Board> => {
-  const sql = await getSql();
-  await seedIfPreview(sql);
-  const rows = await sql<RawOrder>`
+export const getBoard = createServerFn({ method: "GET" }).handler(async (): Promise<Board> =>
+  withSql(async (sql) => {
+    await seedIfPreview(sql);
+    const rows = await sql<RawOrder>`
     select id, token, item, status,
       created_at as "createdAt",
       ready_at as "readyAt"
     from orders
     where status in ('preparing', 'ready')
       and (created_at at time zone ${TZ})::date = (now() at time zone ${TZ})::date
-  `;
-  const orders = rows.map(mapOrder);
-  const ready = orders
-    .filter((order) => order.status === "ready")
-    .sort((a, b) => a.token - b.token);
-  const preparing = orders
-    .filter((order) => order.status === "preparing")
-    .sort((a, b) => a.id - b.id);
-  const served = await sql<{ n: unknown }>`
+      `;
+    const orders = rows.map(mapOrder);
+    const ready = orders
+      .filter((order) => order.status === "ready")
+      .sort((a, b) => a.token - b.token);
+    const preparing = orders
+      .filter((order) => order.status === "preparing")
+      .sort((a, b) => a.id - b.id);
+    const served = await sql<{ n: unknown }>`
     select count(*)::int as n
     from orders
     where status = 'collected'
       and (created_at at time zone ${TZ})::date = (now() at time zone ${TZ})::date
-  `;
-  const counter = await sql<{ next_token: unknown }>`
+      `;
+    const counter = await sql<{ next_token: unknown }>`
     select next_token
     from token_counter
     where service_date = (now() at time zone ${TZ})::date
-  `;
-  return {
-    ready,
-    preparing,
-    servedToday: asNumber(served[0]?.n),
-    nextToken: counter[0] ? asNumber(counter[0].next_token) : 1,
-    serverNow: new Date().toISOString(),
-  };
-});
+      `;
+    return {
+      ready,
+      preparing,
+      servedToday: asNumber(served[0]?.n),
+      nextToken: counter[0] ? asNumber(counter[0].next_token) : 1,
+      serverNow: new Date().toISOString(),
+    };
+  }),
+);
 
 export const placeOrder = createServerFn({ method: "POST" })
   .validator((input: { item: string }) => {
@@ -142,33 +141,34 @@ export const placeOrder = createServerFn({ method: "POST" })
     if (!MENU_NAMES.has(item)) throw new Error("Pick a dish from the menu");
     return { item };
   })
-  .handler(async ({ data }) => {
-    const sql = await getSql();
-    const issued = await sql<{ token: unknown }>`
+  .handler(async ({ data }) =>
+    withSql(async (sql) => {
+      const issued = await sql<{ token: unknown }>`
       insert into token_counter (service_date, next_token)
       values ((now() at time zone ${TZ})::date, 2)
       on conflict (service_date) do update
       set next_token = token_counter.next_token + 1
       returning next_token - 1 as token
-    `;
-    const token = asNumber(issued[0]?.token);
-    const inserted = await sql<RawOrder>`
+        `;
+      const token = asNumber(issued[0]?.token);
+      const inserted = await sql<RawOrder>`
       insert into orders (token, item, status)
       values (${token}, ${data.item}, 'preparing')
       returning id, token, item, status,
         created_at as "createdAt",
         ready_at as "readyAt"
-    `;
-    const order = mapOrder(inserted[0]!);
-    const aheadRows = await sql<{ ahead: unknown }>`
+        `;
+      const order = mapOrder(inserted[0]!);
+      const aheadRows = await sql<{ ahead: unknown }>`
       select count(*)::int as ahead
       from orders
       where status = 'preparing'
         and id < ${order.id}
         and (created_at at time zone ${TZ})::date = (now() at time zone ${TZ})::date
-    `;
-    return { order, ahead: asNumber(aheadRows[0]?.ahead) };
-  });
+        `;
+      return { order, ahead: asNumber(aheadRows[0]?.ahead) };
+    }),
+  );
 
 /**
  * Counter-side order at an explicitly chosen token number. Token numbers are
@@ -185,41 +185,42 @@ export const placeOrderAt = createServerFn({ method: "POST" })
     }
     return { item, token };
   })
-  .handler(async ({ data }) => {
-    const sql = await getSql();
-    const used = await sql<{ id: unknown }>`
+  .handler(async ({ data }) =>
+    withSql(async (sql) => {
+      const used = await sql<{ id: unknown }>`
       select id from orders
       where token = ${data.token}
         and (created_at at time zone ${TZ})::date = (now() at time zone ${TZ})::date
       limit 1
-    `;
-    if (used[0]) throw new Error(`Token ${data.token} is already in use today`);
+        `;
+      if (used[0]) throw new Error(`Token ${data.token} is already in use today`);
 
-    const inserted = await sql<RawOrder>`
+      const inserted = await sql<RawOrder>`
       insert into orders (token, item, status)
       values (${data.token}, ${data.item}, 'preparing')
       returning id, token, item, status,
         created_at as "createdAt",
         ready_at as "readyAt"
-    `;
-    const order = mapOrder(inserted[0]!);
+        `;
+      const order = mapOrder(inserted[0]!);
 
-    await sql`
+      await sql`
       insert into token_counter (service_date, next_token)
       values ((now() at time zone ${TZ})::date, ${data.token + 1})
       on conflict (service_date) do update
       set next_token = greatest(token_counter.next_token, ${data.token + 1})
-    `;
+        `;
 
-    const aheadRows = await sql<{ ahead: unknown }>`
+      const aheadRows = await sql<{ ahead: unknown }>`
       select count(*)::int as ahead
       from orders
       where status = 'preparing'
         and id < ${order.id}
         and (created_at at time zone ${TZ})::date = (now() at time zone ${TZ})::date
-    `;
-    return { order, ahead: asNumber(aheadRows[0]?.ahead) };
-  });
+        `;
+      return { order, ahead: asNumber(aheadRows[0]?.ahead) };
+    }),
+  );
 
 function idInput(input: { id: number }) {
   const id = Number(input?.id);
@@ -229,51 +230,54 @@ function idInput(input: { id: number }) {
 
 export const markReady = createServerFn({ method: "POST" })
   .validator(idInput)
-  .handler(async ({ data }) => {
-    const sql = await getSql();
-    const rows = await sql<RawOrder>`
+  .handler(async ({ data }) =>
+    withSql(async (sql) => {
+      const rows = await sql<RawOrder>`
       update orders
       set status = 'ready', ready_at = now()
       where id = ${data.id} and status = 'preparing'
       returning id, token, item, status,
         created_at as "createdAt",
         ready_at as "readyAt"
-    `;
-    if (!rows[0]) throw new Error("That token is not still cooking");
-    return mapOrder(rows[0]);
-  });
+      `;
+      if (!rows[0]) throw new Error("That token is not still cooking");
+      return mapOrder(rows[0]);
+    }),
+  );
 
 export const markCollected = createServerFn({ method: "POST" })
   .validator(idInput)
-  .handler(async ({ data }) => {
-    const sql = await getSql();
-    const rows = await sql<RawOrder>`
+  .handler(async ({ data }) =>
+    withSql(async (sql) => {
+      const rows = await sql<RawOrder>`
       update orders
       set status = 'collected', collected_at = now()
       where id = ${data.id} and status = 'ready'
       returning id, token, item, status,
         created_at as "createdAt",
         ready_at as "readyAt"
-    `;
-    if (!rows[0]) throw new Error("That token is not at the pickup counter");
-    return mapOrder(rows[0]);
-  });
+      `;
+      if (!rows[0]) throw new Error("That token is not at the pickup counter");
+      return mapOrder(rows[0]);
+    }),
+  );
 
 export const recallOrder = createServerFn({ method: "POST" })
   .validator(idInput)
-  .handler(async ({ data }) => {
-    const sql = await getSql();
-    const rows = await sql<RawOrder>`
+  .handler(async ({ data }) =>
+    withSql(async (sql) => {
+      const rows = await sql<RawOrder>`
       update orders
       set status = 'preparing', ready_at = null
       where id = ${data.id} and status = 'ready'
       returning id, token, item, status,
         created_at as "createdAt",
         ready_at as "readyAt"
-    `;
-    if (!rows[0]) throw new Error("That token is not ready");
-    return mapOrder(rows[0]);
-  });
+      `;
+      if (!rows[0]) throw new Error("That token is not ready");
+      return mapOrder(rows[0]);
+    }),
+  );
 
 export type ServerPulse = {
   now: string;
@@ -305,14 +309,14 @@ type RawEvent = {
 
 /** Real runtime + order activity for the server.log panel. */
 export const getServerPulse = createServerFn({ method: "GET" }).handler(
-  async (): Promise<ServerPulse> => {
-    const sql = await getSql();
-    const counts = await sql<{
-      orders_today: unknown;
-      cooking: unknown;
-      ready: unknown;
-      served: unknown;
-    }>`
+  async (): Promise<ServerPulse> =>
+    withSql(async (sql) => {
+      const counts = await sql<{
+        orders_today: unknown;
+        cooking: unknown;
+        ready: unknown;
+        served: unknown;
+      }>`
       select
         count(*)::int as orders_today,
         count(*) filter (where status = 'preparing')::int as cooking,
@@ -320,8 +324,8 @@ export const getServerPulse = createServerFn({ method: "GET" }).handler(
         count(*) filter (where status = 'collected')::int as served
       from orders
       where (created_at at time zone ${TZ})::date = (now() at time zone ${TZ})::date
-    `;
-    const events = await sql<RawEvent>`
+      `;
+      const events = await sql<RawEvent>`
       select token, item, status,
         case status
           when 'collected' then collected_at
@@ -332,28 +336,38 @@ export const getServerPulse = createServerFn({ method: "GET" }).handler(
       where (created_at at time zone ${TZ})::date = (now() at time zone ${TZ})::date
       order by at desc nulls last
       limit 5
-    `;
-    return {
-      now: new Date().toISOString(),
-      uptimeSec: Math.round(process.uptime()),
-      node: process.version,
-      env: process.env.VERCEL_ENV ?? "local",
-      db: dbSource,
-      commit: process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 7) ?? null,
-      counts: {
-        ordersToday: asNumber(counts[0]?.orders_today),
-        cooking: asNumber(counts[0]?.cooking),
-        ready: asNumber(counts[0]?.ready),
-        served: asNumber(counts[0]?.served),
-      },
-      events: events.map((row) => ({
-        token: asNumber(row.token),
-        item: String(row.item),
-        status: asStatus(row.status),
-        at: asIso(row.at) ?? new Date().toISOString(),
-      })),
-    };
-  },
+      `;
+      return {
+        now: new Date().toISOString(),
+        uptimeSec:
+          typeof process !== "undefined" && typeof process.uptime === "function"
+            ? Math.round(process.uptime())
+            : 0,
+        node: typeof process !== "undefined" ? (process.version ?? "worker") : "worker",
+        env:
+          (typeof process !== "undefined"
+            ? (process.env?.VERCEL_ENV ?? process.env?.NODE_ENV)
+            : undefined) ?? "cloudflare-workers",
+        db: dbSource,
+        commit:
+          (typeof process !== "undefined"
+            ? (process.env?.VERCEL_GIT_COMMIT_SHA ?? process.env?.CF_PAGES_COMMIT_SHA)
+            : undefined
+          )?.slice(0, 7) ?? null,
+        counts: {
+          ordersToday: asNumber(counts[0]?.orders_today),
+          cooking: asNumber(counts[0]?.cooking),
+          ready: asNumber(counts[0]?.ready),
+          served: asNumber(counts[0]?.served),
+        },
+        events: events.map((row) => ({
+          token: asNumber(row.token),
+          item: String(row.item),
+          status: asStatus(row.status),
+          at: asIso(row.at) ?? new Date().toISOString(),
+        })),
+      };
+    }),
 );
 
 export const lookupToken = createServerFn({ method: "POST" })
@@ -364,9 +378,9 @@ export const lookupToken = createServerFn({ method: "POST" })
     }
     return { token };
   })
-  .handler(async ({ data }): Promise<Lookup> => {
-    const sql = await getSql();
-    const rows = await sql<RawOrder>`
+  .handler(async ({ data }): Promise<Lookup> =>
+    withSql(async (sql) => {
+      const rows = await sql<RawOrder>`
       select id, token, item, status,
         created_at as "createdAt",
         ready_at as "readyAt"
@@ -375,19 +389,20 @@ export const lookupToken = createServerFn({ method: "POST" })
         and (created_at at time zone ${TZ})::date = (now() at time zone ${TZ})::date
       order by id desc
       limit 1
-    `;
-    if (!rows[0]) return { found: false };
-    const order = mapOrder(rows[0]);
-    let ahead = 0;
-    if (order.status === "preparing") {
-      const aheadRows = await sql<{ ahead: unknown }>`
+      `;
+      if (!rows[0]) return { found: false };
+      const order = mapOrder(rows[0]);
+      let ahead = 0;
+      if (order.status === "preparing") {
+        const aheadRows = await sql<{ ahead: unknown }>`
         select count(*)::int as ahead
         from orders
         where status = 'preparing'
           and id < ${order.id}
           and (created_at at time zone ${TZ})::date = (now() at time zone ${TZ})::date
-      `;
-      ahead = asNumber(aheadRows[0]?.ahead);
-    }
-    return { found: true, order, ahead };
-  });
+        `;
+        ahead = asNumber(aheadRows[0]?.ahead);
+      }
+      return { found: true, order, ahead };
+    }),
+  );

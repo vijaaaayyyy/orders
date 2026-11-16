@@ -1,0 +1,16 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "orders",
+  "main": "@tanstack/react-start/server-entry",
+  "compatibility_date": "2026-05-11",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {
+    "enabled": true
+  },
+  "hyperdrive": [
+    {
+      "binding": "HYPERDRIVE",
+      "id": "4d674fd57edc4b9981dd8da78f618b80"
+    }
+  ]
+}

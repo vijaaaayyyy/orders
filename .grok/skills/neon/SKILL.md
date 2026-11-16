@@ -18,7 +18,8 @@ migrations, don't import `@/lib/db`, and keep state in `localStorage` / zustand.
 
 This template ships a ready-made, **dual-mode** database integration:
 
-- **Configured** (env var set, e.g. deployed): real **Neon Postgres**.
+- **Deployed**: Neon Postgres through Cloudflare's `HYPERDRIVE` binding.
+- **Node/build scripts**: Neon Postgres through `DATABASE_URL`.
 - **Not configured** (sandbox live preview): the DB falls back to a local
   **PGLite** (embedded WASM Postgres), so the preview always renders. Build
   against the `@/lib/db` helper; both modes work with the same API.
@@ -37,32 +38,34 @@ Set `deploy.database` to `true` in `.grok/app-env.json`:
 { "VITE_AUTH_ENABLED": "false", "deploy": { "database": true } }
 ```
 
-That is what tells the platform to provision Neon for the deployed app; leave it
-`false` and the deploy gets no `DATABASE_URL`, so the app silently runs on a
-throwaway PGLite that loses its rows. Shipping `migrations/*.sql`, or sign-in,
-provisions one regardless — this flag is for an app that queries `@/lib/db`
-without either. It is not a `VITE_` key and never reaches the browser.
+That records the app's database requirement. For this Cloudflare deployment,
+production persistence still requires a Neon-backed `HYPERDRIVE` binding; the
+flag alone does not configure a database. Shipping `migrations/*.sql`, or
+sign-in, also marks the app as requiring one. It is not a `VITE_` key and never
+reaches the browser.
 
 ## Env vars — do **not** create a `.env` file
 
 **Never write a `.env` / `.env.local` / `.env.example` for the database.** In
 the sandbox live preview, leave `DATABASE_URL` unset — `@/lib/db` automatically
-uses embedded PGLite. When the app is deployed, the platform injects
-`DATABASE_URL` (Neon); you do not provision or write it yourself.
+uses embedded PGLite. In Cloudflare production, configure `HYPERDRIVE` to use
+Neon. The protected deploy environment also needs `DATABASE_URL` for migrations.
 
 | Var | Where | Purpose |
 |---|---|---|
-| `DATABASE_URL` | server | Neon connection string when deployed (optional — PGLite fallback if unset) |
+| `HYPERDRIVE` | Cloudflare Worker binding | Neon connection used by the deployed app |
+| `DATABASE_URL` | protected deploy environment | Neon connection used by the migration script and Node tooling |
 
 Never hardcode it; never expose non-`VITE_` vars to the client.
 
 ## Database (server-only)
 
-`@/lib/db` exports `getSql()` and `dbSource`: a **regular Postgres driver**
-(node-postgres, `pg`) against `DATABASE_URL`, or a local **PGLite** fallback when
-unset. Same API either way — a tagged template (and `.query()`) resolving to
-`rows[]`. Call ONLY from a `createServerFn` handler / server loader, never a
-client component. Define schema in `migrations/`, not inline.
+`@/lib/db` exports `getSql()` and `dbSource`: node-postgres (`pg`) through the
+Cloudflare `HYPERDRIVE` binding in deployed Workers, `DATABASE_URL` in Node, or
+a local **PGLite** fallback when no Postgres URL is configured. Same API either
+way — a tagged template (and `.query()`) resolving to `rows[]`. Call ONLY from a
+`createServerFn` handler / server loader, never a client component. Define
+schema in `migrations/`, not inline.
 
 ```ts
 import { createServerFn } from "@tanstack/react-start";
@@ -110,10 +113,9 @@ about a person) in this mode, and leave out destructive bulk mutations
 
 ## Migrations
 
-`migrations/*.sql` are the single schema source. They apply to **Neon on deploy**
-(`npm run build` runs `db:migrate` against `DATABASE_URL`, so Vercel ships with
-the schema ready) and to the **PGLite** preview **automatically on startup**, so
-dev matches prod.
+`migrations/*.sql` are the single schema source. `npm run deploy` applies them
+to **Neon** using the protected `DATABASE_URL` before building and deploying;
+the **PGLite** preview applies them automatically on startup.
 
 Neither applier descends into subdirectories, so the Better Auth schema at
 `migrations/auth/0001_auth.sql` is **not** applied unless the app turns sign-in

@@ -32,7 +32,7 @@ them (AGENTS.md §0.5). Switching it on is "Turning sign-in on" below.
 
 **Once on, sign-in is REAL — including in the sandbox live preview.** Do **NOT**
 scaffold demo/mock/hardcoded users. Preview: popup + baked preview client;
-deployed: per-app client + `DATABASE_URL` + zero-click gate sign-in
+deployed: per-app client + Neon via Cloudflare `HYPERDRIVE` + zero-click gate sign-in
 (`references/prewired-and-env.md`).
 
 **While OFF** (`VITE_AUTH_ENABLED=false`) a **dev user** is returned so a

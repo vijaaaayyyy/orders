@@ -2,15 +2,17 @@
 /**
  * Deploy-time database migrator (node-postgres, `pg`).
  *
- * Runs during `npm run build` — on every Vercel deploy — applying pending files
- * in ../migrations to DATABASE_URL. Each file is applied in one transaction and
- * recorded in a `_migrations` table, so it runs once and is safe to re-run.
+ * Runs before `wrangler deploy` against the same Neon database configured
+ * through the Worker's HYPERDRIVE binding. Each file is applied in one
+ * transaction and recorded in a `_migrations` table, so it is safe to re-run.
  *
  * The read is non-recursive, so the opt-in auth schema under migrations/auth/
  * is not applied to an app that never asked for sign-in.
  *
- * No DATABASE_URL (local / preview builds) -> skip; the PGLite fallback applies
- * the same files at startup instead (see src/lib/db.ts).
+ * Local / preview builds may omit DATABASE_URL; the PGLite fallback applies
+ * the same files at startup instead (see src/lib/db.ts). Deploy mode passes
+ * --required so a missing migration URL stops deployment rather than silently
+ * shipping an app with no production schema.
  */
 import { readdir, readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
@@ -18,12 +20,20 @@ import { dirname, join } from "node:path";
 import pg from "pg";
 import { pendingMigrations } from "./migration-plan.mjs";
 
-const databaseUrl = process.env.DATABASE_URL;
+const required = process.argv.includes("--required");
+const databaseUrl = process.env.DATABASE_URL?.trim();
 if (!databaseUrl) {
-  console.log(
-    "[migrate] DATABASE_URL not set — skipping (the PGLite fallback migrates itself).",
-  );
-  process.exit(0);
+  if (required) {
+    console.error(
+      "[migrate] DATABASE_URL is required for deployment migrations. Set it in the deploy environment to the same Neon database used by HYPERDRIVE.",
+    );
+    process.exit(1);
+  } else {
+    console.log(
+      "[migrate] DATABASE_URL not set — skipping local migration (PGLite applies migrations at startup).",
+    );
+    process.exit(0);
+  }
 }
 
 const migrationsDir = join(dirname(fileURLToPath(import.meta.url)), "..", "migrations");
