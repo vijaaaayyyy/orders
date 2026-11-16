@@ -404,7 +404,7 @@ function BoardView({
         ) : (
           <div className="columns-2 gap-3 sm:columns-3 lg:columns-4 [column-fill:_balance]">
             {board.ready.map((order, index) => {
-              const pinHeight = ["h-24", "h-36", "h-28", "h-44", "h-32", "h-40"][index % 6];
+              const pinHeight = ["h-20 sm:h-24", "h-28 sm:h-36", "h-24 sm:h-28", "h-36 sm:h-44", "h-28 sm:h-32", "h-32 sm:h-40"][index % 6];
               const station = STATION_BY_ITEM.get(order.item);
               const tone = stationTone(station);
               return (
@@ -415,7 +415,7 @@ function BoardView({
                   } ${watch === order.token ? "ring-4 ring-primary ring-offset-2 ring-offset-bg" : ""}`}
                 >
                   <div
-                    className={`relative flex ${pinHeight} items-center justify-center bg-gradient-to-br ${tone.grad} px-4 text-white`}
+                    className={`relative flex ${pinHeight} items-center justify-center bg-gradient-to-br ${tone.grad} px-4 text-white pt-8`}
                   >
                     <div className="absolute inset-x-3 top-3 flex items-center justify-between text-[11px] font-semibold tracking-widest uppercase">
                       <span className="inline-flex items-center gap-1 rounded-full bg-white/20 px-2 py-0.5 backdrop-blur-sm">
@@ -426,7 +426,7 @@ function BoardView({
                         {minutesAgo(order.readyAt ?? order.createdAt, now)}
                       </span>
                     </div>
-                    <p className="font-display text-7xl leading-none font-semibold tabular-nums lining-nums drop-shadow-sm">
+                    <p className="font-display text-5xl sm:text-7xl leading-none font-semibold tabular-nums lining-nums drop-shadow-sm">
                       {order.token}
                     </p>
                   </div>
@@ -475,43 +475,55 @@ function BoardView({
               body="New tokens show up here the moment the counter takes an order."
             />
           ) : (
-            <ul className="flex flex-col gap-2">
+            <div className="columns-2 gap-3 sm:columns-3 lg:columns-4 [column-fill:_balance]">
               {board.preparing.map((order, index) => {
                 const station = STATION_BY_ITEM.get(order.item);
                 const tone = stationTone(station);
+                const pinHeight = ["h-28", "h-36", "h-32", "h-44", "h-24", "h-40"][index % 6];
                 return (
-                <li key={order.id}>
+                <article
+                  key={order.id}
+                  className={`pinterest-card mb-3 break-inside-avoid overflow-hidden rounded-xl border border-border bg-surface ${
+                    watch === order.token ? "ring-4 ring-primary ring-offset-2 ring-offset-bg" : ""
+                  }`}
+                >
                   <div
-                    className={`docket relative flex items-center gap-3 overflow-hidden rounded-lg border border-border bg-surface py-3 pr-3 pl-4 ${
-                      watch === order.token ? "ring-4 ring-primary ring-offset-2 ring-offset-bg" : ""
-                    }`}
+                    className={`relative flex ${pinHeight} items-center justify-center bg-gradient-to-br ${tone.grad} px-4 text-white`}
                   >
-                    <span className={`absolute inset-y-0 left-0 w-1.5 ${tone.bar}`} />
-                    <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-surface-2 text-xs font-semibold text-muted tabular-nums">
-                      {index + 1}
-                    </span>
-                    <span className="font-display text-5xl leading-none font-semibold tabular-nums lining-nums">
-                      {order.token}
-                    </span>
-                    <span className="min-w-0 flex-1">
-                      <span className="block truncate text-lg font-medium">{order.item}</span>
-                      <span className="mt-1 flex flex-wrap items-center gap-1.5 text-sm text-muted">
-                        <Clock3 className="size-3.5" aria-hidden="true" />
-                        {minutesAgo(order.createdAt, now)} in
-                        {station ? (
-                          <span
-                            className={`rounded-full px-2 py-0.5 text-[11px] font-semibold tracking-wide uppercase ${tone.chip}`}
-                          >
-                            {station}
-                          </span>
-                        ) : null}
+                    <div className="absolute inset-x-3 top-3 flex items-center justify-between text-[11px] font-semibold tracking-widest uppercase">
+                      <span className="inline-flex items-center gap-1 rounded-full bg-white/20 px-2 py-0.5 backdrop-blur-sm">
+                        <span className="size-1.5 rounded-full bg-white" />
+                        Cooking
                       </span>
-                    </span>
+                      <span className="tabular-nums text-white/85">
+                        {minutesAgo(order.createdAt, now)}
+                      </span>
+                    </div>
+                    <p className="font-display text-5xl sm:text-7xl leading-none font-semibold tabular-nums lining-nums drop-shadow-sm">
+                      {order.token}
+                    </p>
                   </div>
-                </li>
+                  <div className="p-3">
+                    <p className="truncate text-lg font-semibold">{order.item}</p>
+                    <div className="mt-1.5 flex items-center justify-between gap-2">
+                      {station ? (
+                        <span
+                          className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-semibold tracking-wide uppercase ${tone.chip}`}
+                        >
+                          {station}
+                        </span>
+                      ) : (
+                        <span />
+                      )}
+                      <span className={`text-xs font-semibold tracking-widest uppercase ${tone.text}`}>
+                        Cooking
+                      </span>
+                    </div>
+                  </div>
+                </article>
                 );
               })}
-            </ul>
+            </div>
           )}
         </section>
 

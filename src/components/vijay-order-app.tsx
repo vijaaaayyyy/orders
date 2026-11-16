@@ -330,7 +330,7 @@ function Lane({
       {orders.length === 0 ? (
         <p className="rounded-xl border border-dashed border-border px-4 py-6 text-sm text-muted">{empty}</p>
       ) : (
-        <div className="columns-1 gap-3 sm:columns-2 [column-fill:_balance]">
+        <div className="columns-2 gap-3 sm:columns-3 lg:columns-4 [column-fill:_balance]">
           {orders.map((order) => {
             const station = STATION_BY_ITEM.get(order.item);
             const stationStyle = stationTone(station);
