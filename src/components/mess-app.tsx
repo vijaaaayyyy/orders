@@ -543,18 +543,12 @@ function BoardView({
         <section className="fixed bottom-4 left-1/2 -translate-x-1/2 z-20 w-auto max-w-sm rounded-full border border-border bg-surface/95 backdrop-blur-md shadow-[0_8px_32px_-8px_color-mix(in_oklab,var(--fg)_30%,transparent)] overflow-hidden"
           aria-labelledby="track-heading"
         >
-          <div className="h-1.5 rainbow-rule" />
-          <div className="p-4">
+          <div className="h-1 rainbow-rule" />
+          <div className="px-3 py-2">
             <div className="flex items-center justify-between gap-2">
-              <h2 id="track-heading" className="font-display text-3xl leading-none font-semibold italic">
-                Track a token
-              </h2>
-              <span className="sticker bg-accent/15 text-accent">Live</span>
+              <h2 id="track-heading" className="sr-only">Track a token</h2>
             </div>
-            <p className="mt-2 text-base text-muted">
-              The number they called at the counter. We'll tell you when to walk up.
-            </p>
-            <form className="mt-4 flex gap-2" onSubmit={onTrack}>
+            <form className="flex items-center gap-2" onSubmit={onTrack}>
               <label className="sr-only" htmlFor="token">
                 Token number
               </label>
@@ -563,16 +557,16 @@ function BoardView({
                 inputMode="numeric"
                 value={draft}
                 onChange={(event) => setDraft(event.target.value.replace(/\D/g, "").slice(0, 4))}
-                placeholder="e.g. 21"
+                placeholder="Track token…"
                 autoComplete="off"
                 suppressHydrationWarning
-                className="h-12 min-w-0 flex-1 rounded-md border border-border bg-bg px-3 text-xl tabular-nums outline-none placeholder:text-muted focus-visible:ring-2 focus-visible:ring-primary"
+                className="h-8 w-20 min-w-0 rounded-full border border-border bg-bg px-3 text-sm tabular-nums outline-none placeholder:text-muted focus-visible:ring-2 focus-visible:ring-primary"
               />
               <button
                 type="submit"
-                className="btn-primary inline-flex h-12 items-center gap-2 rounded-md px-4 font-semibold transition-transform duration-150 ease-out active:scale-[0.96]"
+                className="btn-primary inline-flex h-8 items-center gap-1 rounded-full px-3 text-sm font-semibold transition-transform duration-150 ease-out active:scale-[0.96]"
               >
-                <Search className="size-4" aria-hidden="true" />
+                <Search className="size-3.5" aria-hidden="true" />
                 Check
               </button>
             </form>
@@ -582,9 +576,6 @@ function BoardView({
               </p>
             ) : null}
             {live ? <LookupCard live={live} onClear={clearWatch} /> : null}
-            <p className="mt-4 text-sm tracking-wide text-muted uppercase">
-              {board.servedToday} picked up today & next token {board.nextToken}
-            </p>
           </div>
         </section>
       </div>
