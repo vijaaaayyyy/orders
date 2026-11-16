@@ -230,6 +230,14 @@
     opacity: 0.5;
   }
 
+  @media (max-width: 640px) {
+    body::after {
+      font-size: 40vw;
+      bottom: -5vh;
+      opacity: 0.15;
+    }
+  }
+
   button:not(:disabled),
   [role="button"]:not(:disabled) {
     cursor: pointer;
