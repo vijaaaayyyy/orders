@@ -540,7 +540,7 @@ function BoardView({
           )}
         </section>
 
-        <section className="fixed bottom-4 left-1/2 -translate-x-1/2 z-20 w-auto max-w-lg rounded-full border border-border bg-surface/95 backdrop-blur-md shadow-[0_8px_32px_-8px_color-mix(in_oklab,var(--fg)_30%,transparent)] overflow-hidden"
+        <section className={`fixed bottom-4 left-1/2 -translate-x-1/2 z-20 rounded-3xl border border-border bg-surface/95 backdrop-blur-md shadow-[0_8px_32px_-8px_color-mix(in_oklab,var(--fg)_30%,transparent)] overflow-hidden transition-all duration-300 ${live ? "w-[calc(100%-2rem)] max-w-lg" : "w-auto max-w-sm"}`}
           aria-labelledby="track-heading"
         >
           <div className="h-1 rainbow-rule" />
@@ -560,11 +560,11 @@ function BoardView({
                 placeholder="Track token…"
                 autoComplete="off"
                 suppressHydrationWarning
-                className="h-8 w-32 min-w-0 rounded-full border border-border bg-bg px-3 text-sm tabular-nums outline-none placeholder:text-muted focus-visible:ring-2 focus-visible:ring-primary"
+                className="h-10 min-w-0 flex-1 rounded-full border border-border bg-bg px-4 text-base tabular-nums outline-none placeholder:text-muted focus-visible:ring-2 focus-visible:ring-primary"
               />
               <button
                 type="submit"
-                className="btn-primary inline-flex h-8 items-center gap-1 rounded-full px-3 text-sm font-semibold transition-transform duration-150 ease-out active:scale-[0.96]"
+                className="btn-primary inline-flex h-10 items-center gap-1.5 rounded-full px-4 text-sm font-semibold transition-transform duration-150 ease-out active:scale-[0.96]"
               >
                 <Search className="size-3.5" aria-hidden="true" />
                 Check
