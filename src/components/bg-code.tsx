@@ -47,9 +47,9 @@ const COLORS = [
   "#0369a1",
 ];
 
-// 26 equations + 14 icons at fixed positions — no random scatter, stable on re-render.
+// 26 equations + 14 icons at fixed positions — stable on re-render.
 const scatter = [
-  // Equations (rows 0‑4, left‑right across)
+  // Equations (rows 0‑4)
   { x: 6,  y: 4,  text: EQUATION_TEXTS[0], rotate: -8,  color: "#e11d48" },
   { x: 18, y: 1,  text: EQUATION_TEXTS[1], rotate:  5,  color: "#7c3aed" },
   { x: 3,  y: 7,  text: EQUATION_TEXTS[2], rotate: -3,  color: "#0ea5e9" },

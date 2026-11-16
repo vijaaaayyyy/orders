@@ -303,6 +303,7 @@ export function MessApp({ initial }: { initial: Board }) {
         />
 
         <CompileBox />
+      <CompileBox />
       </main>
 
       {watchedReady && live?.found ? (
