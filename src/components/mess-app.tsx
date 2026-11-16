@@ -210,8 +210,8 @@ export function MessApp({ initial }: { initial: Board }) {
   return (
     <div className="relative z-10 min-h-dvh">
       <div className = "header1">
-        <header className="sticky top-0 z-20 border-b border-border bg-bg/90 backdrop-blur-md supports-[backdrop-filter]:bg-bg/75">
-          <div className="mx-auto flex max-w-6xl flex-col gap-3 overflow-hidden rounded-[34px] px-4 py-3 sm:px-6 lg:flex-row lg:items-center lg:justify-between">
+        <header className="sticky top-0 z-20 overflow-hidden rounded-[23px] border-b border-border bg-bg/90 backdrop-blur-md supports-[backdrop-filter]:bg-bg/75">
+          <div className="mx-auto flex max-w-6xl flex-col gap-3 overflow-hidden rounded-[138px] px-4 py-3 sm:px-6 lg:flex-row lg:items-center lg:justify-between">
             {/* Brand */}
             <div className="flex items-center justify-between gap-3">
               <div className="flex min-w-0 items-center gap-3">
