@@ -370,10 +370,8 @@ function BoardView({
         />
         {!featured && (
           <div className="pointer-events-none absolute top-0 left-1/2 h-full w-full max-w-lg -translate-x-1/2">
-            <p className="absolute left-[78%] top-[32%] font-display text-2xl leading-none font-semibold italic text-[#1a1512] sm:text-3xl">
-              No
-              <br />
-              order
+            <p className="absolute left-[78%] right-0 top-[32%] font-display text-lg leading-tight font-semibold italic text-[#1a1512] sm:text-xl">
+              No orders to pick so I'm seeing you
             </p>
           </div>
         )}
