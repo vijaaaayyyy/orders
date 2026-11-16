@@ -210,7 +210,7 @@ export function MessApp({ initial }: { initial: Board }) {
   return (
     <div className="relative z-10 min-h-dvh">
       <div className = "header1">
-        <header className="sticky top-0 z-20 overflow-hidden rounded-[23px] border-b border-border bg-bg/90 backdrop-blur-md supports-[backdrop-filter]:bg-bg/75">
+        <header className="glass sticky top-0 z-20 overflow-hidden rounded-[23px]">
           <div className="mx-auto flex max-w-6xl flex-col gap-3 overflow-hidden rounded-[138px] px-4 py-3 sm:px-6 lg:flex-row lg:items-center lg:justify-between">
             {/* Brand */}
             <div className="flex items-center justify-between gap-3">
@@ -384,7 +384,7 @@ function BoardView({
         )}
       </section>
 
-      <section className="min-w-0 lg:col-span-3 rounded-2xl border border-border bg-surface p-4 sm:p-5" aria-labelledby="ready-heading">
+      <section className="glass min-w-0 lg:col-span-3 rounded-2xl p-4 sm:p-5" aria-labelledby="ready-heading">
         <SectionHead
           id="ready-heading"
           kicker="Walk up now"
@@ -406,7 +406,7 @@ function BoardView({
               return (
                 <article
                   key={order.id}
-                  className={`pinterest-card mb-4 break-inside-avoid overflow-hidden rounded-2xl border border-border bg-surface ring-1 ring-black/5 ${
+                  className={`pinterest-card mb-4 break-inside-avoid overflow-hidden rounded-2xl glass ${
                     fresh.includes(order.id) ? "just-called" : ""
                   } ${watch === order.token ? "ring-4 ring-primary ring-offset-2 ring-offset-bg" : ""}`}
                 >
@@ -457,7 +457,7 @@ function BoardView({
       </section>
 
       <div className="flex min-w-0 flex-col gap-6 lg:col-span-2">
-        <section className="min-w-0 rounded-2xl border border-border bg-surface p-4 sm:p-5" aria-labelledby="cook-heading">
+        <section className="glass min-w-0 rounded-2xl p-4 sm:p-5" aria-labelledby="cook-heading">
           <SectionHead
             id="cook-heading"
             kicker="Still on the pass"
@@ -479,7 +479,7 @@ function BoardView({
                 return (
                 <article
                   key={order.id}
-                  className={`pinterest-card mb-4 break-inside-avoid overflow-hidden rounded-2xl border border-border bg-surface ring-1 ring-black/5 ${
+                  className={`pinterest-card mb-4 break-inside-avoid overflow-hidden rounded-2xl glass ${
                     watch === order.token ? "ring-4 ring-primary ring-offset-2 ring-offset-bg" : ""
                   }`}
                 >
