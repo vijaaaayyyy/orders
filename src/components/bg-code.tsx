@@ -47,10 +47,9 @@ const COLORS = [
   "#0369a1",
 ];
 
-// Spread 26 equations + 14 icons across a 5×6 grid with gentle jitter
-// Each gets a predictable rotation so they’re never upside‑down in a jarring way.
+// 26 equations + 14 icons at fixed positions — no random scatter, stable on re-render.
 const scatter = [
-  // Equations placed first (rows 0‑4)
+  // Equations (rows 0‑4, left‑right across)
   { x: 6,  y: 4,  text: EQUATION_TEXTS[0], rotate: -8,  color: "#e11d48" },
   { x: 18, y: 1,  text: EQUATION_TEXTS[1], rotate:  5,  color: "#7c3aed" },
   { x: 3,  y: 7,  text: EQUATION_TEXTS[2], rotate: -3,  color: "#0ea5e9" },
@@ -62,7 +61,7 @@ const scatter = [
   { x: 16, y: 9,  text: EQUATION_TEXTS[8], rotate: -2,  color: "#9333ea" },
   { x: 20, y: 6,  text: EQUATION_TEXTS[9], rotate:  8,  color: "#0369a1" },
 
-  // Engineering icons placed after (rows 5‑8)
+  // Engineering icons (rows 5‑8)
   { x:  2, y: 5,  Icon: Cog,       rotate: 12, color: "#e11d48", size: 36 },
   { x: 24, y: 0,  Icon: CircuitBoard, rotate: -5, color: "#7c3aed", size: 40 },
   { x:  5, y: 3,  Icon: DraftingCompass, rotate: 8, color: "#0ea5e9", size: 42 },
@@ -76,7 +75,7 @@ const scatter = [
   { x: 20, y: 8,  Icon: Gauge,       rotate: -1, color: "#0ea5e9", size: 38 },
   { x:  6, y: 2,  Icon: Cable,       rotate:  9, color: "#ea580c", size: 34 },
 
-  // Plus a couple extra for warmth (rows 9‑10)
+  // Warmth extras (rows 9‑10)
   { x: 12, y: 10, Icon: Disc3,     rotate: 0,  color: "#7c3aed", size: 28 },
   { x:  1, y: 10, Icon: Settings,   rotate: 0,  color: "#64748b", size: 24 },
 ];
