@@ -280,6 +280,57 @@
     0 18px 40px -28px color-mix(in oklab, var(--fg) 70%, transparent);
 }
 
+@layer components {
+  /* Liquid glass: translucent, saturated surface with a light rim and a slow specular sheen. */
+  .glass {
+    position: relative;
+    isolation: isolate;
+    background-color: color-mix(in oklab, var(--surface) 58%, transparent);
+    -webkit-backdrop-filter: blur(22px) saturate(180%);
+    backdrop-filter: blur(22px) saturate(180%);
+    border: 1px solid color-mix(in oklab, var(--fg) 9%, transparent);
+    box-shadow:
+      inset 0 1px 0 color-mix(in oklab, #ffffff 55%, transparent),
+      0 22px 44px -30px color-mix(in oklab, var(--fg) 55%, transparent);
+  }
+
+  .glass::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.22) 50%, transparent 65%);
+    background-size: 250% 100%;
+    animation: glass-sheen 9s ease-in-out infinite;
+  }
+
+  :root:not([data-theme="dark"]) .glass {
+    background-color: color-mix(in oklab, #ffffff 42%, transparent);
+    border-color: color-mix(in oklab, #ffffff 85%, transparent);
+    box-shadow:
+      inset 0 1px 0 #ffffff,
+      inset 0 -1px 0 color-mix(in oklab, var(--fg) 6%, transparent),
+      0 1px 2px color-mix(in oklab, var(--fg) 8%, transparent),
+      0 24px 48px -26px color-mix(in oklab, var(--fg) 40%, transparent);
+  }
+
+  :root:not([data-theme="dark"]) .glass::before {
+    background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.8) 50%, transparent 65%);
+    background-size: 250% 100%;
+  }
+
+  @keyframes glass-sheen {
+    0% {
+      background-position: 120% 0;
+    }
+    100% {
+      background-position: -120% 0;
+    }
+  }
+}
+
 /* Multi-hue rule under the header — gives the app a signature stripe. */
 .rainbow-rule {
   background-image: linear-gradient(
@@ -344,14 +395,31 @@
 
 .pinterest-card {
   transition:
-    transform 0.16s ease,
-    box-shadow 0.16s ease,
-    border-color 0.16s ease;
+    transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+  animation: card-enter 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
     border-left:54px;
 }
 .pinterest-card:hover {
   transform: translateY(-3px);
   box-shadow: 0 16px 30px -14px color-mix(in oklab, var(--fg) 55%, transparent);
+}
+.pinterest-card:active {
+  transform: scale(0.98);
+}
+
+@keyframes card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.94);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
 }
 .pinterest-card:focus-visible {
   outline: 2px solid var(--primary);
@@ -418,7 +486,9 @@
 
 @media (prefers-reduced-motion: reduce) {
   .live-dot,
-  .just-called {
+  .just-called,
+  .pinterest-card,
+  .glass::before {
     animation: none;
   }
   .pinterest-card:hover {

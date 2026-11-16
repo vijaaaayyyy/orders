@@ -19,7 +19,7 @@ export const Route = createRootRoute({
       {
         name: "description",
         content:
-          "Live college mess board. Leave the window and come back when your token number is ready.",
+          "Live college mess board. Leave the pickup counter and come back when your token number is ready.",
       },
       { name: "theme-color", content: "#f4efe6", media: "(prefers-color-scheme: light)" },
       { name: "theme-color", content: "#12100e", media: "(prefers-color-scheme: dark)" },

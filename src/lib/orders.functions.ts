@@ -255,7 +255,7 @@ export const markCollected = createServerFn({ method: "POST" })
         created_at as "createdAt",
         ready_at as "readyAt"
     `;
-    if (!rows[0]) throw new Error("That token is not at the window");
+    if (!rows[0]) throw new Error("That token is not at the pickup counter");
     return mapOrder(rows[0]);
   });
 
