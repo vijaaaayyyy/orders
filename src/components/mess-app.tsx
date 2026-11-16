@@ -359,16 +359,16 @@ function BoardView({
     <div className="grid min-w-0 grid-cols-1 gap-6 lg:grid-cols-5">
       <section
         aria-label="Now serving"
-        className="relative overflow-hidden rounded-2xl lg:col-span-full"
+        className="relative overflow-hidden rounded-2xl lg:col-span-full flex justify-center"
       >
         <img
           src={featured ? "/now-serving.jpg" : "/no-order.jpg"}
           alt={featured ? `Now serving token ${featured.token}` : "Window is clear"}
-          className="w-full max-w-2xl mx-auto h-auto object-cover rounded-2xl"
+          className="w-full max-w-lg mx-auto h-auto object-cover rounded-2xl"
           loading="lazy"
         />
         {featured && (
-          <div className="absolute inset-0 flex items-end justify-start p-5 sm:p-7">
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-lg flex items-end justify-start p-5 sm:p-7">
             <div className="min-w-0">
               <p className="font-display text-7xl leading-[0.82] font-semibold tabular-nums sm:text-8xl text-white drop-shadow-lg">
                 {featured.token}
