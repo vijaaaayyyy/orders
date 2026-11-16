@@ -233,7 +233,7 @@
   @media (max-width: 640px) {
     body::after {
       font-size: 40vw;
-      bottom: 5px;
+      bottom: -13px;
       opacity: 0.5;
     }
   }
