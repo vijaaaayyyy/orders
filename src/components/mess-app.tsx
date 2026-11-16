@@ -536,7 +536,7 @@ function BoardView({
           )}
         </section>
 
-        <section className={`fixed ${watchedReady ? "bottom-40" : "bottom-6"} left-1/2 -translate-x-1/2 z-20 -mt-[59px] -mb-[59px] rounded-3xl border border-border bg-surface shadow-[0_8px_32px_-8px_color-mix(in_oklab,var(--fg)_30%,transparent)] overflow-hidden transition-all duration-300 ${live ? "w-[calc(100%-2rem)] max-w-lg" : "w-auto max-w-sm"}`}
+        <section className={`fixed ${watchedReady ? "bottom-40" : "bottom-6"} left-1/2 -translate-x-1/2 z-20 mt-[7px] mb-[7px] rounded-3xl border border-border bg-surface shadow-[0_8px_32px_-8px_color-mix(in_oklab,var(--fg)_30%,transparent)] overflow-hidden transition-all duration-300 ${live ? "w-[calc(100%-2rem)] max-w-lg" : "w-auto max-w-sm"}`}
           aria-labelledby="track-heading"
         >
           <div className="mx-[9px] mt-px mb-px pl-px pr-3 pt-2 pb-[5px]">
