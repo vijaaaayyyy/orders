@@ -401,7 +401,7 @@ function BoardView({
             body="Nothing is waiting. Stay where you are — your number will light up here."
           />
         ) : (
-          <div className="columns-1 gap-4 sm:columns-2 lg:columns-3 [column-fill:_balance]">
+          <div className="columns-2 gap-3 sm:columns-3 lg:columns-4 [column-fill:_balance]">
             {board.ready.map((order, index) => {
               const pinHeight = ["h-24", "h-36", "h-28", "h-44", "h-32", "h-40"][index % 6];
               const station = STATION_BY_ITEM.get(order.item);
