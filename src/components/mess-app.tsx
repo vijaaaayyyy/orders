@@ -404,7 +404,7 @@ function BoardView({
         {board.ready.length === 0 ? (
           <EmptyPanel
             icon={<Ticket className="size-5" />}
-            title="No orders to pick"
+            title="No orders to pick so I'm seeing you"
             body="Nothing is waiting. Stay where you are,  your number will light up here."
           />
         ) : (
