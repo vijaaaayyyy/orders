@@ -194,20 +194,26 @@
     font-family: var(--font-sans);
     font-size: 1.0625rem;
     line-height: 1.55;
-    background-image: url('/bg-light.jpg');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    background-repeat: no-repeat;
     overflow-x: hidden;
   }
 
-  :root[data-theme="dark"] body {
+  .bg-image-layer {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background-image: url('/bg-light.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    pointer-events: none;
+  }
+
+  :root[data-theme="dark"] .bg-image-layer {
     background-image: url('/bg-dark.jpg');
   }
 
   @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) body {
+    :root:not([data-theme="light"]) .bg-image-layer {
       background-image: url('/bg-dark.jpg');
     }
   }
@@ -233,8 +239,8 @@
   @media (max-width: 640px) {
     body::after {
       font-size: 40vw;
-      bottom: -13px;
-      opacity: 0.5;
+      bottom: 0;
+      opacity: 0.25;
     }
   }
 
@@ -353,7 +359,6 @@
 }
 .header1{
   opacity: 1;
-  transparent: 0.5;
 }
 /* Gradient brand tile used in both headers. */
 .brand-tile {

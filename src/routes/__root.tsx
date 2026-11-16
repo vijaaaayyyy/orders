@@ -57,6 +57,7 @@ function RootComponent() {
         <HeadContent />
       </head>
       <body>
+        <div className="bg-image-layer" aria-hidden="true" />
         <BgCode />
         <PreviewHostBridge />
         <AuthProvider>

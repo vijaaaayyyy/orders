@@ -540,7 +540,7 @@ function BoardView({
           )}
         </section>
 
-        <section className="docket overflow-hidden rounded-xl border border-border bg-surface"
+        <section className="fixed bottom-4 left-1/2 -translate-x-1/2 z-20 w-[calc(100%-2rem)] max-w-md rounded-2xl border border-border bg-surface/95 backdrop-blur-md shadow-[0_8px_32px_-8px_color-mix(in_oklab,var(--fg)_30%,transparent)] overflow-hidden"
           aria-labelledby="track-heading"
         >
           <div className="h-1.5 rainbow-rule" />
