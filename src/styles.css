@@ -151,6 +151,7 @@
     z-index: 0;
     pointer-events: none;
     overflow: hidden;
+    opacity: 0.6;
   }
 
   .bg-eq {
@@ -193,34 +194,11 @@
     font-family: var(--font-sans);
     font-size: 1.0625rem;
     line-height: 1.55;
-    background-image:
-      radial-gradient(
-        1100px 620px at 88% -8%,
-        color-mix(in oklab, var(--primary) 12%, transparent),
-        transparent 60%
-      ),
-      radial-gradient(
-        820px 520px at -6% 24%,
-        color-mix(in oklab, var(--accent) 10%, transparent),
-        transparent 62%
-      ),
-      radial-gradient(
-        900px 520px at 4% 108%,
-        color-mix(in oklab, var(--ready) 9%, transparent),
-        transparent 62%
-      ),
-      linear-gradient(
-        to right,
-        color-mix(in oklab, var(--fg) 7%, transparent) 1px,
-        transparent 1px
-      ),
-      linear-gradient(
-        to bottom,
-        color-mix(in oklab, var(--fg) 7%, transparent) 1px,
-        transparent 1px
-      );
-    background-size: auto, auto, auto, 26px 26px, 26px 26px;
-    background-position: 0 0, 0 0, 0 0, -1px -1px, -1px -1px;
+    background-image: url('/bg-image.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
     overflow-x: hidden;
   }
 
