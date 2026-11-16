@@ -354,6 +354,7 @@
     transform 0.16s ease,
     box-shadow 0.16s ease,
     border-color 0.16s ease;
+    border-left:54px;
 }
 .pinterest-card:hover {
   transform: translateY(-3px);

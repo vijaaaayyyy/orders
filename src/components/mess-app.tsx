@@ -477,20 +477,19 @@ function BoardView({
               body="New tokens show up here the moment the counter takes an order."
             />
           ) : (
-            <div className="columns-2 gap-3 sm:columns-3 lg:columns-4 [column-fill:_balance]">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 [grid-auto-rows:_minmax(0,1fr)]">
               {board.preparing.map((order, index) => {
                 const station = STATION_BY_ITEM.get(order.item);
                 const tone = stationTone(station);
-                const pinHeight = ["h-28", "h-36", "h-32", "h-44", "h-24", "h-40"][index % 6];
                 return (
                 <article
                   key={order.id}
-                  className={`pinterest-card mb-3 break-inside-avoid overflow-hidden rounded-xl border border-border bg-surface ${
+                  className={`pinterest-card break-inside-avoid overflow-hidden rounded-xl border border-border bg-surface ${
                     watch === order.token ? "ring-4 ring-primary ring-offset-2 ring-offset-bg" : ""
                   }`}
                 >
                   <div
-                    className={`relative flex ${pinHeight} items-center justify-center bg-gradient-to-br ${tone.grad} px-4 text-white`}
+                    className={`relative flex h-32 items-center justify-center bg-gradient-to-br ${tone.grad} px-4 text-white`}
                   >
                     <div className="absolute inset-x-3 top-3 flex items-center justify-between text-[11px] font-semibold tracking-widest uppercase">
                       <span className="inline-flex items-center gap-1 rounded-full bg-white/20 px-2 py-0.5 backdrop-blur-sm">
@@ -501,7 +500,7 @@ function BoardView({
                         {minutesAgo(order.createdAt, now)}
                       </span>
                     </div>
-                    <p className="font-display text-5xl sm:text-7xl leading-none font-semibold tabular-nums lining-nums drop-shadow-sm">
+                    <p className="font-display text-5xl sm:text-6xl leading-none font-semibold tabular-nums lining-nums drop-shadow-sm">
                       {order.token}
                     </p>
                   </div>
