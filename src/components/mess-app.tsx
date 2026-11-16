@@ -535,7 +535,7 @@ function BoardView({
           )}
         </section>
 
-        <section className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-20 rounded-3xl border border-border bg-surface/85 backdrop-blur-md shadow-[0_8px_32px_-8px_color-mix(in_oklab,var(--fg)_30%,transparent)] overflow-hidden transition-all duration-300 ${live ? "w-[calc(100%-2rem)] max-w-lg" : "w-auto max-w-sm"}`}
+        <section className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-20 rounded-3xl border border-border bg-surface shadow-[0_8px_32px_-8px_color-mix(in_oklab,var(--fg)_30%,transparent)] overflow-hidden transition-all duration-300 ${live ? "w-[calc(100%-2rem)] max-w-lg" : "w-auto max-w-sm"}`}
           aria-labelledby="track-heading"
         >
           <div className="mx-[9px] mt-px mb-px pl-px pr-3 pt-2 pb-[5px]">
@@ -593,12 +593,12 @@ function LookupCard({ live, onClear }: { live: Lookup; onClear: () => void }) {
   const { order, ahead } = live;
   if (order.status === "ready") {
     return (
-      <div className="mt-4 rounded-xl bg-gradient-to-r from-ready to-ready-2 px-4 py-4 text-ready-fg">
-        <p className="text-sm font-semibold tracking-widest uppercase">Come to the window</p>
-        <p className="mt-1 font-display text-6xl leading-none font-semibold tabular-nums">{order.token}</p>
-        <p className="mt-2 text-base">{order.item} is ready.</p>
-        <button type="button" onClick={onClear} className="mt-2 text-base font-semibold underline">
-          Stop watching
+      <div className="mt-4 flex flex-col items-center text-center">
+        <SuccessBadge />
+        <p className="mt-4 font-display text-3xl leading-none font-semibold">Come to the window</p>
+        <p className="mt-2 text-base text-muted">Token {order.token} · {order.item} is ready.</p>
+        <button type="button" onClick={onClear} className="mt-5 h-11 w-full rounded-xl bg-fg text-base font-semibold text-bg">
+          Done
         </button>
       </div>
     );
@@ -615,17 +615,37 @@ function LookupCard({ live, onClear }: { live: Lookup; onClear: () => void }) {
     );
   }
   return (
-    <div className="mt-4 rounded-xl bg-ready-soft px-4 py-4 text-fg ring-1 ring-ready/20">
-      <p className="text-sm font-semibold tracking-widest text-ready uppercase">Still cooking</p>
-      <p className="mt-1 font-display text-6xl leading-none font-semibold tabular-nums">{order.token}</p>
-      <p className="mt-2 text-base">
-        {order.item}
-        {ahead === 0 ? " is next on the pass." : ` ┬╖ ${ahead} order${ahead === 1 ? "" : "s"} ahead.`}
+    <div className="mt-4 flex flex-col items-center text-center">
+      <SuccessBadge />
+      <p className="mt-4 font-display text-3xl leading-none font-semibold">Still cooking</p>
+      <p className="mt-2 text-base text-muted">
+        Token {order.token} · {order.item}
+        {ahead === 0 ? " is next on the pass." : ` · ${ahead} order${ahead === 1 ? "" : "s"} ahead.`}
       </p>
-      <button type="button" onClick={onClear} className="mt-2 text-base font-semibold text-primary">
-        Stop watching
+      <button type="button" onClick={onClear} className="mt-5 h-11 w-full rounded-xl bg-fg text-base font-semibold text-bg">
+        Done
       </button>
     </div>
+  );
+}
+
+function SuccessBadge() {
+  return (
+    <svg viewBox="0 0 24 24" className="size-20" aria-hidden="true">
+      <path
+        d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"
+        className="fill-ready-soft"
+      />
+      <path
+        d="m9 12 2 2 4-4"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="text-ready"
+      />
+    </svg>
   );
 }
 
