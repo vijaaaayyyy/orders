@@ -3,7 +3,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { ArrowLeft, ChefHat, Clock3, Ticket, UtensilsCrossed } from "lucide-react";
 import { MENU } from "@/lib/menu";
-import { CompileBox } from "@/components/compile-box";
 import { stationTone } from "@/lib/station-tone";
 import {
   getBoard,
