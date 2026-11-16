@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.output/
+.nitro/
+.vercel/
+screenshots/
+scripts/tmp-*
+*.log
+.DS_Store

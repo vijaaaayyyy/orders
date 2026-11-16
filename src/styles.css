@@ -1,0 +1,430 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --bg: #f5efe3;
+  --fg: #1a1512;
+  --muted: #6b5f52;
+  --surface: #fffdf9;
+  --surface-2: #f0e7d8;
+  --border: #e4d8c6;
+  --primary: #bf4a24;
+  --primary-2: #e0673b;
+  --primary-fg: #fff8f0;
+  --accent: #b9821b;
+  --ready: #16613d;
+  --ready-2: #1f7d4f;
+  --ready-fg: #f2fff7;
+  --ready-soft: #e2f1e8;
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --bg: #100e0b;
+  --fg: #f7f1e7;
+  --muted: #b6a99b;
+  --surface: #1c1814;
+  --surface-2: #292319;
+  --border: #3a3129;
+  --primary: #ef7f4d;
+  --primary-2: #ff9a68;
+  --primary-fg: #1a120c;
+  --accent: #e6b45c;
+  --ready: #93d3b3;
+  --ready-2: #6fc39b;
+  --ready-fg: #0d2118;
+  --ready-soft: #17291f;
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #100e0b;
+    --fg: #f7f1e7;
+    --muted: #b6a99b;
+    --surface: #1c1814;
+    --surface-2: #292319;
+    --border: #3a3129;
+    --primary: #ef7f4d;
+    --primary-2: #ff9a68;
+    --primary-fg: #1a120c;
+    --accent: #e6b45c;
+    --ready: #93d3b3;
+    --ready-2: #6fc39b;
+    --ready-fg: #0d2118;
+    --ready-soft: #17291f;
+    color-scheme: dark;
+  }
+}
+
+@theme inline {
+  --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Fraunces", ui-serif, Georgia, serif;
+  --color-bg: var(--bg);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-2: var(--primary-2);
+  --color-primary-fg: var(--primary-fg);
+  --color-accent: var(--accent);
+  --color-ready: var(--ready);
+  --color-ready-2: var(--ready-2);
+  --color-ready-fg: var(--ready-fg);
+  --color-ready-soft: var(--ready-soft);
+  --radius-lg: 1.25rem;
+  --radius-md: 0.9rem;
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: clip;
+  }
+
+  /* Fixed layer of coloured squares that drift across the sketch grid. */
+  .bg-grid-colour {
+    position: fixed;
+    inset: -12%;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='104' height='104'%3E%3Crect x='2' y='2' width='22' height='22' rx='5' fill='%23f97316' opacity='0.5'/%3E%3Crect x='54' y='28' width='22' height='22' rx='5' fill='%23e11d48' opacity='0.42'/%3E%3Crect x='80' y='2' width='22' height='22' rx='5' fill='%230ea5e9' opacity='0.42'/%3E%3Crect x='28' y='54' width='22' height='22' rx='5' fill='%238b5cf6' opacity='0.42'/%3E%3Crect x='2' y='80' width='22' height='22' rx='5' fill='%2310b981' opacity='0.42'/%3E%3Crect x='80' y='80' width='22' height='22' rx='5' fill='%23eab308' opacity='0.42'/%3E%3C/svg%3E"),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='156' height='156'%3E%3Crect x='2' y='54' width='22' height='22' rx='5' fill='%23f43f5e' opacity='0.34'/%3E%3Crect x='80' y='2' width='22' height='22' rx='5' fill='%2314b8a6' opacity='0.34'/%3E%3Crect x='132' y='80' width='22' height='22' rx='5' fill='%23a855f7' opacity='0.34'/%3E%3Crect x='54' y='132' width='22' height='22' rx='5' fill='%23f59e0b' opacity='0.34'/%3E%3Crect x='106' y='28' width='22' height='22' rx='5' fill='%230ea5e9' opacity='0.3'/%3E%3C/svg%3E");
+    background-size: 104px 104px, 156px 156px;
+    background-position: 0 0, 0 0;
+    opacity: 0.6;
+    animation:
+      grid-fill 34s linear infinite,
+      grid-glow 7s ease-in-out infinite;
+  }
+
+  @keyframes grid-fill {
+    0% {
+      background-position: 0 0, 0 0;
+    }
+    100% {
+      background-position: 104px 104px, -156px 156px;
+    }
+  }
+
+  @keyframes grid-glow {
+    0%,
+    100% {
+      opacity: 0.38;
+    }
+    50% {
+      opacity: 0.72;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bg-grid-colour {
+      animation: none;
+      opacity: 0.45;
+    }
+  }
+
+  /* Hand-drawn doodles on top of the grid; colour comes from --fg via a mask. */
+  .bg-doodle {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-color: color-mix(in oklab, var(--fg) 9%, transparent);
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='380' height='380' viewBox='0 0 380 380'%3E%3Cg fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M42 66c-8-18 20-34 38-22 18 12 8 40-14 40-24 0-28-26-14-38'/%3E%3Cpath d='M300 34l8 18 20 3-15 14 4 20-17-10-17 10 4-20-15-14 20-3z'/%3E%3Cpath d='M120 300c28-18 44 10 70-8'/%3E%3Cpath d='M182 282l12 9-7 12'/%3E%3Cpath d='M246 150q10-16 20 0t20 0t20 0'/%3E%3Cpath d='M70 236v22M59 247h22'/%3E%3Cpath d='M270 300c10 0 16 8 16 18M286 306c0 10-8 16-18 16'/%3E%3Cpath d='M40 330c16-8 24 6 40-2s24 6 40-2'/%3E%3Cpath d='M190 90l14 14M204 90l-14 14'/%3E%3C/g%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='380' height='380' viewBox='0 0 380 380'%3E%3Cg fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M42 66c-8-18 20-34 38-22 18 12 8 40-14 40-24 0-28-26-14-38'/%3E%3Cpath d='M300 34l8 18 20 3-15 14 4 20-17-10-17 10 4-20-15-14 20-3z'/%3E%3Cpath d='M120 300c28-18 44 10 70-8'/%3E%3Cpath d='M182 282l12 9-7 12'/%3E%3Cpath d='M246 150q10-16 20 0t20 0t20 0'/%3E%3Cpath d='M70 236v22M59 247h22'/%3E%3Cpath d='M270 300c10 0 16 8 16 18M286 306c0 10-8 16-18 16'/%3E%3Cpath d='M40 330c16-8 24 6 40-2s24 6 40-2'/%3E%3Cpath d='M190 90l14 14M204 90l-14 14'/%3E%3C/g%3E%3C/svg%3E");
+    -webkit-mask-size: 380px 380px;
+    mask-size: 380px 380px;
+    -webkit-mask-repeat: repeat;
+    mask-repeat: repeat;
+  }
+
+  /* Handwritten equations + engineering doodles on the sketch paper. */
+  .bg-code-scene {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .bg-eq {
+    position: absolute;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 560;
+    font-size: clamp(0.85rem, 1.35vw, 1.2rem);
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    opacity: 0.22;
+    transform: rotate(var(--tilt, 0deg));
+  }
+
+  .bg-eng {
+    position: absolute;
+    opacity: 0.26;
+  }
+
+  .bg-eng svg {
+    display: block;
+  }
+
+  @media (max-width: 900px) {
+    .bg-eng {
+      display: none;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .bg-eq {
+      opacity: 0.13;
+      font-size: 0.78rem;
+    }
+
+    .bg-eq:nth-child(n + 6) {
+      display: none;
+    }
+  }
+
+  body {
+    margin: 0;
+    min-height: 100dvh;
+    background-color: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.55;
+    background-image:
+      radial-gradient(
+        1100px 620px at 88% -8%,
+        color-mix(in oklab, var(--primary) 12%, transparent),
+        transparent 60%
+      ),
+      radial-gradient(
+        820px 520px at -6% 24%,
+        color-mix(in oklab, var(--accent) 10%, transparent),
+        transparent 62%
+      ),
+      radial-gradient(
+        900px 520px at 4% 108%,
+        color-mix(in oklab, var(--ready) 9%, transparent),
+        transparent 62%
+      ),
+      linear-gradient(
+        to right,
+        color-mix(in oklab, var(--fg) 7%, transparent) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        to bottom,
+        color-mix(in oklab, var(--fg) 7%, transparent) 1px,
+        transparent 1px
+      );
+    background-size: auto, auto, auto, 26px 26px, 26px 26px;
+    background-position: 0 0, 0 0, 0 0, -1px -1px, -1px -1px;
+  }
+
+  body::after {
+    content: "mess";
+    position: fixed;
+    right: 0;
+    bottom: -8vh;
+    z-index: 0;
+    pointer-events: none;
+    user-select: none;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 560;
+    font-size: 34vw;
+    line-height: 0.8;
+    letter-spacing: -0.04em;
+    background-image: linear-gradient(
+      120deg,
+      #ff5a1f 0%,
+      #e11d48 38%,
+      #7c3aed 68%,
+      #0ea5e9 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    opacity: 0.42;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+    letter-spacing: -0.01em;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  .font-display {
+    font-optical-sizing: auto;
+  }
+
+  .tabular-nums {
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--primary) 30%, transparent);
+    color: var(--fg);
+  }
+}
+
+.docket {
+  box-shadow:
+    0 1px 0 color-mix(in oklab, var(--surface) 60%, transparent) inset,
+    0 18px 40px -28px color-mix(in oklab, var(--fg) 70%, transparent);
+}
+
+/* Multi-hue rule under the header — gives the app a signature stripe. */
+.rainbow-rule {
+  background-image: linear-gradient(
+    90deg,
+    #f97316 0%,
+    #e11d48 22%,
+    #8b5cf6 44%,
+    #0ea5e9 63%,
+    #10b981 82%,
+    #eab308 100%
+  );
+}
+
+/* Primary action: saturated tangerine gradient with a soft cast shadow. */
+.btn-primary {
+  background-image: linear-gradient(135deg, var(--primary) 0%, var(--primary-2) 100%);
+  color: var(--primary-fg);
+  box-shadow: 0 14px 26px -16px color-mix(in oklab, var(--primary) 95%, transparent);
+}
+.btn-primary:hover {
+  filter: brightness(1.05);
+}
+
+/* Small rotated label, used sparingly for state ("live", "ready"). */
+.sticker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transform: rotate(-1.5deg);
+}
+
+/* Big "now serving" ticket. */.hero-ticket {
+  position: relative;
+  color: #fff9f2;
+  background-image:
+    radial-gradient(120% 140% at 90% -20%, #ff9a5c 0%, transparent 55%),
+    linear-gradient(120deg, #3b1d4f 0%, #8f2d5c 45%, #d9522b 100%);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.18) inset,
+    0 30px 60px -30px rgba(59, 29, 79, 0.75);
+}
+.hero-ticket::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    rgba(255, 255, 255, 0.16) 1px,
+    transparent 0
+  );
+  background-size: 14px 14px;
+  opacity: 0.5;
+  mix-blend-mode: soft-light;
+}
+
+.pinterest-card {
+  transition:
+    transform 0.16s ease,
+    box-shadow 0.16s ease,
+    border-color 0.16s ease;
+}
+.pinterest-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 30px -14px color-mix(in oklab, var(--fg) 55%, transparent);
+}
+.pinterest-card:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Gradient brand tile used in both headers. */
+.brand-tile {
+  background-image: linear-gradient(
+    140deg,
+    var(--primary) 0%,
+    var(--primary-2) 100%
+  );
+  box-shadow:
+    0 10px 22px -12px color-mix(in oklab, var(--primary) 90%, transparent),
+    0 0 0 1px color-mix(in oklab, var(--primary-fg) 14%, transparent) inset;
+}
+
+/* Ready "pin" header sits on the green token block. */
+.ready-tile {
+  background-image: linear-gradient(
+    150deg,
+    var(--ready) 0%,
+    var(--ready-2) 100%
+  );
+}
+
+.live-dot {
+  box-shadow: 0 0 0 0 color-mix(in oklab, var(--ready) 55%, transparent);
+  animation: live-pulse 1.8s ease-out infinite;
+}
+
+.just-called {
+  animation: call-in 700ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+@keyframes live-pulse {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in oklab, var(--ready) 55%, transparent);
+  }
+  100% {
+    box-shadow: 0 0 0 8px transparent;
+  }
+}
+
+@keyframes call-in {
+  0% {
+    transform: scale(0.96);
+    filter: brightness(1.2);
+  }
+  100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live-dot,
+  .just-called {
+    animation: none;
+  }
+  .pinterest-card:hover {
+    transform: none;
+  }
+}
