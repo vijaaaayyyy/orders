@@ -363,7 +363,10 @@
   outline: 2px solid var(--primary);
   outline-offset: 2px;
 }
-
+.header1{
+  opacity: 1;
+  transparent: 0.5;
+}
 /* Gradient brand tile used in both headers. */
 .brand-tile {
   background-image: linear-gradient(

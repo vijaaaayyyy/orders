@@ -209,79 +209,81 @@ export function MessApp({ initial }: { initial: Board }) {
 
   return (
     <div className="relative z-10 min-h-dvh">
-      <header className="sticky top-0 z-20 border-b border-border bg-bg/90 backdrop-blur-md supports-[backdrop-filter]:bg-bg/75">
-        <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-3 sm:px-6 lg:flex-row lg:items-center lg:justify-between">
-          {/* Brand */}
-          <div className="flex items-center justify-between gap-3">
-            <div className="flex min-w-0 items-center gap-3">
-              <span className="relative flex size-10 shrink-0 items-center justify-center rounded-xl brand-tile text-primary-fg">
-                <UtensilsCrossed className="size-5" aria-hidden="true" />
-                <span className="live-dot absolute -top-0.5 -right-0.5 size-2.5 rounded-full bg-ready ring-2 ring-bg" />
-              </span>
-              <div className="min-w-0">
-                <div className="flex items-baseline gap-2">
-                  <span className="font-display text-3xl leading-none font-bold tracking-tight sm:text-4xl">
-                    Messline
-                  </span>
-                  <span className="rounded-full border border-accent/30 bg-accent/10 px-2.5 py-0.5 text-xs font-semibold tracking-wider text-accent uppercase">
-                    {mounted ? serviceName(clock) : "Today"}
-                  </span>
+     <div className = "header1">
+        <header className="sticky top-0 z-20 border-b border-border bg-bg/90 backdrop-blur-md supports-[backdrop-filter]:bg-bg/75">
+          <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-3 sm:px-6 lg:flex-row lg:items-center lg:justify-between">
+            {/* Brand */}
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex min-w-0 items-center gap-3">
+                <span className="relative flex size-10 shrink-0 items-center justify-center rounded-xl brand-tile text-primary-fg">
+                  <UtensilsCrossed className="size-5" aria-hidden="true" />
+                  <span className="live-dot absolute -top-0.5 -right-0.5 size-2.5 rounded-full bg-ready ring-2 ring-bg" />
+                </span>
+                <div className="min-w-0">
+                  <div className="flex items-baseline gap-2">
+                    <span className="font-display text-3xl leading-none font-bold tracking-tight sm:text-4xl">
+                      Messline
+                    </span>
+                    <span className="rounded-full border border-accent/30 bg-accent/10 px-2.5 py-0.5 text-xs font-semibold tracking-wider text-accent uppercase">
+                      {mounted ? serviceName(clock) : "Today"}
+                    </span>
+                  </div>
+                  <p className="mt-1.5 flex items-center gap-2 text-sm text-muted">
+                    <span className="inline-flex items-center gap-1 font-medium text-ready">
+                      <span className="live-dot size-1.5 rounded-full bg-ready" />
+                      Live pickup
+                    </span>
+                    <span aria-hidden="true"></span>
+                    <span className="tabular-nums">{mounted ? formatDay(clock) : "뿯ν뿯½뿯½"}</span>
+                  </p>
                 </div>
-                <p className="mt-1.5 flex items-center gap-2 text-sm text-muted">
-                  <span className="inline-flex items-center gap-1 font-medium text-ready">
-                    <span className="live-dot size-1.5 rounded-full bg-ready" />
-                    Live pickup
-                  </span>
-                  <span aria-hidden="true"></span>
-                  <span className="tabular-nums">{mounted ? formatDay(clock) : "뿯ν뿯½뿯½"}</span>
-                </p>
               </div>
-            </div>
-            <p className="font-display text-2xl leading-none tabular-nums lg:hidden">
-              {mounted ? formatClock(clock) : ""}
-            </p>
-          </div>
-
-          {/* Controls */}
-          <div className="flex items-center justify-between gap-2 lg:justify-end lg:gap-3">
-            <div className="flex items-center gap-2">
-              <p className="mr-1 hidden font-display text-3xl leading-none tabular-nums lg:block">
+              <p className="font-display text-2xl leading-none tabular-nums lg:hidden">
                 {mounted ? formatClock(clock) : ""}
               </p>
-              <IconButton
-                label={chimeOn ? "Mute call chime" : "Turn on call chime"}
-                onClick={() => {
-                  const next = !chimeOn;
-                  setChimeOn(next);
-                  localStorage.setItem(CHIME_KEY, next ? "on" : "off");
-                  if (next) playChime();
-                }}
-              >
-                {chimeOn ? <Bell className="size-5" /> : <BellOff className="size-5" />}
-              </IconButton>
-              <IconButton
-                label={theme.theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
-                onClick={theme.toggle}
-              >
-                {theme.ready && theme.theme === "dark" ? (
-                  <Sun className="size-5" />
-                ) : (
-                  <Moon className="size-5" />
-                )}
-              </IconButton>
-              <IconButton
-                label="Fill the screen"
-                onClick={() => {
-                  if (document.fullscreenElement) void document.exitFullscreen();
-                  else void document.documentElement.requestFullscreen();
-                }}
-              >
-                <Maximize2 className="size-5" />
-              </IconButton>
+            </div>
+
+            {/* Controls */}
+            <div className="flex items-center justify-between gap-2 lg:justify-end lg:gap-3">
+              <div className="flex items-center gap-2">
+                <p className="mr-1 hidden font-display text-3xl leading-none tabular-nums lg:block">
+                  {mounted ? formatClock(clock) : ""}
+                </p>
+                <IconButton
+                  label={chimeOn ? "Mute call chime" : "Turn on call chime"}
+                  onClick={() => {
+                    const next = !chimeOn;
+                    setChimeOn(next);
+                    localStorage.setItem(CHIME_KEY, next ? "on" : "off");
+                    if (next) playChime();
+                  }}
+                >
+                  {chimeOn ? <Bell className="size-5" /> : <BellOff className="size-5" />}
+                </IconButton>
+                <IconButton
+                  label={theme.theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
+                  onClick={theme.toggle}
+                >
+                  {theme.ready && theme.theme === "dark" ? (
+                    <Sun className="size-5" />
+                  ) : (
+                    <Moon className="size-5" />
+                  )}
+                </IconButton>
+                <IconButton
+                  label="Fill the screen"
+                  onClick={() => {
+                    if (document.fullscreenElement) void document.exitFullscreen();
+                    else void document.documentElement.requestFullscreen();
+                  }}
+                >
+                  <Maximize2 className="size-5" />
+                </IconButton>
+              </div>
             </div>
           </div>
-        </div>
-      </header>
+        </header>
+      </div>
 
       <main className={`mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-8 ${watchedReady ? "pb-28" : ""}`}>
         <p className="sr-only" aria-live="polite">

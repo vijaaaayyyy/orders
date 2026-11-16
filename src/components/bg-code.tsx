@@ -86,6 +86,21 @@ const scatter = [
   { x: 24, y: 9,  text: EQUATION_TEXTS[15], rotate:  4, color: "#6ee7a8" },
   { x: 14, y: 4,  text: EQUATION_TEXTS[16], rotate: -3, color: "#f4a261" },
   { x:  8, y: 7,  text: EQUATION_TEXTS[17], rotate:  6, color: "#7dd3fc" },
+  // Middle area
+  { x: 35, y: 1,  text: EQUATION_TEXTS[0],  rotate: -6, color: "#e11d48" },
+  { x: 48, y: 2,  Icon: Cog,       rotate: 8,  color: "#0ea5e9", size: 38 },
+  { x: 62, y: 3,  text: EQUATION_TEXTS[3],  rotate:  5, color: "#ea580c" },
+  { x: 38, y: 5,  Icon: Atom,      rotate: -4, color: "#0f766e", size: 32 },
+  { x: 55, y: 6,  text: EQUATION_TEXTS[5],  rotate:  7, color: "#be123c" },
+  { x: 42, y: 8,  Icon: Orbit,     rotate:  3, color: "#15803d", size: 36 },
+  { x: 68, y: 9,  text: EQUATION_TEXTS[8],  rotate: -2, color: "#9333ea" },
+  { x: 31, y: 10, Icon: Cable,     rotate:  9, color: "#ea580c", size: 34 },
+  { x: 50, y: 7,  Icon: Binary,    rotate:  1, color: "#4d7c0f", size: 30 },
+  { x: 65, y: 1,  Icon: Wrench,     rotate: -8, color: "#be123c", size: 32 },
+  { x: 33, y: 4,  text: EQUATION_TEXTS[10], rotate: -4, color: "#b45309" },
+  { x: 58, y: 5,  Icon: Gauge,     rotate:  2, color: "#0ea5e9", size: 36 },
+  { x: 45, y: 9,  text: EQUATION_TEXTS[12], rotate:  5, color: "#047857" },
+  { x: 72, y: 6,  Icon: BatteryCharging, rotate: -3, color: "#15803d", size: 32 },
 ];
 
 export function BgCode() {
