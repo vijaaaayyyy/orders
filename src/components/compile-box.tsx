@@ -42,8 +42,9 @@ export function CompileBox() {
   const live = Boolean(data);
 
   return (
-    <div className="mt-4 flex justify-center pb-1 sm:pb-2">
-      <div className="w-full max-w-sm mx-auto overflow-hidden rounded-2xl border border-[#3a2f5e] bg-gradient-to-br from-[#241c42] via-[#1b1733] to-[#12131f] shadow-[6px_8px_0_0_rgba(124,58,237,0.18)]">
+    <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-10 w-full max-w-xs mt-2 pb-1 sm:pb-2">
+        <div className="h-1 rainbow-rule" />
+        <div className="flex items-center gap-2 border-b border-white/10 bg-white/[0.06] px-3 py-2">
         <div className="h-1 rainbow-rule" />
         <div className="flex items-center gap-2 border-b border-white/10 bg-white/[0.06] px-3 py-2">
           <span className="size-2.5 rounded-full bg-[#ff5f57]" />
