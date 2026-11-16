@@ -194,12 +194,22 @@
     font-family: var(--font-sans);
     font-size: 1.0625rem;
     line-height: 1.55;
-    background-image: url('/bg-image.jpg');
+    background-image: url('/bg-light.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
     background-repeat: no-repeat;
     overflow-x: hidden;
+  }
+
+  :root[data-theme="dark"] body {
+    background-image: url('/bg-dark.jpg');
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) body {
+      background-image: url('/bg-dark.jpg');
+    }
   }
 
   body::after {
