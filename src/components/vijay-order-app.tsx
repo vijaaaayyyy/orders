@@ -157,7 +157,7 @@ export function VijayOrderApp({ initial }: { initial: Board }) {
 
       <main className="mx-auto grid max-w-6xl grid-cols-1 gap-6 px-4 py-6 sm:px-6 sm:py-8 lg:grid-cols-5">
         {/* New order */}
-        <section className="min-w-0 lg:col-span-3" aria-labelledby="new-order-heading">
+        <section className="min-w-0 lg:col-span-3 rounded-2xl border border-border bg-surface p-4 sm:p-5" aria-labelledby="new-order-heading">
           <div className="mb-4">
             <p className="flex items-center gap-2 text-sm font-semibold tracking-widest text-muted uppercase">
               <span className="h-1 w-5 rounded-full bg-primary-2" />

@@ -390,7 +390,7 @@ function BoardView({
         </div>
       </section>
 
-      <section className="min-w-0 lg:col-span-3" aria-labelledby="ready-heading">
+      <section className="min-w-0 lg:col-span-3 rounded-2xl border border-border bg-surface p-4 sm:p-5" aria-labelledby="ready-heading">
         <SectionHead
           id="ready-heading"
           kicker="Walk up now"
@@ -463,7 +463,7 @@ function BoardView({
       </section>
 
       <div className="flex min-w-0 flex-col gap-6 lg:col-span-2">
-        <section aria-labelledby="cook-heading">
+        <section className="min-w-0 rounded-2xl border border-border bg-surface p-4 sm:p-5" aria-labelledby="cook-heading">
           <SectionHead
             id="cook-heading"
             kicker="Still on the pass"
@@ -540,8 +540,7 @@ function BoardView({
           )}
         </section>
 
-        <section
-          className="docket overflow-hidden rounded-xl border border-border bg-surface"
+        <section className="docket overflow-hidden rounded-xl border border-border bg-surface"
           aria-labelledby="track-heading"
         >
           <div className="h-1.5 rainbow-rule" />
