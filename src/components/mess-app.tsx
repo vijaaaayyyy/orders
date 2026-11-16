@@ -395,7 +395,7 @@ function BoardView({
           <EmptyPanel
             icon={<Ticket className="size-5" />}
             title="nothing to take"
-            body="Nothing is waiting. Stay where you are,your number will light up here."
+            body="Nothing is waiting. Stay where you are,  your number will light up here."
           />
         ) : (
           <div className="columns-2 gap-3 sm:columns-3 lg:columns-4 [column-fill:_balance]">
