@@ -12,8 +12,12 @@ import { getHyperdriveConnectionString } from "./cloudflare-db-env";
  */
 
 export async function getRuntimePostgresUrl(): Promise<string | undefined> {
-  const workerUrl = getHyperdriveConnectionString();
-  if (workerUrl) return workerUrl;
+  // Wrangler dev requires a Hyperdrive local string even when no database runs locally,
+  // so dev ignores the binding and uses DATABASE_URL or the PGLite fallback.
+  if (!import.meta.env.DEV) {
+    const workerUrl = getHyperdriveConnectionString();
+    if (workerUrl) return workerUrl;
+  }
 
   const raw =
     typeof process !== "undefined" ? process.env?.DATABASE_URL : undefined;
