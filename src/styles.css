@@ -359,6 +359,12 @@
 }
 .header1{
   opacity: 1;
+  padding-left: 23px;
+  padding-right: 23px;
+  padding-top: 13px;
+
+
+
 }
 /* Gradient brand tile used in both headers. */
 .brand-tile {

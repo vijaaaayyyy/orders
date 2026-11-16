@@ -209,7 +209,7 @@ export function MessApp({ initial }: { initial: Board }) {
 
   return (
     <div className="relative z-10 min-h-dvh">
-     <div className = "header1">
+      <div className = "header1">
         <header className="sticky top-0 z-20 border-b border-border bg-bg/90 backdrop-blur-md supports-[backdrop-filter]:bg-bg/75">
           <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-3 sm:px-6 lg:flex-row lg:items-center lg:justify-between">
             {/* Brand */}
@@ -364,7 +364,7 @@ function BoardView({
         <img
           src={featured ? "/now-serving.jpg" : "/no-order.jpg"}
           alt={featured ? `Now serving token ${featured.token}` : "Window is clear"}
-          className="w-full max-w-lg mx-auto h-auto object-cover rounded-2xl border-4 border-border"
+          className="w-full max-w-lg mx-auto h-auto object-cover rounded-2xl"
           loading="lazy"
         />
         {featured && (
