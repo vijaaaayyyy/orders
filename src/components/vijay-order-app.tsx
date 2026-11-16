@@ -337,7 +337,7 @@ function Lane({
             return (
               <div
                 key={order.id}
-                className="pinterest-card mb-3 break-inside-avoid overflow-hidden rounded-xl border border-border bg-surface"
+                className="pinterest-card mb-3 break-inside-avoid overflow-hidden rounded-3xl border border-border bg-surface"
               >
                 <div
                   className={`flex items-center justify-between bg-gradient-to-br px-3 py-2 text-white ${stationStyle.grad}`}
