@@ -349,7 +349,11 @@ function BoardView({
   live: Lookup | null;
   clearWatch: () => void;
 }) {
-  const featured = board.ready.length > 0 ? board.ready[board.ready.length - 1] : null;
+  const featured = board.ready.length > 0
+    ? board.ready.reduce((a, b) =>
+        (a.readyAt ?? a.createdAt) < (b.readyAt ?? b.createdAt) ? a : b
+      )
+    : null;
   const featuredStation = featured ? STATION_BY_ITEM.get(featured.item) : undefined;
 
   return (
