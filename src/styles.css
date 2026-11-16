@@ -294,18 +294,6 @@
       0 22px 44px -30px color-mix(in oklab, var(--fg) 55%, transparent);
   }
 
-  .glass::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    border-radius: inherit;
-    pointer-events: none;
-    background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.22) 50%, transparent 65%);
-    background-size: 250% 100%;
-    animation: glass-sheen 9s ease-in-out infinite;
-  }
-
   :root:not([data-theme="dark"]) .glass {
     background-color: color-mix(in oklab, #ffffff 26%, transparent);
     border-color: color-mix(in oklab, #ffffff 85%, transparent);
@@ -316,19 +304,6 @@
       0 24px 48px -26px color-mix(in oklab, var(--fg) 40%, transparent);
   }
 
-  :root:not([data-theme="dark"]) .glass::before {
-    background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.8) 50%, transparent 65%);
-    background-size: 250% 100%;
-  }
-
-  @keyframes glass-sheen {
-    0% {
-      background-position: 120% 0;
-    }
-    100% {
-      background-position: -120% 0;
-    }
-  }
 }
 
 /* Multi-hue rule under the header — gives the app a signature stripe. */
@@ -487,8 +462,7 @@
 @media (prefers-reduced-motion: reduce) {
   .live-dot,
   .just-called,
-  .pinterest-card,
-  .glass::before {
+  .pinterest-card {
     animation: none;
   }
   .pinterest-card:hover {

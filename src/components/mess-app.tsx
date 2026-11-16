@@ -368,6 +368,15 @@ function BoardView({
           className="w-full max-w-lg mx-auto h-auto object-cover rounded-2xl"
           loading="lazy"
         />
+        {!featured && (
+          <div className="pointer-events-none absolute top-0 left-1/2 h-full w-full max-w-lg -translate-x-1/2">
+            <p className="absolute left-[78%] top-[32%] font-display text-2xl leading-none font-semibold italic text-[#1a1512] sm:text-3xl">
+              No
+              <br />
+              order
+            </p>
+          </div>
+        )}
         {featured && (
           <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-lg flex items-end justify-start p-5 sm:p-7">
             <div className="min-w-0">
