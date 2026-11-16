@@ -7,3 +7,5 @@ screenshots/
 scripts/tmp-*
 *.log
 .DS_Store
+
+.vercel
