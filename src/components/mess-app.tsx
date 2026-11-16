@@ -564,7 +564,7 @@ function BoardView({
                 placeholder="Track token…"
                 autoComplete="off"
                 suppressHydrationWarning
-                className="-mx-px h-10 min-w-0 flex-1 rounded-full border border-border bg-bg/50 px-[13px] text-base backdrop-blur-md tabular-nums outline-none placeholder:text-muted focus-visible:ring-2 focus-visible:ring-primary"
+                className="-mx-px h-10 min-w-0 flex-1 rounded-full border border-border bg-bg/30 px-[13px] text-base backdrop-blur-md tabular-nums outline-none placeholder:text-muted focus-visible:ring-2 focus-visible:ring-primary"
               />
               <button
                 type="submit"
@@ -701,7 +701,7 @@ function HeroStat({ label, value }: { label: string; value: number }) {
 
 function Step({ n, text, tone }: { n: string; text: string; tone: string }) {
   return (
-    <li className="rounded-xl border border-border bg-surface/40 px-3 py-3 backdrop-blur-md">
+    <li className="rounded-xl border border-border bg-surface/25 px-3 py-3 backdrop-blur-md">
       <span
         className={`inline-flex size-7 items-center justify-center rounded-full font-display text-base leading-none font-semibold ${tone}`}
       >
@@ -714,7 +714,7 @@ function Step({ n, text, tone }: { n: string; text: string; tone: string }) {
 
 function EmptyPanel({ icon, title, body }: { icon: ReactNode; title: string; body: string }) {
   return (
-    <div className="rounded-xl border border-dashed border-border bg-surface/40 px-5 py-8 backdrop-blur-md">
+    <div className="rounded-xl border border-dashed border-border bg-surface/25 px-5 py-8 backdrop-blur-md">
       <span className="inline-flex size-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
         {icon}
       </span>
@@ -738,7 +738,7 @@ function IconButton({
       type="button"
       aria-label={label}
       onClick={onClick}
-      className="inline-flex size-11 items-center justify-center rounded-full border border-border bg-surface/40 text-fg backdrop-blur-md transition-transform duration-150 ease-out active:scale-[0.96]"
+      className="inline-flex size-11 items-center justify-center rounded-full border border-border bg-surface/25 text-fg backdrop-blur-md transition-transform duration-150 ease-out active:scale-[0.96]"
     >
       {children}
     </button>
