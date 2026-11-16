@@ -224,7 +224,7 @@ export function MessApp({ initial }: { initial: Board }) {
                     <span className="font-display text-3xl leading-none font-bold tracking-tight sm:text-4xl">
                       Messline
                     </span>
-                    <span className="rounded-full border border-accent/30 bg-accent/10 px-2.5 py-0.5 text-xs font-semibold tracking-wider text-accent uppercase">
+                    <span className="mt-px mb-px rounded-full border border-accent/30 bg-accent/10 px-2.5 py-0.5 text-xs font-semibold tracking-wider text-accent uppercase">
                       {mounted ? serviceName(clock) : "Today"}
                     </span>
                   </div>
@@ -238,7 +238,7 @@ export function MessApp({ initial }: { initial: Board }) {
                   </p>
                 </div>
               </div>
-              <p className="font-display text-2xl leading-none tabular-nums lg:hidden">
+              <p className="my-[7px] pt-[49px] px-[35px] font-display text-2xl leading-none tabular-nums lg:hidden">
                 {mounted ? formatClock(clock) : ""}
               </p>
             </div>
