@@ -395,7 +395,7 @@ function BoardView({
           <EmptyPanel
             icon={<Ticket className="size-5" />}
             title="Window is clear"
-            body="Nothing is waiting. Stay where you are 뿯ν뿯½뿯½ your number will light up here."
+            body="Nothing is waiting. Stay where you are,your number will light up here."
           />
         ) : (
           <div className="columns-2 gap-3 sm:columns-3 lg:columns-4 [column-fill:_balance]">
@@ -689,7 +689,7 @@ function EmptyPanel({ icon, title, body }: { icon: ReactNode; title: string; bod
         {icon}
       </span>
       <p className="mt-3 font-display text-3xl leading-none font-semibold italic">{title}</p>
-      <p className="mt-2 max-w-sm text-base text-muted">{body}</p>
+      <p className=" text-base text-muted">{body}</p>
     </div>
   );
 }
