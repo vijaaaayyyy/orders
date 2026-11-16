@@ -149,7 +149,7 @@ export default defineConfig(({ command, isPreview }) => ({
   server: {
     host: "0.0.0.0",
     port: 8081,
-    allowedHosts: ["neat-experts-smell.loca.lt"],
+    allowedHosts: ["neat-experts-smell.loca.lt", "young-glasses-deny.loca.lt"],
   },
   preview: {
     host: "127.0.0.1",
