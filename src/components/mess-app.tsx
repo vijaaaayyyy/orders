@@ -232,7 +232,7 @@ export function MessApp({ initial }: { initial: Board }) {
                     <span className="live-dot size-1.5 rounded-full bg-ready" />
                     Live pickup
                   </span>
-                  <span aria-hidden="true">┬╖</span>
+                  <span aria-hidden="true"></span>
                   <span className="tabular-nums">{mounted ? formatDay(clock) : "뿯ν뿯½뿯½"}</span>
                 </p>
               </div>
@@ -571,7 +571,7 @@ function BoardView({
             ) : null}
             {live ? <LookupCard live={live} onClear={clearWatch} /> : null}
             <p className="mt-4 text-sm tracking-wide text-muted uppercase">
-              {board.servedToday} picked up today ┬╖ next token {board.nextToken}
+              {board.servedToday} picked up today & next token {board.nextToken}
             </p>
           </div>
         </section>
