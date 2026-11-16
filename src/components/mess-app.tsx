@@ -317,7 +317,7 @@ export function MessApp({ initial }: { initial: Board }) {
                 </span>
               </p>
             </div>
-            <p className="hidden text-base sm:block">Come to the window now.</p>
+            <p className="hidden text-base sm:block">Come to the pickup counter now.</p>
           </div>
         </div>
       ) : null}
@@ -364,7 +364,7 @@ function BoardView({
       >
         <img
           src={featured ? "/now-serving.jpg" : "/no-order.jpg"}
-          alt={featured ? `Now serving token ${featured.token}` : "Window is clear"}
+          alt={featured ? `Now serving token ${featured.token}` : "Pickup counter is clear"}
           className="w-full max-w-lg mx-auto h-auto object-cover rounded-2xl"
           loading="lazy"
         />
@@ -452,7 +452,7 @@ function BoardView({
 
         <ol className="mt-6 grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-3">
           <Step n="1" text="Order at the counter and take your token." tone="bg-orange-500/15 text-orange-600 dark:text-orange-300" />
-          <Step n="2" text="Leave the window. Don't stand in the crowd." tone="bg-teal-500/15 text-teal-600 dark:text-teal-300" />
+          <Step n="2" text="Leave the pickup counter. Don't stand in the crowd." tone="bg-teal-500/15 text-teal-600 dark:text-teal-300" />
           <Step n="3" text="Come back only when your number turns green." tone="bg-violet-500/15 text-violet-600 dark:text-violet-300" />
         </ol>
       </section>
@@ -596,7 +596,7 @@ function LookupCard({ live, onClear }: { live: Lookup; onClear: () => void }) {
     return (
       <div className="mt-4 flex flex-col items-center text-center">
         <SuccessBadge />
-        <p className="mt-4 font-display text-3xl leading-none font-semibold">Come to the window</p>
+        <p className="mt-4 font-display text-3xl leading-none font-semibold">Come to the pickup counter</p>
         <p className="mt-2 text-base text-muted">Token {order.token} · {order.item} is ready.</p>
         <button type="button" onClick={onClear} className="mt-5 h-11 w-full rounded-xl bg-fg text-base font-semibold text-bg">
           Done

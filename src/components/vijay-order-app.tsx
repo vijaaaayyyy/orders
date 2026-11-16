@@ -275,7 +275,7 @@ export function VijayOrderApp({ initial }: { initial: Board }) {
             tone="cook"
           />
           <Lane
-            title="At the window"
+            title="At the pickup counter"
             icon={<Ticket className="size-4 text-primary" aria-hidden="true" />}
             empty="No one to hand food to."
             orders={board.ready}
