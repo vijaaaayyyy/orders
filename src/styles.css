@@ -234,7 +234,7 @@
     body::after {
       font-size: 40vw;
       bottom: -5vh;
-      opacity: 0.15;
+      opacity: 0.25;
     }
   }
 
