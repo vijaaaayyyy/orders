@@ -364,19 +364,19 @@ function BoardView({
         <img
           src={featured ? "/now-serving.jpg" : "/no-order.jpg"}
           alt={featured ? `Now serving token ${featured.token}` : "Window is clear"}
-          className="w-full max-w-lg mx-auto h-auto object-cover rounded-2xl"
+          className="w-full max-w-lg mx-auto h-auto object-cover rounded-2xl border-4 border-border"
           loading="lazy"
         />
         {featured && (
           <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-lg flex items-end justify-start p-5 sm:p-7">
             <div className="min-w-0">
-              <p className="font-display text-7xl leading-[0.82] font-semibold tabular-nums sm:text-8xl text-white drop-shadow-lg">
+              <p className="font-display text-7xl leading-[0.82] font-semibold tabular-nums sm:text-8xl text-black drop-shadow-lg">
                 {featured.token}
               </p>
-              <p className="truncate text-base font-medium text-white drop-shadow-md">
+              <p className="truncate text-base font-medium text-black drop-shadow-md">
                 {featured.item}
               </p>
-              <p className="truncate text-sm text-white/80 drop-shadow-md">
+              <p className="truncate text-sm text-black/80 drop-shadow-md">
                 {featuredStation ?? "Kitchen"} · ready to collect
               </p>
             </div>
