@@ -285,7 +285,7 @@ export function MessApp({ initial }: { initial: Board }) {
         </header>
       </div>
 
-      <main className={`mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-8 ${watchedReady ? "pb-28" : ""}`}>
+      <main className={`mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-8 ${watchedReady ? "pb-28" : "pb-[49px]"}`}>
         <p className="sr-only" aria-live="polite">
           {announcement}
         </p>
@@ -539,7 +539,7 @@ function BoardView({
           aria-labelledby="track-heading"
         >
           <div className="h-1 rainbow-rule" />
-          <div className="px-3 py-2">
+          <div className="-mx-[3px] pl-px pr-3 py-2">
             <div className="flex items-center justify-between gap-2">
               <h2 id="track-heading" className="sr-only">Track a token</h2>
             </div>
