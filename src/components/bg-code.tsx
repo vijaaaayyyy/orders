@@ -15,6 +15,10 @@ const EQUATION_TEXTS = [
   "f(x) = Σ aₙxⁿ",
   "0x1F · 1011₂",
   "E = mc²",
+  "$ tsc --noEmit",
+  "✓ built in 3.42s",
+  "$ vite build",
+  "▲ deploy --prod",
 ];
 
 const ENGINEERING_ICONS = [
@@ -78,6 +82,10 @@ const scatter = [
   // Warmth extras (rows 9‑10)
   { x: 12, y: 10, Icon: Disc3,     rotate: 0,  color: "#7c3aed", size: 28 },
   { x:  1, y: 10, Icon: Settings,   rotate: 0,  color: "#64748b", size: 24 },
+  { x: 10, y: 0,  text: EQUATION_TEXTS[14], rotate: -5, color: "#f4a261" },
+  { x: 24, y: 9,  text: EQUATION_TEXTS[15], rotate:  4, color: "#6ee7a8" },
+  { x: 14, y: 4,  text: EQUATION_TEXTS[16], rotate: -3, color: "#f4a261" },
+  { x:  8, y: 7,  text: EQUATION_TEXTS[17], rotate:  6, color: "#7dd3fc" },
 ];
 
 export function BgCode() {
