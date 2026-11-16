@@ -43,8 +43,9 @@ export function CompileBox() {
 
   return (
     <div className="mt-10 flex justify-center pb-2">
-      <div className="w-full max-w-md -rotate-1 overflow-hidden rounded-2xl border border-border bg-[#14110e] shadow-[6px_8px_0_0_rgba(26,21,18,0.12)]">
-        <div className="flex items-center gap-2 border-b border-white/10 bg-white/[0.04] px-3 py-2">
+      <div className="w-full max-w-md -rotate-1 overflow-hidden rounded-2xl border border-[#3a2f5e] bg-gradient-to-br from-[#241c42] via-[#1b1733] to-[#12131f] shadow-[6px_8px_0_0_rgba(124,58,237,0.18)]">
+        <div className="h-1 rainbow-rule" />
+        <div className="flex items-center gap-2 border-b border-white/10 bg-white/[0.06] px-3 py-2">
           <span className="size-2.5 rounded-full bg-[#ff5f57]" />
           <span className="size-2.5 rounded-full bg-[#febc2e]" />
           <span className="size-2.5 rounded-full bg-[#28c840]" />
