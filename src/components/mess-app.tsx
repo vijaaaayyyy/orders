@@ -359,35 +359,29 @@ function BoardView({
     <div className="grid min-w-0 grid-cols-1 gap-6 lg:grid-cols-5">
       <section
         aria-label="Now serving"
-        className="hero-ticket relative overflow-hidden rounded-2xl px-5 py-5 sm:px-7 sm:py-6 lg:col-span-full"
+        className="relative overflow-hidden rounded-2xl lg:col-span-full"
       >
-        <div className="relative z-10 flex flex-wrap items-end justify-between gap-5">
-          <div className="min-w-0">
-            <p className="text-xs font-semibold tracking-[0.22em] text-white/70 uppercase">
-              Now serving
-            </p>
-            <div className="mt-1.5 flex items-end gap-4">
-              <p className="font-display text-7xl leading-[0.82] font-semibold tabular-nums sm:text-8xl">
-                {featured ? featured.token : "뿯ν뿯½뿯½"}
+        <img
+          src={featured ? "/now-serving.jpg" : "/no-order.jpg"}
+          alt={featured ? `Now serving token ${featured.token}` : "Window is clear"}
+          className="w-full h-auto object-cover rounded-2xl"
+          loading="lazy"
+        />
+        {featured && (
+          <div className="absolute inset-0 flex items-end justify-start p-5 sm:p-7">
+            <div className="min-w-0">
+              <p className="font-display text-7xl leading-[0.82] font-semibold tabular-nums sm:text-8xl text-white drop-shadow-lg">
+                {featured.token}
               </p>
-              <div className="min-w-0 pb-1">
-                <p className="truncate text-base font-medium">
-                  {featured ? featured.item : "Window is clear"}
-                </p>
-                <p className="truncate text-sm text-white/70">
-                  {featured
-                    ? `${featuredStation ?? "Kitchen"} ┬╖ ready to collect`
-                    : "Take a token at the counter"}
-                </p>
-              </div>
+              <p className="truncate text-base font-medium text-white drop-shadow-md">
+                {featured.item}
+              </p>
+              <p className="truncate text-sm text-white/80 drop-shadow-md">
+                {featuredStation ?? "Kitchen"} · ready to collect
+              </p>
             </div>
           </div>
-          <div className="flex gap-2">
-            <HeroStat label="Ready" value={board.ready.length} />
-            <HeroStat label="Cooking" value={board.preparing.length} />
-            <HeroStat label="Served" value={board.servedToday} />
-          </div>
-        </div>
+        )}
       </section>
 
       <section className="min-w-0 lg:col-span-3 rounded-2xl border border-border bg-surface p-4 sm:p-5" aria-labelledby="ready-heading">
