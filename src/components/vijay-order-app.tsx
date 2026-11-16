@@ -319,7 +319,7 @@ function Lane({
   tone: "cook" | "ready";
 }) {
   return (
-    <section className="rounded-2xl border border-solid border-border bg-surface/40 p-4 sm:p-5">
+    <section className="rounded-2xl border border-solid border-border bg-surface p-4 sm:p-5">
       <div className="mb-3 flex items-center gap-2">
         {icon}
         <h2 className="font-display text-3xl leading-none font-semibold italic">{title}</h2>
