@@ -44,7 +44,7 @@ export function CompileBox() {
   return (
     <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-10 w-full max-w-xs mt-2 pb-1 sm:pb-2">
         <div className="h-1 rainbow-rule" />
-        <div className="flex items-center gap-2 border-b border-white/10 bg-white/[0.06] px-3 py-2">
+        <div className="flex items-center gap-2 border-b border-white/[0.02] bg-white/[0.02] px-3 py-2">
         <div className="h-1 rainbow-rule" />
         <div className="flex items-center gap-2 border-b border-white/10 bg-white/[0.06] px-3 py-2">
           <span className="size-2.5 rounded-full bg-[#ff5f57]" />
@@ -119,7 +119,7 @@ export function CompileBox() {
             <p className="text-white/35">› waiting for the first order…</p>
           )}
 
-          <div className="!mt-3 flex items-center gap-2 border-t border-white/10 pt-2 text-[10px] text-white/30">
+          <div className="!mt-3 flex items-center gap-2 border-t border-white/[0.02] pt-2 text-[10px] text-white/30">
             <span className="text-[#6ee7a8]">●</span>
             <span>
               real server · refreshing every 5s
