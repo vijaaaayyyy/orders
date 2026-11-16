@@ -540,7 +540,7 @@ function BoardView({
           )}
         </section>
 
-        <section className="fixed bottom-4 left-1/2 -translate-x-1/2 z-20 w-auto max-w-sm rounded-full border border-border bg-surface/95 backdrop-blur-md shadow-[0_8px_32px_-8px_color-mix(in_oklab,var(--fg)_30%,transparent)] overflow-hidden"
+        <section className="fixed bottom-4 left-1/2 -translate-x-1/2 z-20 w-auto max-w-lg rounded-full border border-border bg-surface/95 backdrop-blur-md shadow-[0_8px_32px_-8px_color-mix(in_oklab,var(--fg)_30%,transparent)] overflow-hidden"
           aria-labelledby="track-heading"
         >
           <div className="h-1 rainbow-rule" />
@@ -560,7 +560,7 @@ function BoardView({
                 placeholder="Track token…"
                 autoComplete="off"
                 suppressHydrationWarning
-                className="h-8 w-20 min-w-0 rounded-full border border-border bg-bg px-3 text-sm tabular-nums outline-none placeholder:text-muted focus-visible:ring-2 focus-visible:ring-primary"
+                className="h-8 w-32 min-w-0 rounded-full border border-border bg-bg px-3 text-sm tabular-nums outline-none placeholder:text-muted focus-visible:ring-2 focus-visible:ring-primary"
               />
               <button
                 type="submit"
