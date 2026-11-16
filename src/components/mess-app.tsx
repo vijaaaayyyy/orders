@@ -414,7 +414,7 @@ function BoardView({
               return (
                 <article
                   key={order.id}
-                  className={`pinterest-card mb-4 break-inside-avoid overflow-hidden rounded-2xl glass ${
+                  className={`pinterest-card mb-4 break-inside-avoid overflow-hidden rounded-2xl glass-card ${
                     fresh.includes(order.id) ? "just-called" : ""
                   } ${watch === order.token ? "ring-4 ring-primary ring-offset-2 ring-offset-bg" : ""}`}
                 >
@@ -487,7 +487,7 @@ function BoardView({
                 return (
                 <article
                   key={order.id}
-                  className={`pinterest-card mb-4 break-inside-avoid overflow-hidden rounded-2xl glass ${
+                  className={`pinterest-card mb-4 break-inside-avoid overflow-hidden rounded-2xl glass-card ${
                     watch === order.token ? "ring-4 ring-primary ring-offset-2 ring-offset-bg" : ""
                   }`}
                 >

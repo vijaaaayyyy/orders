@@ -1,5 +1,3 @@
-import { getHyperdriveConnectionString } from "./cloudflare-db-env";
-
 /**
  * Resolve the Neon/Postgres connection string for the current runtime.
  *
@@ -15,6 +13,7 @@ export async function getRuntimePostgresUrl(): Promise<string | undefined> {
   // Wrangler dev requires a Hyperdrive local string even when no database runs locally,
   // so dev ignores the binding and uses DATABASE_URL or the PGLite fallback.
   if (!import.meta.env.DEV) {
+    const { getHyperdriveConnectionString } = await import("./cloudflare-db-env");
     const workerUrl = getHyperdriveConnectionString();
     if (workerUrl) return workerUrl;
   }

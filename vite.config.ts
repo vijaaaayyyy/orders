@@ -158,7 +158,9 @@ export default defineConfig(({ command, isPreview }) => ({
   plugins: [
     // Cloudflare Workers + static assets (production). Must come first so SSR
     // environment is configured correctly for TanStack Start.
-    cloudflare({ viteEnvironment: { name: "ssr" } }),
+    ...(command === "build" || isPreview
+      ? [cloudflare({ viteEnvironment: { name: "ssr" } })]
+      : []),
     // Dev-only: finish PGLite bootstrap before traffic when local fallback DB is used.
     ...(!isPreview ? [pgliteBootstrapPlugin()] : []),
     // Before tanstackStart in dev so /auth/popup never falls through to the SPA.
