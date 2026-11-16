@@ -307,7 +307,7 @@ export function MessApp({ initial }: { initial: Board }) {
 
       {watchedReady && live?.found ? (
         <div className="fixed inset-x-0 bottom-0 z-30 border-t border-ready bg-gradient-to-r from-ready to-ready-2 text-ready-fg">
-          <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
+          <div className="-my-4 mx-auto flex max-w-6xl items-center justify-between gap-4 overflow-hidden rounded-[23px] px-4 py-4 sm:px-6">
             <div>
               <p className="text-sm font-semibold tracking-widest uppercase">Your token is ready</p>
               <p className="font-display text-5xl leading-none font-semibold tabular-nums lining-nums">
