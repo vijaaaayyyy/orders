@@ -164,7 +164,7 @@ export function VijayOrderApp({ initial }: { initial: Board }) {
       <main className="mx-auto grid max-w-6xl grid-cols-1 gap-6 px-4 py-6 sm:px-6 sm:py-8 lg:grid-cols-5">
         {/* New order */}
         <div className="glass-frame min-w-0 rounded-[40px] border-2 border-solid p-2 lg:col-span-3">
-        <section className="glass rounded-[32px] p-5 sm:p-6" aria-labelledby="new-order-heading">
+        <section className="glass !bg-transparent rounded-[32px] p-5 sm:p-6" aria-labelledby="new-order-heading">
           <div className="mb-4">
             <p className="flex items-center gap-2 text-sm font-semibold tracking-widest text-muted uppercase">
               <span className="h-1 w-5 rounded-full bg-primary-2" />
@@ -332,7 +332,7 @@ function Lane({
 }) {
   return (
     <div className="glass-frame min-w-0 rounded-[40px] border-2 border-solid p-2">
-    <section className="glass rounded-[32px] p-5 sm:p-6">
+    <section className="glass !bg-transparent rounded-[32px] p-5 sm:p-6">
       <div className="mb-3 flex items-center gap-2">
         {icon}
         <h2 className="font-display text-3xl leading-none font-semibold italic">{title}</h2>

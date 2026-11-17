@@ -358,7 +358,7 @@ function BoardView({
       <div className="glass-frame min-w-0 rounded-[40px] border-2 border-solid p-2 lg:col-span-full">
       <section
         aria-label="Now serving"
-        className="glass relative overflow-hidden rounded-[32px] flex justify-center"
+        className="glass !bg-transparent relative overflow-hidden rounded-[32px] flex justify-center"
       >
         <img
           src={featured ? "/now-serving.jpg" : "/no-order.jpg"}
@@ -466,7 +466,7 @@ function BoardView({
 
       <div className="flex min-w-0 flex-col gap-6 overflow-hidden rounded-[29px] border border-solid border-[#e5e595] lg:col-span-2">
         <div className="glass-frame min-w-0 rounded-[40px] border-2 border-solid border-[#bca228] p-2">
-        <section className="glass min-w-0 rounded-[32px] p-5 sm:p-6" aria-labelledby="cook-heading">
+        <section className="glass !bg-transparent min-w-0 rounded-[32px] p-5 sm:p-6" aria-labelledby="cook-heading">
           <SectionHead
             id="cook-heading"
             kicker="Still on the pass"
