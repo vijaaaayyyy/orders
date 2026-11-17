@@ -179,16 +179,6 @@
     pointer-events: none;
   }
 
-  :root[data-theme="dark"] .bg-image-layer {
-    background-image: url('https://cdn.builder.io/api/v1/image/assets%2F642fe6953ac445aa94caa185de9acd75%2F5bd6b98236284cef981601f61d8395bf?format=webp&width=800&height=1200');
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) .bg-image-layer {
-      background-image: url('https://cdn.builder.io/api/v1/image/assets%2F642fe6953ac445aa94caa185de9acd75%2F5bd6b98236284cef981601f61d8395bf?format=webp&width=800&height=1200');
-    }
-  }
-
   body::after {
     content: "mess";
     position: fixed;

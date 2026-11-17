@@ -392,7 +392,7 @@ function BoardView({
       </div>
 
       <div className="glass-frame flex min-w-0 flex-col rounded-[40px] border-2 border-solid border-[#bca28b] p-2 lg:col-span-3">
-        <section className="glass flex-1 min-w-0 rounded-[32px] p-5 sm:p-6" aria-labelledby="ready-heading">
+        <section className="glass !bg-transparent flex-1 min-w-0 rounded-[32px] p-5 sm:p-6" aria-labelledby="ready-heading">
         <SectionHead
           id="ready-heading"
           kicker="Walk up now"
