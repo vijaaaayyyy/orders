@@ -408,7 +408,7 @@ function BoardView({
               const station = STATION_BY_ITEM.get(order.item);
               const tone = stationTone(station);
               return (
-                <div key={order.id} className="glass-frame mb-4 break-inside-avoid rounded-[28px] sm:rounded-[24px] border-2 border-solid p-2">
+                <div key={order.id} className="glass-frame mb-4 break-inside-avoid overflow-hidden rounded-3xl border-2 border-solid border-[rgba(97,62,62,1)] p-2">
                 <article
                   className={`pinterest-card overflow-hidden rounded-[20px] sm:rounded-[16px] glass-card ${watch === order.token ? "ring-4 ring-primary ring-offset-2 ring-offset-bg" : ""}`}
                 >
@@ -482,7 +482,7 @@ function BoardView({
                 const station = STATION_BY_ITEM.get(order.item);
                 const tone = stationTone(station);
                 return (
-                <div key={order.id} className="glass-frame mb-4 break-inside-avoid rounded-[28px] sm:rounded-[24px] border-2 border-solid p-2">
+                <div key={order.id} className="glass-frame mb-4 break-inside-avoid overflow-hidden rounded-3xl border-2 border-solid border-[rgba(97,62,62,1)] p-2">
                 <article
                   className={`pinterest-card overflow-hidden rounded-[20px] sm:rounded-[16px] glass-card ${
                     watch === order.token ? "ring-4 ring-primary ring-offset-2 ring-offset-bg" : ""

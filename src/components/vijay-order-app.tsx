@@ -350,7 +350,7 @@ function Lane({
             return (
               <div
                 key={order.id}
-                className="glass-frame mb-3 break-inside-avoid rounded-[28px] sm:rounded-[24px] border-2 border-solid p-2"
+                className="glass-frame mb-3 break-inside-avoid overflow-hidden rounded-3xl border-2 border-solid border-[rgba(97,62,62,1)] p-2"
               >
               <div
                 className="pinterest-card overflow-hidden rounded-[20px] sm:rounded-[16px] border border-border bg-surface"
