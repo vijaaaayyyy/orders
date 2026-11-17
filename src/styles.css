@@ -275,6 +275,14 @@
       0 24px 48px -26px color-mix(in oklab, var(--fg) 40%, transparent);
   }
 
+  .glass-frame {
+    border-color: var(--surface);
+  }
+
+  :root:not([data-theme="dark"]) .glass-frame {
+    border-color: #ffffff;
+  }
+
   .glass-card {
     position: relative;
     isolation: isolate;
