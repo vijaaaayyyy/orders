@@ -172,7 +172,7 @@
     position: fixed;
     inset: 0;
     z-index: -1;
-    background-image: url('/bg-light.jpg');
+    background-image: url('https://cdn.builder.io/api/v1/image/assets%2F642fe6953ac445aa94caa185de9acd75%2F7ed5c26b8d694dd3ab2dbe244edc7da4?format=webp&width=800&height=1200');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
