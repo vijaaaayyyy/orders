@@ -117,7 +117,6 @@ export function MessApp({ initial }: { initial: Board }) {
   const [lookupError, setLookupError] = useState("");
   const [chimeOn, setChimeOn] = useState(true);
   const [announcement, setAnnouncement] = useState("");
-  const [fresh, setFresh] = useState<number[]>([]);
   const seenReady = useRef<Set<number> | null>(null);
 
   const boardQuery = useQuery({
@@ -142,7 +141,6 @@ export function MessApp({ initial }: { initial: Board }) {
     if (seenReady.current) {
       const newly = board.ready.filter((order) => !seenReady.current?.has(order.id));
       if (newly.length > 0) {
-        setFresh(newly.map((order) => order.id));
         const names = newly.map((order) => order.token).join(", ");
         setAnnouncement(`Token ${names} is ready for pickup.`);
         if (chimeOn) playChime();
@@ -293,7 +291,6 @@ export function MessApp({ initial }: { initial: Board }) {
         <BoardView
           board={board}
           now={now}
-          fresh={fresh}
           watch={watch}
           draft={draft}
           setDraft={setDraft}
@@ -328,7 +325,6 @@ export function MessApp({ initial }: { initial: Board }) {
 function BoardView({
   board,
   now,
-  fresh,
   watch,
   draft,
   setDraft,
@@ -339,7 +335,6 @@ function BoardView({
 }: {
   board: Board;
   now: number;
-  fresh: number[];
   watch: number | null;
   draft: string;
   setDraft: (value: string) => void;
@@ -414,9 +409,7 @@ function BoardView({
               return (
                 <article
                   key={order.id}
-                  className={`pinterest-card mb-4 break-inside-avoid overflow-hidden rounded-2xl glass-card ${
-                    fresh.includes(order.id) ? "just-called" : ""
-                  } ${watch === order.token ? "ring-4 ring-primary ring-offset-2 ring-offset-bg" : ""}`}
+                  className={`pinterest-card mb-4 break-inside-avoid overflow-hidden rounded-2xl glass-card ${watch === order.token ? "ring-4 ring-primary ring-offset-2 ring-offset-bg" : ""}`}
                 >
                   <div
                     className={`relative flex ${pinHeight} items-center justify-center bg-gradient-to-br ${tone.grad} px-4 text-white pt-8`}
