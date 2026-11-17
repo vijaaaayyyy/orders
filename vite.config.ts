@@ -47,7 +47,11 @@ function pgliteBootstrapPlugin(): Plugin {
           await mod.ensureDbReady();
         }
       } catch (err) {
-        console.error("[app-builder] DB bootstrap failed:", err);
+        // Vite 8 environments may be non-runnable (e.g. Nitro/Workers SSR), so
+        // ssrLoadModule can fail during configureServer. The DB still initializes
+        // lazily at runtime via ensureDbReady()/getSql(), so a failed eager
+        // bootstrap must not block the local dev server from starting.
+        console.warn("[app-builder] eager DB bootstrap skipped:", (err as Error)?.message ?? err);
       }
     },
   };
