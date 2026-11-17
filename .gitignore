@@ -13,3 +13,5 @@ scripts/tmp-*
 .env.local
 .tanstack/
 .wrangler/
+
+.env*
