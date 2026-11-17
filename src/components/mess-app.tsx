@@ -122,6 +122,7 @@ export function MessApp({ initial }: { initial: Board }) {
   const boardQuery = useQuery({
     queryKey: ["board"],
     queryFn: () => getBoard(),
+    select: ({ ready, preparing }) => ({ ready, preparing }),
     initialData: initial,
     initialDataUpdatedAt: 0,
     refetchInterval: 2500,
@@ -335,7 +336,7 @@ function BoardView({
   live,
   clearWatch,
 }: {
-  board: Board;
+  board: Pick<Board, "ready" | "preparing">;
   now: number;
   watch: number | null;
   draft: string;
