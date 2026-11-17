@@ -11,10 +11,10 @@ export type StationTone = {
 
 export const STATION_TONE: Record<string, StationTone> = {
   "Hot line": {
-    grad: "from-orange-500 to-amber-500",
-    chip: "bg-orange-500/15 text-orange-700 dark:text-orange-300",
-    bar: "bg-orange-500",
-    text: "text-orange-600 dark:text-orange-400",
+    grad: "from-stone-600 to-stone-500",
+    chip: "bg-stone-500/15 text-stone-700 dark:text-stone-300",
+    bar: "bg-stone-500",
+    text: "text-stone-600 dark:text-stone-400",
   },
   Grill: {
     grad: "from-rose-500 to-pink-500",

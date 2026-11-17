@@ -143,7 +143,7 @@ export function VijayOrderApp({ initial }: { initial: Board }) {
               </div>
               <p className="mt-1.5 flex items-center gap-2 text-sm text-muted">
                 <span className="inline-flex items-center gap-1 font-medium text-ready">
-                  <span className="live-dot size-1.5 rounded-full bg-ready" />
+                  <span className="size-1.5 rounded-full bg-ready" />
                   {board.servedToday} picked up
                 </span>
                 <span aria-hidden="true">·</span>
@@ -163,7 +163,8 @@ export function VijayOrderApp({ initial }: { initial: Board }) {
 
       <main className="mx-auto grid max-w-6xl grid-cols-1 gap-6 px-4 py-6 sm:px-6 sm:py-8 lg:grid-cols-5">
         {/* New order */}
-        <section className="min-w-0 lg:col-span-3 rounded-2xl border border-border bg-surface p-4 sm:p-5" aria-labelledby="new-order-heading">
+        <div className="glass-frame min-w-0 rounded-[40px] border-2 border-solid p-2 lg:col-span-3">
+        <section className="glass !bg-transparent rounded-[32px] p-5 sm:p-6" aria-labelledby="new-order-heading">
           <div className="mb-4">
             <p className="flex items-center gap-2 text-sm font-semibold tracking-widest text-muted uppercase">
               <span className="h-1 w-5 rounded-full bg-primary-2" />
@@ -174,7 +175,8 @@ export function VijayOrderApp({ initial }: { initial: Board }) {
             </h1>
           </div>
 
-          <div className="docket mb-4 overflow-hidden rounded-xl border border-border bg-surface">
+          <div className="glass-frame mb-4 rounded-[28px] sm:rounded-[24px] border-2 border-solid p-2">
+          <div className="docket overflow-hidden rounded-[20px] sm:rounded-[16px] border border-border bg-surface">
             <div className="h-1.5 rainbow-rule" />
             <div className="p-4">
               <div className="flex flex-wrap items-end justify-between gap-3">
@@ -219,6 +221,7 @@ export function VijayOrderApp({ initial }: { initial: Board }) {
               </p>
             </div>
           </div>
+          </div>
 
           {actionError ? (
             <p className="mb-3 text-sm text-primary" role="alert">
@@ -227,7 +230,8 @@ export function VijayOrderApp({ initial }: { initial: Board }) {
           ) : null}
 
           {slip ? (
-            <div className="hero-ticket pinterest-card relative mb-4 flex items-center justify-between gap-3 overflow-hidden rounded-xl px-5 py-4">
+            <div className="glass-frame relative mb-4 rounded-[28px] sm:rounded-[24px] border-2 border-solid p-2">
+            <div className="hero-ticket pinterest-card relative flex items-center justify-between gap-3 overflow-hidden rounded-[20px] sm:rounded-[16px] px-5 py-4">
               <div>
                 <p className="text-xs font-semibold tracking-widest uppercase opacity-80">Called out</p>
                 <p className="font-display text-5xl leading-none font-semibold tabular-nums">{slip.token}</p>
@@ -236,6 +240,7 @@ export function VijayOrderApp({ initial }: { initial: Board }) {
               <button type="button" onClick={() => setSlip(null)} className="text-sm underline">
                 Dismiss
               </button>
+            </div>
             </div>
           ) : null}
 
@@ -249,7 +254,7 @@ export function VijayOrderApp({ initial }: { initial: Board }) {
                     type="button"
                     onClick={() => setSelected(item.name)}
                     aria-pressed={active}
-                    className={`group flex min-h-16 w-full flex-col items-start justify-center rounded-xl border px-3 py-3 text-left transition-all duration-150 ease-out hover:-translate-y-0.5 active:scale-[0.97] ${
+                    className={`group flex min-h-16 w-full flex-col items-start justify-center rounded-[20px] sm:rounded-[16px] border px-3 py-3 text-left transition-all duration-150 ease-out hover:-translate-y-0.5 active:scale-[0.97] ${
                       active
                         ? "border-primary bg-primary/10 ring-2 ring-primary"
                         : "border-border bg-surface hover:border-primary/40"
@@ -266,6 +271,7 @@ export function VijayOrderApp({ initial }: { initial: Board }) {
             })}
           </ul>
         </section>
+        </div>
 
         {/* Lanes */}
         <div className="flex min-w-0 flex-col gap-6 lg:col-span-2">
@@ -325,7 +331,8 @@ function Lane({
   tone: "cook" | "ready";
 }) {
   return (
-    <section className="rounded-2xl border border-solid border-border bg-surface p-4 sm:p-5">
+    <div className="glass-frame min-w-0 rounded-[40px] border-2 border-solid p-2">
+    <section className="glass !bg-transparent rounded-[32px] p-5 sm:p-6">
       <div className="mb-3 flex items-center gap-2">
         {icon}
         <h2 className="font-display text-3xl leading-none font-semibold italic">{title}</h2>
@@ -334,7 +341,7 @@ function Lane({
         </span>
       </div>
       {orders.length === 0 ? (
-        <p className="rounded-xl border border-dashed border-border px-4 py-6 text-sm text-muted">{empty}</p>
+        <p className="rounded-[20px] sm:rounded-[16px] border border-dashed border-border px-4 py-6 text-sm text-muted">{empty}</p>
       ) : (
         <div className="columns-2 gap-3 sm:columns-3 lg:columns-4 [column-fill:_balance]">
           {orders.map((order) => {
@@ -343,7 +350,10 @@ function Lane({
             return (
               <div
                 key={order.id}
-                className="pinterest-card mb-3 break-inside-avoid overflow-hidden rounded-3xl border border-border bg-surface"
+                className="glass-frame mb-3 break-inside-avoid overflow-hidden rounded-3xl border-2 border-solid border-[rgba(97,62,62,1)] p-2"
+              >
+              <div
+                className="pinterest-card overflow-hidden rounded-[20px] sm:rounded-[16px] border border-border bg-surface"
               >
                 <div
                   className={`flex items-center justify-between bg-gradient-to-br px-3 py-2 text-white ${stationStyle.grad}`}
@@ -389,10 +399,12 @@ function Lane({
                   </div>
                 </div>
               </div>
+              </div>
             );
           })}
         </div>
       )}
     </section>
+    </div>
   );
 }

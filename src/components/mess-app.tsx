@@ -117,7 +117,6 @@ export function MessApp({ initial }: { initial: Board }) {
   const [lookupError, setLookupError] = useState("");
   const [chimeOn, setChimeOn] = useState(true);
   const [announcement, setAnnouncement] = useState("");
-  const [fresh, setFresh] = useState<number[]>([]);
   const seenReady = useRef<Set<number> | null>(null);
 
   const boardQuery = useQuery({
@@ -142,7 +141,6 @@ export function MessApp({ initial }: { initial: Board }) {
     if (seenReady.current) {
       const newly = board.ready.filter((order) => !seenReady.current?.has(order.id));
       if (newly.length > 0) {
-        setFresh(newly.map((order) => order.id));
         const names = newly.map((order) => order.token).join(", ");
         setAnnouncement(`Token ${names} is ready for pickup.`);
         if (chimeOn) playChime();
@@ -210,14 +208,14 @@ export function MessApp({ initial }: { initial: Board }) {
   return (
     <div className="relative z-10 min-h-dvh">
       <div className = "header1">
-        <header className="glass sticky top-0 z-20 overflow-hidden rounded-[23px]">
-          <div className="mx-auto flex max-w-6xl flex-col gap-3 overflow-hidden rounded-[138px] px-4 py-3 sm:px-6 lg:flex-row lg:items-center lg:justify-between">
+        <header className="sticky top-0 z-20 mx-auto max-w-6xl overflow-hidden rounded-[40px] glass-frame border-2 border-solid border-[#b59c7d] p-2">
+          <div className="glass !bg-transparent !border-[rgba(220,152,88,1)] flex flex-col gap-3 overflow-hidden rounded-[32px] px-4 py-3 sm:px-6 lg:flex-row lg:items-center lg:justify-between">
             {/* Brand */}
             <div className="flex items-center justify-between gap-3">
               <div className="flex min-w-0 items-center gap-3">
                 <span className="relative flex size-10 shrink-0 items-center justify-center rounded-xl brand-tile text-primary-fg">
                   <UtensilsCrossed className="size-5" aria-hidden="true" />
-                  <span className="live-dot absolute -top-0.5 -right-0.5 size-2.5 rounded-full bg-ready ring-2 ring-bg" />
+                  <span className="absolute -top-0.5 -right-0.5 size-2.5 rounded-full bg-ready ring-2 ring-bg" />
                 </span>
                 <div className="min-w-0">
                   <div className="flex items-baseline gap-2">
@@ -228,9 +226,9 @@ export function MessApp({ initial }: { initial: Board }) {
                       {mounted ? serviceName(clock) : "Today"}
                     </span>
                   </div>
-                  <p className="mt-1.5 flex items-center gap-2 text-sm text-muted">
-                    <span className="inline-flex items-center gap-1 font-medium text-ready">
-                      <span className="live-dot size-1.5 rounded-full bg-ready" />
+                  <p className="mt-1.5 flex items-center gap-2 text-sm text-[rgba(0,0,0,0.72)]">
+                    <span className="inline-flex items-center gap-1 font-medium text-[rgba(0,0,0,1)]">
+                      <span className="size-1.5 rounded-full bg-ready" />
                       Live pickup
                     </span>
                     <span aria-hidden="true"></span>
@@ -285,7 +283,7 @@ export function MessApp({ initial }: { initial: Board }) {
         </header>
       </div>
 
-      <main className={`mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-8 ${watchedReady ? "pb-44" : "pb-[49px]"}`}>
+      <main className={`mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-8 ${watchedReady ? "pb-44" : "pb-[85px]"}`}>
         <p className="sr-only" aria-live="polite">
           {announcement}
         </p>
@@ -293,7 +291,6 @@ export function MessApp({ initial }: { initial: Board }) {
         <BoardView
           board={board}
           now={now}
-          fresh={fresh}
           watch={watch}
           draft={draft}
           setDraft={setDraft}
@@ -306,18 +303,20 @@ export function MessApp({ initial }: { initial: Board }) {
       </main>
 
       {watchedReady && live?.found ? (
-        <div className="fixed inset-x-0 bottom-0 z-30 border-t border-ready bg-gradient-to-r from-ready to-ready-2 text-ready-fg">
-          <div className="-my-4 mx-auto flex max-w-6xl items-center justify-between gap-4 overflow-hidden rounded-[23px] px-4 py-4 sm:px-6">
-            <div>
-              <p className="text-sm font-semibold tracking-widest uppercase">Your token is ready</p>
-              <p className="font-display text-5xl leading-none font-semibold tabular-nums lining-nums">
-                {live.order.token}
-                <span className="ml-3 font-sans text-lg font-medium tracking-normal not-italic">
-                  {live.order.item}
-                </span>
-              </p>
+        <div className="fixed inset-x-0 bottom-0 z-30 px-4 pb-4 sm:px-6">
+          <div className="glass-frame mx-auto max-w-6xl rounded-[40px] border-2 border-solid p-2 text-ready-fg">
+            <div className="flex items-center justify-between gap-4 rounded-[32px] bg-gradient-to-r from-ready to-ready-2 px-4 py-4 sm:px-6">
+              <div>
+                <p className="text-sm font-semibold tracking-widest uppercase">Your token is ready</p>
+                <p className="font-display text-5xl leading-none font-semibold tabular-nums lining-nums">
+                  {live.order.token}
+                  <span className="ml-3 font-sans text-lg font-medium tracking-normal not-italic">
+                    {live.order.item}
+                  </span>
+                </p>
+              </div>
+              <p className="hidden text-base sm:block">Come to the pickup counter now.</p>
             </div>
-            <p className="hidden text-base sm:block">Come to the pickup counter now.</p>
           </div>
         </div>
       ) : null}
@@ -328,7 +327,6 @@ export function MessApp({ initial }: { initial: Board }) {
 function BoardView({
   board,
   now,
-  fresh,
   watch,
   draft,
   setDraft,
@@ -339,7 +337,6 @@ function BoardView({
 }: {
   board: Board;
   now: number;
-  fresh: number[];
   watch: number | null;
   draft: string;
   setDraft: (value: string) => void;
@@ -358,14 +355,15 @@ function BoardView({
 
   return (
     <div className="grid min-w-0 grid-cols-1 gap-6 lg:grid-cols-5">
+      <div className="glass-frame min-w-0 rounded-[40px] border-2 border-solid p-2 lg:col-span-full">
       <section
         aria-label="Now serving"
-        className="relative overflow-hidden rounded-2xl lg:col-span-full flex justify-center"
+        className="glass !bg-transparent relative overflow-hidden rounded-[32px] flex justify-center"
       >
         <img
           src={featured ? "/now-serving.jpg" : "/no-order.jpg"}
           alt={featured ? `Now serving token ${featured.token}` : "Pickup counter is clear"}
-          className="w-full max-w-lg mx-auto h-auto object-cover rounded-2xl"
+          className="-mt-[9px] -mb-[9px] w-full max-w-lg mx-auto h-auto object-cover rounded-[32px] opacity-60"
           loading="lazy"
         />
         {!featured && (
@@ -376,7 +374,7 @@ function BoardView({
           </div>
         )}
         {featured && (
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-lg flex items-end justify-start p-5 sm:p-7">
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 mt-[21px] mb-[21px] w-full max-w-lg flex items-end justify-start p-5 sm:p-7">
             <div className="min-w-0">
               <p className="font-display text-7xl leading-[0.82] font-semibold tabular-nums sm:text-8xl text-black drop-shadow-lg">
                 {featured.token}
@@ -391,8 +389,10 @@ function BoardView({
           </div>
         )}
       </section>
+      </div>
 
-      <section className="glass min-w-0 lg:col-span-3 rounded-2xl p-4 sm:p-5" aria-labelledby="ready-heading">
+      <div className="glass-frame flex min-w-0 flex-col rounded-[40px] border-2 border-solid border-[#bca28b] p-2 lg:col-span-3">
+        <section className="glass !bg-transparent flex-1 min-w-0 rounded-[32px] p-5 sm:p-6" aria-labelledby="ready-heading">
         <SectionHead
           id="ready-heading"
           kicker="Walk up now"
@@ -412,11 +412,9 @@ function BoardView({
               const station = STATION_BY_ITEM.get(order.item);
               const tone = stationTone(station);
               return (
+                <div key={order.id} className="glass-frame mb-4 break-inside-avoid overflow-hidden rounded-3xl border-2 border-solid border-[rgba(97,62,62,1)] p-2">
                 <article
-                  key={order.id}
-                  className={`pinterest-card mb-4 break-inside-avoid overflow-hidden rounded-2xl glass-card ${
-                    fresh.includes(order.id) ? "just-called" : ""
-                  } ${watch === order.token ? "ring-4 ring-primary ring-offset-2 ring-offset-bg" : ""}`}
+                  className={`pinterest-card overflow-hidden rounded-[20px] sm:rounded-[16px] glass-card ${watch === order.token ? "ring-4 ring-primary ring-offset-2 ring-offset-bg" : ""}`}
                 >
                   <div
                     className={`relative flex ${pinHeight} items-center justify-center bg-gradient-to-br ${tone.grad} px-4 text-white pt-8`}
@@ -436,7 +434,7 @@ function BoardView({
                   </div>
                   <div className="p-3">
                     <p className="truncate text-lg font-semibold">{order.item}</p>
-                    <div className="mt-1.5 flex items-center justify-between gap-2">
+                    <div className="mt-1.5 flex flex-wrap items-center justify-between gap-x-2 gap-y-1">
                       {station ? (
                         <span
                           className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-semibold tracking-wide uppercase ${tone.chip}`}
@@ -446,12 +444,13 @@ function BoardView({
                       ) : (
                         <span />
                       )}
-                      <span className={`text-xs font-semibold tracking-widest uppercase ${tone.text}`}>
+                      <span className={`whitespace-nowrap text-xs font-semibold tracking-widest uppercase ${tone.text}`}>
                         Pick up
                       </span>
                     </div>
                   </div>
                 </article>
+                </div>
               );
             })}
           </div>
@@ -462,10 +461,12 @@ function BoardView({
           <Step n="2" text="Leave the pickup counter. Don't stand in the crowd." tone="bg-teal-500/15 text-teal-600 dark:text-teal-300" />
           <Step n="3" text="Come back only when your number turns green." tone="bg-violet-500/15 text-violet-600 dark:text-violet-300" />
         </ol>
-      </section>
+        </section>
+      </div>
 
-      <div className="flex min-w-0 flex-col gap-6 lg:col-span-2">
-        <section className="glass min-w-0 rounded-2xl p-4 sm:p-5" aria-labelledby="cook-heading">
+      <div className="flex min-w-0 flex-col gap-6 overflow-hidden rounded-[29px] border border-solid border-[#e5e595] lg:col-span-2">
+        <div className="glass-frame min-w-0 rounded-[40px] border-2 border-solid border-[#bca228] p-2">
+        <section className="glass !bg-transparent min-w-0 rounded-[32px] p-5 sm:p-6" aria-labelledby="cook-heading">
           <SectionHead
             id="cook-heading"
             kicker="Still on the pass"
@@ -485,9 +486,9 @@ function BoardView({
                 const station = STATION_BY_ITEM.get(order.item);
                 const tone = stationTone(station);
                 return (
+                <div key={order.id} className="glass-frame mb-4 break-inside-avoid overflow-hidden rounded-3xl border-2 border-solid border-[rgba(97,62,62,1)] p-2">
                 <article
-                  key={order.id}
-                  className={`pinterest-card mb-4 break-inside-avoid overflow-hidden rounded-2xl glass-card ${
+                  className={`pinterest-card overflow-hidden rounded-[20px] sm:rounded-[16px] glass-card ${
                     watch === order.token ? "ring-4 ring-primary ring-offset-2 ring-offset-bg" : ""
                   }`}
                 >
@@ -521,7 +522,7 @@ function BoardView({
                   </div>
                   <div className="p-3">
                     <p className="truncate text-lg font-semibold">{order.item}</p>
-                    <div className="mt-1.5 flex items-center justify-between gap-2">
+                    <div className="mt-1.5 flex flex-wrap items-center justify-between gap-x-2 gap-y-1">
                       {station ? (
                         <span
                           className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-semibold tracking-wide uppercase ${tone.chip}`}
@@ -531,22 +532,24 @@ function BoardView({
                       ) : (
                         <span />
                       )}
-                      <span className={`text-xs font-semibold tracking-widest uppercase ${tone.text}`}>
+                      <span className={`whitespace-nowrap text-xs font-semibold tracking-widest uppercase ${tone.text}`}>
                         Cooking
                       </span>
                     </div>
                   </div>
                 </article>
+                </div>
                 );
               })}
             </div>
           )}
         </section>
+        </div>
 
-        <section className={`fixed ${watchedReady ? "bottom-40" : "bottom-6"} left-1/2 -translate-x-1/2 z-20 mt-[7px] mb-[7px] rounded-3xl glass border border-border shadow-[0_8px_32px_-8px_color-mix(in_oklab,var(--fg)_30%,transparent)] overflow-hidden transition-all duration-300 ${live ? "w-[calc(100%-2rem)] max-w-lg" : "w-auto max-w-sm"}`}
+        <section className={`fixed ${watchedReady ? "bottom-16" : "bottom-6"} left-1/2 -translate-x-1/2 z-20 mt-[7px] mb-[7px] rounded-[32px] shadow-[0_8px_32px_-8px_color-mix(in_oklab,var(--fg)_30%,transparent)] overflow-hidden transition-all duration-300 ${live ? "w-[calc(100%-2rem)] max-w-lg" : "w-auto max-w-sm"}`}
           aria-labelledby="track-heading"
         >
-          <div className="mx-[9px] mt-px mb-px pl-px pr-3 pt-2 pb-[5px]">
+          <div className="glass rounded-[32px] p-3">
             <div className="flex items-center justify-between gap-2">
               <h2 id="track-heading" className="sr-only">Track a token</h2>
             </div>
@@ -588,7 +591,7 @@ function BoardView({
 function LookupCard({ live, onClear }: { live: Lookup; onClear: () => void }) {
   if (!live.found) {
     return (
-      <div className="mt-4 rounded-xl bg-surface-2 px-4 py-3">
+      <div className="mt-4 rounded-[28px] bg-surface-2 px-4 py-3">
         <p className="text-lg font-medium">Not on today's board</p>
         <p className="mt-1 text-base text-muted">Tokens reset every day. Check the number again.</p>
         <button type="button" onClick={onClear} className="mt-2 text-base font-semibold text-primary">
@@ -613,7 +616,7 @@ function LookupCard({ live, onClear }: { live: Lookup; onClear: () => void }) {
   }
   if (order.status === "collected") {
     return (
-      <div className="mt-4 rounded-xl bg-surface-2 px-4 py-3">
+      <div className="mt-4 rounded-[28px] bg-surface-2 px-4 py-3">
         <p className="text-lg font-medium">Token {order.token} was already picked up</p>
         <p className="mt-1 text-base text-muted">{order.item}</p>
         <button type="button" onClick={onClear} className="mt-2 text-base font-semibold text-primary">
@@ -690,7 +693,7 @@ function SectionHead({
 
 function HeroStat({ label, value }: { label: string; value: number }) {
   return (
-    <div className="min-w-16 rounded-xl border border-white/20 bg-white/10 px-3 py-2 text-center backdrop-blur-sm">
+    <div className="min-w-16 rounded-[24px] border border-white/20 bg-white/10 px-3 py-2 text-center backdrop-blur-sm">
       <p className="font-display text-3xl leading-none font-semibold tabular-nums">{value}</p>
       <p className="mt-1 text-[11px] font-semibold tracking-widest text-white/70 uppercase">{label}</p>
     </div>
@@ -699,7 +702,7 @@ function HeroStat({ label, value }: { label: string; value: number }) {
 
 function Step({ n, text, tone }: { n: string; text: string; tone: string }) {
   return (
-    <li className="rounded-xl border border-border bg-surface/25 px-3 py-3 backdrop-blur-md">
+    <li className="rounded-[20px] sm:rounded-[16px] border border-border bg-surface/25 px-3 py-3 backdrop-blur-md">
       <span
         className={`inline-flex size-7 items-center justify-center rounded-full font-display text-base leading-none font-semibold ${tone}`}
       >
@@ -712,7 +715,7 @@ function Step({ n, text, tone }: { n: string; text: string; tone: string }) {
 
 function EmptyPanel({ icon, title, body }: { icon: ReactNode; title: string; body: string }) {
   return (
-    <div className="rounded-xl border border-dashed border-border bg-surface/25 px-5 py-8 backdrop-blur-md">
+    <div className="rounded-[20px] sm:rounded-[16px] border border-dashed border-border bg-surface/25 px-5 py-8 backdrop-blur-md">
       <span className="inline-flex size-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
         {icon}
       </span>
