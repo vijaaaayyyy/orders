@@ -368,6 +368,13 @@ function BoardView({
           className="w-full max-w-lg mx-auto h-auto object-cover rounded-2xl"
           loading="lazy"
         />
+        {!featured && (
+          <div className="pointer-events-none absolute top-0 left-1/2 h-full w-full max-w-lg -translate-x-1/2">
+            <p className="absolute left-[78%] right-0 top-[26%] font-display text-lg leading-tight font-semibold italic text-[#1a1512] sm:text-xl">
+              No orders to pick so I'm seeing you
+            </p>
+          </div>
+        )}
         {featured && (
           <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-lg flex items-end justify-start p-5 sm:p-7">
             <div className="min-w-0">
@@ -395,7 +402,7 @@ function BoardView({
         {board.ready.length === 0 ? (
           <EmptyPanel
             icon={<Ticket className="size-5" />}
-            title="nothing to take"
+            title="No order"
             body="Nothing is waiting. Stay where you are,  your number will light up here."
           />
         ) : (
@@ -407,7 +414,7 @@ function BoardView({
               return (
                 <article
                   key={order.id}
-                  className={`pinterest-card mb-4 break-inside-avoid overflow-hidden rounded-2xl glass ${
+                  className={`pinterest-card mb-4 break-inside-avoid overflow-hidden rounded-2xl glass-card ${
                     fresh.includes(order.id) ? "just-called" : ""
                   } ${watch === order.token ? "ring-4 ring-primary ring-offset-2 ring-offset-bg" : ""}`}
                 >
@@ -480,7 +487,7 @@ function BoardView({
                 return (
                 <article
                   key={order.id}
-                  className={`pinterest-card mb-4 break-inside-avoid overflow-hidden rounded-2xl glass ${
+                  className={`pinterest-card mb-4 break-inside-avoid overflow-hidden rounded-2xl glass-card ${
                     watch === order.token ? "ring-4 ring-primary ring-offset-2 ring-offset-bg" : ""
                   }`}
                 >
@@ -536,7 +543,7 @@ function BoardView({
           )}
         </section>
 
-        <section className={`fixed ${watchedReady ? "bottom-40" : "bottom-6"} left-1/2 -translate-x-1/2 z-20 mt-[7px] mb-[7px] rounded-3xl border border-border bg-surface shadow-[0_8px_32px_-8px_color-mix(in_oklab,var(--fg)_30%,transparent)] overflow-hidden transition-all duration-300 ${live ? "w-[calc(100%-2rem)] max-w-lg" : "w-auto max-w-sm"}`}
+        <section className={`fixed ${watchedReady ? "bottom-40" : "bottom-6"} left-1/2 -translate-x-1/2 z-20 mt-[7px] mb-[7px] rounded-3xl glass border border-border shadow-[0_8px_32px_-8px_color-mix(in_oklab,var(--fg)_30%,transparent)] overflow-hidden transition-all duration-300 ${live ? "w-[calc(100%-2rem)] max-w-lg" : "w-auto max-w-sm"}`}
           aria-labelledby="track-heading"
         >
           <div className="mx-[9px] mt-px mb-px pl-px pr-3 pt-2 pb-[5px]">
@@ -555,7 +562,7 @@ function BoardView({
                 placeholder="Track token…"
                 autoComplete="off"
                 suppressHydrationWarning
-                className="-mx-px h-10 min-w-0 flex-1 rounded-full border border-border bg-bg px-[13px] text-base tabular-nums outline-none placeholder:text-muted focus-visible:ring-2 focus-visible:ring-primary"
+                className="-mx-px h-10 min-w-0 flex-1 rounded-full border border-border bg-bg/30 px-[13px] text-base backdrop-blur-md tabular-nums outline-none placeholder:text-muted focus-visible:ring-2 focus-visible:ring-primary"
               />
               <button
                 type="submit"
@@ -692,7 +699,7 @@ function HeroStat({ label, value }: { label: string; value: number }) {
 
 function Step({ n, text, tone }: { n: string; text: string; tone: string }) {
   return (
-    <li className="rounded-xl border border-border bg-surface px-3 py-3">
+    <li className="rounded-xl border border-border bg-surface/25 px-3 py-3 backdrop-blur-md">
       <span
         className={`inline-flex size-7 items-center justify-center rounded-full font-display text-base leading-none font-semibold ${tone}`}
       >
@@ -705,7 +712,7 @@ function Step({ n, text, tone }: { n: string; text: string; tone: string }) {
 
 function EmptyPanel({ icon, title, body }: { icon: ReactNode; title: string; body: string }) {
   return (
-    <div className="rounded-xl border border-dashed border-border bg-surface px-5 py-8">
+    <div className="rounded-xl border border-dashed border-border bg-surface/25 px-5 py-8 backdrop-blur-md">
       <span className="inline-flex size-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
         {icon}
       </span>
@@ -729,7 +736,7 @@ function IconButton({
       type="button"
       aria-label={label}
       onClick={onClick}
-      className="inline-flex size-11 items-center justify-center rounded-full border border-border bg-surface text-fg transition-transform duration-150 ease-out active:scale-[0.96]"
+      className="inline-flex size-11 items-center justify-center rounded-full border border-border bg-surface/25 text-fg backdrop-blur-md transition-transform duration-150 ease-out active:scale-[0.96]"
     >
       {children}
     </button>

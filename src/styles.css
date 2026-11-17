@@ -256,29 +256,17 @@
   .glass {
     position: relative;
     isolation: isolate;
-    background-color: color-mix(in oklab, var(--surface) 58%, transparent);
-    -webkit-backdrop-filter: blur(22px) saturate(180%);
-    backdrop-filter: blur(22px) saturate(180%);
+    background-color: color-mix(in oklab, var(--surface) 12%, transparent);
+    -webkit-backdrop-filter: blur(28px) saturate(200%);
+    backdrop-filter: blur(28px) saturate(200%);
     border: 1px solid color-mix(in oklab, var(--fg) 9%, transparent);
     box-shadow:
       inset 0 1px 0 color-mix(in oklab, #ffffff 55%, transparent),
       0 22px 44px -30px color-mix(in oklab, var(--fg) 55%, transparent);
   }
 
-  .glass::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    border-radius: inherit;
-    pointer-events: none;
-    background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.22) 50%, transparent 65%);
-    background-size: 250% 100%;
-    animation: glass-sheen 9s ease-in-out infinite;
-  }
-
   :root:not([data-theme="dark"]) .glass {
-    background-color: color-mix(in oklab, #ffffff 42%, transparent);
+    background-color: color-mix(in oklab, #ffffff 8%, transparent);
     border-color: color-mix(in oklab, #ffffff 85%, transparent);
     box-shadow:
       inset 0 1px 0 #ffffff,
@@ -287,19 +275,23 @@
       0 24px 48px -26px color-mix(in oklab, var(--fg) 40%, transparent);
   }
 
-  :root:not([data-theme="dark"]) .glass::before {
-    background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.8) 50%, transparent 65%);
-    background-size: 250% 100%;
+  .glass-card {
+    position: relative;
+    isolation: isolate;
+    background-color: var(--surface);
+    border: 1px solid color-mix(in oklab, var(--fg) 9%, transparent);
+    box-shadow: 0 22px 44px -30px color-mix(in oklab, var(--fg) 55%, transparent);
   }
 
-  @keyframes glass-sheen {
-    0% {
-      background-position: 120% 0;
-    }
-    100% {
-      background-position: -120% 0;
-    }
+  :root:not([data-theme="dark"]) .glass-card {
+    background-color: #ffffff;
+    border-color: color-mix(in oklab, #ffffff 85%, transparent);
+    box-shadow:
+      inset 0 1px 0 #ffffff,
+      0 1px 2px color-mix(in oklab, var(--fg) 8%, transparent),
+      0 24px 48px -26px color-mix(in oklab, var(--fg) 40%, transparent);
   }
+
 }
 
 /* Multi-hue rule under the header — gives the app a signature stripe. */
@@ -458,8 +450,7 @@
 @media (prefers-reduced-motion: reduce) {
   .live-dot,
   .just-called,
-  .pinterest-card,
-  .glass::before {
+  .pinterest-card {
     animation: none;
   }
   .pinterest-card:hover {

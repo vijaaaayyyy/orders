@@ -173,8 +173,10 @@ export default defineConfig(({ command, isPreview }) => ({
       : [],
   },
   plugins: [
-    // Keep Workers as the default target; Vercel uses Nitro's Node runtime.
-    ...(!isVercel ? [cloudflare({ viteEnvironment: { name: "ssr" } })] : []),
+    // Cloudflare Workers + static assets for build/preview only; Vercel uses Nitro's Node runtime.
+    ...(!isVercel && (command === "build" || isPreview)
+      ? [cloudflare({ viteEnvironment: { name: "ssr" } })]
+      : []),
     // Dev-only: finish PGLite bootstrap before traffic when local fallback DB is used.
     ...(!isPreview ? [pgliteBootstrapPlugin()] : []),
     // Before tanstackStart in dev so /auth/popup never falls through to the SPA.
