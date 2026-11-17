@@ -227,7 +227,7 @@ export function MessApp({ initial }: { initial: Board }) {
                     </span>
                   </div>
                   <p className="mt-1.5 flex items-center gap-2 text-sm text-[rgba(0,0,0,0.72)]">
-                    <span className="inline-flex items-center gap-1 border border-solid font-medium text-[rgba(0,0,0,1)]">
+                    <span className="inline-flex items-center gap-1 font-medium text-[rgba(0,0,0,1)]">
                       <span className="size-1.5 rounded-full bg-ready" />
                       Live pickup
                     </span>
