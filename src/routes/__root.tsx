@@ -6,7 +6,7 @@ import { BgCode } from "@/components/bg-code";
 import { PreviewHostBridge } from "@/components/preview-host-bridge";
 import appCss from "../styles.css?url";
 
-const APP_NAME = "Messline";
+const APP_NAME = "SRT Grand";
 
 const themeScript = `(function(){try{var k="messline-theme";var t=localStorage.getItem(k);if(t!=="light"&&t!=="dark"){t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";}document.documentElement.setAttribute("data-theme",t);if(t==="dark")document.documentElement.classList.add("dark");}catch(e){}})();`;
 

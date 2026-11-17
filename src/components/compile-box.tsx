@@ -51,7 +51,7 @@ export function CompileBox() {
           <span className="size-2.5 rounded-full bg-[#febc2e]" />
           <span className="size-2.5 rounded-full bg-[#28c840]" />
           <span className="ml-2 font-mono text-[11px] tracking-wide text-white/50">
-            messline — server.log
+            srt grand — server.log
           </span>
           <span
             className={`ml-auto inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[10px] font-semibold tracking-wide uppercase ${
