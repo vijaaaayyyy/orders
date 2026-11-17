@@ -11,21 +11,20 @@
 
 export async function getRuntimePostgresUrl(): Promise<string | undefined> {
   // Wrangler dev requires a Hyperdrive local string even when no database runs locally,
-  // so dev ignores the binding and uses DATABASE_URL or the PGLite fallback.
+  // so dev ignores the binding and uses the PGLite fallback.
   if (!import.meta.env.DEV) {
     const { getHyperdriveConnectionString } = await import("@/lib/cloudflare-db-env");
     const workerUrl = getHyperdriveConnectionString();
     if (workerUrl) return workerUrl;
   }
 
-  const raw =
-    typeof process !== "undefined" ? process.env?.DATABASE_URL : undefined;
-  const url = raw?.trim();
-  return url || undefined;
+  return getNodeDatabaseUrl();
 }
 
 /** Synchronous best-effort resolver for Node contexts (scripts/local dev). */
 export function getNodeDatabaseUrl(): string | undefined {
+  // Local dev always uses embedded PGLite so a stale DATABASE_URL cannot break the preview.
+  if (import.meta.env?.DEV) return undefined;
   const raw =
     typeof process !== "undefined" ? process.env?.DATABASE_URL : undefined;
   const url = raw?.trim();
