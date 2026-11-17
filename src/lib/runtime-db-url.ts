@@ -2,7 +2,7 @@
  * Resolve the Neon/Postgres connection string for the current runtime.
  *
  * - Cloudflare Workers (deployed): use a Neon-backed Hyperdrive binding.
- * - Node/local/dev/build scripts: fall back to `process.env.DATABASE_URL`.
+ * - Vercel and Node/local/dev/build scripts: fall back to `process.env.DATABASE_URL`.
  *
  * This must not rely on `process.env.DATABASE_URL` inside the Workers runtime.
  * The Cloudflare-only binding module is loaded lazily so Node/local runtimes can
@@ -13,7 +13,7 @@ export async function getRuntimePostgresUrl(): Promise<string | undefined> {
   // Wrangler dev requires a Hyperdrive local string even when no database runs locally,
   // so dev ignores the binding and uses DATABASE_URL or the PGLite fallback.
   if (!import.meta.env.DEV) {
-    const { getHyperdriveConnectionString } = await import("./cloudflare-db-env");
+    const { getHyperdriveConnectionString } = await import("@/lib/cloudflare-db-env");
     const workerUrl = getHyperdriveConnectionString();
     if (workerUrl) return workerUrl;
   }

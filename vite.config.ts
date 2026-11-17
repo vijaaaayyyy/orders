@@ -1,9 +1,10 @@
 import { readdirSync } from "node:fs";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 import type { Plugin } from "vite";
 import { defineConfig } from "vite";
 import { cloudflare } from "@cloudflare/vite-plugin";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
+import { nitro } from "nitro/vite";
 import viteReact from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 // @ts-expect-error JS plugin alongside the TS vite config
@@ -11,6 +12,8 @@ import { grokPwaPlugin } from "./scripts/grok-pwa-plugin.mjs";
 // @ts-expect-error JS plugin alongside the TS vite config
 import { appEnvPlugin } from "./scripts/app-env-plugin.mjs";
 import { isMigrationFile } from "./scripts/migration-plan.mjs";
+
+const isVercel = Boolean(process.env.VERCEL);
 
 /** The files `src/lib/db.ts` globs — same directory, same non-recursive scope. */
 function hasGlobbedMigrations(root: string): boolean {
@@ -154,11 +157,20 @@ export default defineConfig(({ command, isPreview }) => ({
     port: 8082,
     strictPort: true,
   },
-  resolve: { tsconfigPaths: true },
+  resolve: {
+    tsconfigPaths: true,
+    alias: isVercel
+      ? [
+          {
+            find: "@/lib/cloudflare-db-env",
+            replacement: resolve(process.cwd(), "src/lib/node-db-env.ts"),
+          },
+        ]
+      : [],
+  },
   plugins: [
-    // Cloudflare Workers + static assets (production). Must come first so SSR
-    // environment is configured correctly for TanStack Start.
-    ...(command === "build" || isPreview
+    // Cloudflare Workers + static assets for build/preview only; Vercel uses Nitro's Node runtime.
+    ...(!isVercel && (command === "build" || isPreview)
       ? [cloudflare({ viteEnvironment: { name: "ssr" } })]
       : []),
     // Dev-only: finish PGLite bootstrap before traffic when local fallback DB is used.
@@ -172,6 +184,7 @@ export default defineConfig(({ command, isPreview }) => ({
     grokPwaPlugin(),
     tailwindcss(),
     tanstackStart(),
+    ...(isVercel ? [nitro()] : []),
     viteReact(),
   ],
 }));
