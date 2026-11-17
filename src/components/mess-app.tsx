@@ -387,7 +387,8 @@ function BoardView({
         )}
       </section>
 
-      <section className="glass min-w-0 lg:col-span-3 rounded-[40px] p-5 sm:p-6" aria-labelledby="ready-heading">
+      <div className="glass-frame flex min-w-0 flex-col rounded-[40px] border-2 border-solid p-2 lg:col-span-3">
+        <section className="glass flex-1 min-w-0 rounded-[32px] p-5 sm:p-6" aria-labelledby="ready-heading">
         <SectionHead
           id="ready-heading"
           kicker="Walk up now"
@@ -407,9 +408,9 @@ function BoardView({
               const station = STATION_BY_ITEM.get(order.item);
               const tone = stationTone(station);
               return (
+                <div key={order.id} className="glass-frame mb-4 break-inside-avoid rounded-[28px] sm:rounded-[24px] border-2 border-solid p-2">
                 <article
-                  key={order.id}
-                  className={`pinterest-card mb-4 break-inside-avoid overflow-hidden rounded-[20px] sm:rounded-[16px] glass-card ${watch === order.token ? "ring-4 ring-primary ring-offset-2 ring-offset-bg" : ""}`}
+                  className={`pinterest-card overflow-hidden rounded-[20px] sm:rounded-[16px] glass-card ${watch === order.token ? "ring-4 ring-primary ring-offset-2 ring-offset-bg" : ""}`}
                 >
                   <div
                     className={`relative flex ${pinHeight} items-center justify-center bg-gradient-to-br ${tone.grad} px-4 text-white pt-8`}
@@ -445,6 +446,7 @@ function BoardView({
                     </div>
                   </div>
                 </article>
+                </div>
               );
             })}
           </div>
@@ -455,10 +457,12 @@ function BoardView({
           <Step n="2" text="Leave the pickup counter. Don't stand in the crowd." tone="bg-teal-500/15 text-teal-600 dark:text-teal-300" />
           <Step n="3" text="Come back only when your number turns green." tone="bg-violet-500/15 text-violet-600 dark:text-violet-300" />
         </ol>
-      </section>
+        </section>
+      </div>
 
       <div className="flex min-w-0 flex-col gap-6 lg:col-span-2">
-        <section className="glass min-w-0 rounded-[40px] p-5 sm:p-6" aria-labelledby="cook-heading">
+        <div className="glass-frame min-w-0 rounded-[40px] border-2 border-solid p-2">
+        <section className="glass min-w-0 rounded-[32px] p-5 sm:p-6" aria-labelledby="cook-heading">
           <SectionHead
             id="cook-heading"
             kicker="Still on the pass"
@@ -478,9 +482,9 @@ function BoardView({
                 const station = STATION_BY_ITEM.get(order.item);
                 const tone = stationTone(station);
                 return (
+                <div key={order.id} className="glass-frame mb-4 break-inside-avoid rounded-[28px] sm:rounded-[24px] border-2 border-solid p-2">
                 <article
-                  key={order.id}
-                  className={`pinterest-card mb-4 break-inside-avoid overflow-hidden rounded-[20px] sm:rounded-[16px] glass-card ${
+                  className={`pinterest-card overflow-hidden rounded-[20px] sm:rounded-[16px] glass-card ${
                     watch === order.token ? "ring-4 ring-primary ring-offset-2 ring-offset-bg" : ""
                   }`}
                 >
@@ -530,16 +534,18 @@ function BoardView({
                     </div>
                   </div>
                 </article>
+                </div>
                 );
               })}
             </div>
           )}
         </section>
+        </div>
 
-        <section className={`fixed ${watchedReady ? "bottom-40" : "bottom-6"} left-1/2 -translate-x-1/2 z-20 mt-[7px] mb-[7px] rounded-[40px] glass border border-border shadow-[0_8px_32px_-8px_color-mix(in_oklab,var(--fg)_30%,transparent)] overflow-hidden transition-all duration-300 ${live ? "w-[calc(100%-2rem)] max-w-lg" : "w-auto max-w-sm"}`}
+        <section className={`fixed ${watchedReady ? "bottom-40" : "bottom-6"} left-1/2 -translate-x-1/2 z-20 mt-[7px] mb-[7px] rounded-[40px] glass-frame border-2 border-solid p-2 shadow-[0_8px_32px_-8px_color-mix(in_oklab,var(--fg)_30%,transparent)] overflow-hidden transition-all duration-300 ${live ? "w-[calc(100%-2rem)] max-w-lg" : "w-auto max-w-sm"}`}
           aria-labelledby="track-heading"
         >
-          <div className="mx-3 mt-px mb-px pl-px pr-3 pt-3 pb-3">
+          <div className="glass rounded-[32px] p-3">
             <div className="flex items-center justify-between gap-2">
               <h2 id="track-heading" className="sr-only">Track a token</h2>
             </div>
