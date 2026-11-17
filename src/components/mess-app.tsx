@@ -222,7 +222,7 @@ export function MessApp({ initial }: { initial: Board }) {
                     <span className="font-display text-3xl leading-none font-bold tracking-tight sm:text-4xl">
                       Messline
                     </span>
-                    <span className="mt-px mb-px rounded-full border border-accent/30 bg-accent/10 px-2.5 py-0.5 text-xs font-semibold tracking-wider text-accent uppercase">
+                    <span className="mt-px mb-px rounded-full border border-accent/30 bg-accent/10 px-2.5 py-0.5 text-xs font-semibold tracking-wider text-black uppercase">
                       {mounted ? serviceName(clock) : "Today"}
                     </span>
                   </div>
