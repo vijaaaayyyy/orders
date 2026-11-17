@@ -418,22 +418,7 @@
   );
 }
 
-.live-dot {
-  box-shadow: 0 0 0 0 color-mix(in oklab, var(--ready) 55%, transparent);
-  animation: live-pulse 1.8s ease-out infinite;
-}
-
-@keyframes live-pulse {
-  0% {
-    box-shadow: 0 0 0 0 color-mix(in oklab, var(--ready) 55%, transparent);
-  }
-  100% {
-    box-shadow: 0 0 0 8px transparent;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .live-dot,
   .pinterest-card {
     animation: none;
   }

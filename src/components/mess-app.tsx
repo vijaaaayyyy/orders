@@ -215,7 +215,7 @@ export function MessApp({ initial }: { initial: Board }) {
               <div className="flex min-w-0 items-center gap-3">
                 <span className="relative flex size-10 shrink-0 items-center justify-center rounded-xl brand-tile text-primary-fg">
                   <UtensilsCrossed className="size-5" aria-hidden="true" />
-                  <span className="live-dot absolute -top-0.5 -right-0.5 size-2.5 rounded-full bg-ready ring-2 ring-bg" />
+                  <span className="absolute -top-0.5 -right-0.5 size-2.5 rounded-full bg-ready ring-2 ring-bg" />
                 </span>
                 <div className="min-w-0">
                   <div className="flex items-baseline gap-2">
@@ -228,7 +228,7 @@ export function MessApp({ initial }: { initial: Board }) {
                   </div>
                   <p className="mt-1.5 flex items-center gap-2 text-sm text-muted">
                     <span className="inline-flex items-center gap-1 font-medium text-ready">
-                      <span className="live-dot size-1.5 rounded-full bg-ready" />
+                      <span className="size-1.5 rounded-full bg-ready" />
                       Live pickup
                     </span>
                     <span aria-hidden="true"></span>

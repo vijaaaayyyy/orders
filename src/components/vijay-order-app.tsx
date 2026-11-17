@@ -143,7 +143,7 @@ export function VijayOrderApp({ initial }: { initial: Board }) {
               </div>
               <p className="mt-1.5 flex items-center gap-2 text-sm text-muted">
                 <span className="inline-flex items-center gap-1 font-medium text-ready">
-                  <span className="live-dot size-1.5 rounded-full bg-ready" />
+                  <span className="size-1.5 rounded-full bg-ready" />
                   {board.servedToday} picked up
                 </span>
                 <span aria-hidden="true">·</span>
