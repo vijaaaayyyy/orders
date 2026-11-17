@@ -25,6 +25,8 @@ function templateToQuery(strings: TemplateStringsArray, values: unknown[]) {
 const globalRef = globalThis as typeof globalThis & {
   __pgliteInstance__?: Promise<unknown>;
   __pgliteSql__?: Promise<Sql>;
+  __pgSql__?: Promise<Sql>;
+  __pgSqlUrl__?: string;
 };
 
 // Matches the server-boundary helpers (coerceRow / coerceRows) so reads from pg
@@ -122,10 +124,67 @@ function getPgliteSql(): Promise<Sql> {
   return globalRef.__pgliteSql__;
 }
 
+type PgPoolLike = {
+  query(text: string, params?: unknown[]): Promise<{ rows: unknown[] }>;
+};
+type PgTypes = {
+  setTypeParser(oid: number, parser: (value: string) => unknown): void;
+};
+type PgModule = {
+  Pool?: new (options: { connectionString: string }) => PgPoolLike;
+  types?: PgTypes;
+  default?: { Pool?: PgModule["Pool"]; types?: PgTypes };
+};
+
 /**
- * Run one database operation with a request-scoped PostgreSQL client.
- * Hyperdrive pools upstream connections, so Workers should not retain a pg Pool
- * across requests.
+ * Get the shared, cached Postgres pool for a connection string.
+ *
+ * A `pg.Pool` keeps warm TCP/TLS connections so each query does NOT pay the
+ * cost of dialing + authenticating a brand-new connection. Hyperdrive is designed
+ * to work with exactly this pattern (`new Pool({ connectionString: env.HYPERDRIVE
+ * .connectionString })`) and pools the upstream connections itself; the pool here
+ * is per-isolate and safe to reuse across requests. The old request-scoped
+ * `Client.connect()/end()` made every single action (pickup, board poll, …) open
+ * and tear down a fresh connection, which is why actions felt slow.
+ */
+async function getPgSql(databaseUrl: string): Promise<Sql> {
+  // Recreate the pool if the runtime connection string changes (e.g. hot reload
+  // or a hyperdrive/local switch). HMR module reloads share `globalThis`.
+  if (globalRef.__pgSql__ && globalRef.__pgSqlUrl__ === databaseUrl) {
+    return globalRef.__pgSql__;
+  }
+
+  globalRef.__pgSqlUrl__ = databaseUrl;
+  globalRef.__pgSql__ = (async () => {
+    const pgMod = (await import("pg")) as unknown as PgModule;
+    const Pool = pgMod.Pool ?? pgMod.default?.Pool;
+    if (!Pool) throw new Error("Postgres Pool is unavailable");
+
+    const types = pgMod.types ?? pgMod.default?.types;
+    if (types?.setTypeParser) {
+      types.setTypeParser(20, (value) => Number(value));
+      types.setTypeParser(1114, (value) => new Date(value.replace(" ", "T") + "Z").toISOString());
+      types.setTypeParser(1184, (value) => new Date(value).toISOString());
+    }
+
+    const pool = new Pool({ connectionString: databaseUrl });
+    const query = async <Row>(text: string, params: unknown[] = []) => {
+      const result = await pool.query(text, params);
+      return result.rows.map((row) => coerceRow<Row>(row));
+    };
+    const sql = (async <Row>(strings: TemplateStringsArray, ...values: unknown[]) => {
+      const { text, params } = templateToQuery(strings, values);
+      return query<Row>(text, params);
+    }) as Sql;
+    sql.query = query;
+    return sql;
+  })();
+  return globalRef.__pgSql__;
+}
+
+/**
+ * Run one database operation using a shared, cached SQL client (pooled Postgres
+ * or PGLite). Warm pool connections keep actions like "picked up" fast.
  */
 export async function withSql<T>(run: (sql: Sql) => Promise<T>): Promise<T> {
   const url = await resolvePostgresUrl();
@@ -135,46 +194,7 @@ export async function withSql<T>(run: (sql: Sql) => Promise<T>): Promise<T> {
   }
 
   dbSource = "neon";
-  type PgClient = {
-    connect(): Promise<void>;
-    query(text: string, params?: unknown[]): Promise<{ rows: unknown[] }>;
-    end(): Promise<void>;
-  };
-  type PgTypes = {
-    setTypeParser(oid: number, parser: (value: string) => unknown): void;
-  };
-  type PgModule = {
-    Client?: new (options: { connectionString: string }) => PgClient;
-    types?: PgTypes;
-    default?: { Client?: PgModule["Client"]; types?: PgTypes };
-  };
-  const pgMod = (await import("pg")) as unknown as PgModule;
-  const Client = pgMod.Client ?? pgMod.default?.Client;
-  if (!Client) throw new Error("Postgres Client is unavailable");
-
-  const types = pgMod.types ?? pgMod.default?.types;
-  if (types?.setTypeParser) {
-    types.setTypeParser(20, (value) => Number(value));
-    types.setTypeParser(1114, (value) => new Date(value.replace(" ", "T") + "Z").toISOString());
-    types.setTypeParser(1184, (value) => new Date(value).toISOString());
-  }
-
-  const client = new Client({ connectionString: url });
-  await client.connect();
-  try {
-    const query = async <Row>(text: string, params: unknown[] = []) => {
-      const result = await client.query(text, params);
-      return result.rows.map((row) => coerceRow<Row>(row));
-    };
-    const sql = (async <Row>(strings: TemplateStringsArray, ...values: unknown[]) => {
-      const { text, params } = templateToQuery(strings, values);
-      return query<Row>(text, params);
-    }) as Sql;
-    sql.query = query;
-    return await run(sql);
-  } finally {
-    await client.end();
-  }
+  return run(await getPgSql(url));
 }
 
 /**
