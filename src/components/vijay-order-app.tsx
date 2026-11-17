@@ -37,10 +37,10 @@ function useNow() {
 export function VijayOrderApp({ initial }: { initial: Board }) {
   const queryClient = useQueryClient();
   const now = useNow();
-  const [selected, setSelected] = useState<string | null>(null);
+  const [selected, setSelected] = useState<string[]>([]);
   const [token, setToken] = useState<string>("");
   const [actionError, setActionError] = useState("");
-  const [slip, setSlip] = useState<{ token: number; item: string; ahead: number } | null>(null);
+  const [slip, setSlip] = useState<{ token: number; items: string[]; ahead: number } | null>(null);
 
   const boardQuery = useQuery({
     queryKey: ["board"],
@@ -54,17 +54,21 @@ export function VijayOrderApp({ initial }: { initial: Board }) {
   const invalidate = () => queryClient.invalidateQueries({ queryKey: ["board"] });
 
   const place = useMutation({
-    mutationFn: async (input: { item: string; token: number }) => {
+    mutationFn: async (input: { items: string[]; token: number }) => {
       const result = await placeOrderAt({ data: input });
-      if (!result?.order) {
+      if (!result?.orders?.length) {
         throw new Error("The order was not saved. Check the connection and try again.");
       }
       return result;
     },
     onSuccess: async (result) => {
-      setSlip({ token: result.order.token, item: result.order.item, ahead: result.ahead });
+      setSlip({
+        token: result.orders[0]!.token,
+        items: result.orders.map((order) => order.item),
+        ahead: result.ahead,
+      });
       setActionError("");
-      setSelected(null);
+      setSelected([]);
       setToken("");
       await invalidate();
     },
@@ -104,8 +108,14 @@ export function VijayOrderApp({ initial }: { initial: Board }) {
         ? recallMut.variables
         : null;
 
+  function toggleDish(name: string) {
+    setSelected((current) =>
+      current.includes(name) ? current.filter((item) => item !== name) : [...current, name],
+    );
+  }
+
   function addOrder() {
-    if (!selected) {
+    if (selected.length === 0) {
       setActionError("Pick a dish first.");
       return;
     }
@@ -118,10 +128,8 @@ export function VijayOrderApp({ initial }: { initial: Board }) {
       setActionError("Enter a valid order number.");
       return;
     }
-    place.mutate({ item: selected, token: tokenNum });
+    place.mutate({ items: selected, token: tokenNum });
   }
-
-  const selectedStation = selected ? STATION_BY_ITEM.get(selected) : undefined;
 
   return (
     <div className="relative z-10 min-h-dvh">
@@ -210,13 +218,12 @@ export function VijayOrderApp({ initial }: { initial: Board }) {
                 </button>
               </div>
               <p className="mt-2 text-sm text-muted">
-                {selected ? (
+                {selected.length > 0 ? (
                   <>
-                    Selected: <span className="font-semibold text-fg">{selected}</span>
-                    {selectedStation ? ` · ${selectedStation}` : ""}
+                    Selected: <span className="font-semibold text-fg">{selected.join(", ")}</span>
                   </>
                 ) : (
-                  "Pick a dish, type the order number, then add it to the queue."
+                  "Pick one or more dishes, type the order number, then add them to the queue."
                 )}
               </p>
             </div>
@@ -235,7 +242,7 @@ export function VijayOrderApp({ initial }: { initial: Board }) {
               <div>
                 <p className="text-xs font-semibold tracking-widest uppercase opacity-80">Called out</p>
                 <p className="font-display text-5xl leading-none font-semibold tabular-nums">{slip.token}</p>
-                <p className="mt-1 text-base opacity-90">{slip.item}</p>
+                <p className="mt-1 text-base opacity-90">{slip.items.join(" · ")}</p>
               </div>
               <button type="button" onClick={() => setSlip(null)} className="text-sm underline">
                 Dismiss
@@ -246,13 +253,13 @@ export function VijayOrderApp({ initial }: { initial: Board }) {
 
           <ul className="grid min-w-0 grid-cols-2 gap-2 sm:grid-cols-3">
             {MENU.map((item) => {
-              const active = selected === item.name;
+              const active = selected.includes(item.name);
               const tone = stationTone(item.station);
               return (
                 <li key={item.name}>
                   <button
                     type="button"
-                    onClick={() => setSelected(item.name)}
+                    onClick={() => toggleDish(item.name)}
                     aria-pressed={active}
                     className={`group flex min-h-16 w-full flex-col items-start justify-center rounded-[20px] sm:rounded-[16px] border px-3 py-3 text-left transition-all duration-150 ease-out hover:-translate-y-0.5 active:scale-[0.97] ${
                       active

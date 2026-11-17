@@ -176,14 +176,17 @@ export const placeOrder = createServerFn({ method: "POST" })
  * already used today and push `token_counter` past it to keep "next token" sane.
  */
 export const placeOrderAt = createServerFn({ method: "POST" })
-  .validator((input: { item: string; token: number }) => {
-    const item = typeof input?.item === "string" ? input.item.trim() : "";
-    if (!MENU_NAMES.has(item)) throw new Error("Pick a dish from the menu");
+  .validator((input: { items: string[]; token: number }) => {
+    const items = Array.isArray(input?.items)
+      ? [...new Set(input.items.map((item) => (typeof item === "string" ? item.trim() : "")))]
+      : [];
+    if (items.length === 0) throw new Error("Pick at least one dish");
+    if (!items.every((item) => MENU_NAMES.has(item))) throw new Error("Pick a dish from the menu");
     const token = Number(input?.token);
     if (!Number.isInteger(token) || token < 1 || token > 9999) {
       throw new Error("Enter a token between 1 and 9999");
     }
-    return { item, token };
+    return { items, token };
   })
   .handler(async ({ data }) =>
     withSql(async (sql) => {
@@ -195,14 +198,17 @@ export const placeOrderAt = createServerFn({ method: "POST" })
         `;
       if (used[0]) throw new Error(`Token ${data.token} is already in use today`);
 
-      const inserted = await sql<RawOrder>`
-      insert into orders (token, item, status)
-      values (${data.token}, ${data.item}, 'preparing')
-      returning id, token, item, status,
-        created_at as "createdAt",
-        ready_at as "readyAt"
-        `;
-      const order = mapOrder(inserted[0]!);
+      const orders: Order[] = [];
+      for (const item of data.items) {
+        const inserted = await sql<RawOrder>`
+        insert into orders (token, item, status)
+        values (${data.token}, ${item}, 'preparing')
+        returning id, token, item, status,
+          created_at as "createdAt",
+          ready_at as "readyAt"
+          `;
+        orders.push(mapOrder(inserted[0]!));
+      }
 
       await sql`
       insert into token_counter (service_date, next_token)
@@ -211,14 +217,15 @@ export const placeOrderAt = createServerFn({ method: "POST" })
       set next_token = greatest(token_counter.next_token, ${data.token + 1})
         `;
 
+      const firstId = Math.min(...orders.map((order) => order.id));
       const aheadRows = await sql<{ ahead: unknown }>`
       select count(*)::int as ahead
       from orders
       where status = 'preparing'
-        and id < ${order.id}
+        and id < ${firstId}
         and (created_at at time zone ${TZ})::date = (now() at time zone ${TZ})::date
         `;
-      return { order, ahead: asNumber(aheadRows[0]?.ahead) };
+      return { orders, ahead: asNumber(aheadRows[0]?.ahead) };
     }),
   );
 
