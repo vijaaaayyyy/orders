@@ -303,18 +303,20 @@ export function MessApp({ initial }: { initial: Board }) {
       </main>
 
       {watchedReady && live?.found ? (
-        <div className="fixed inset-x-0 bottom-0 z-30 border-t border-ready bg-gradient-to-r from-ready to-ready-2 text-ready-fg">
-          <div className="-my-4 mx-auto flex max-w-6xl items-center justify-between gap-4 overflow-hidden rounded-[40px] px-4 py-4 sm:px-6">
-            <div>
-              <p className="text-sm font-semibold tracking-widest uppercase">Your token is ready</p>
-              <p className="font-display text-5xl leading-none font-semibold tabular-nums lining-nums">
-                {live.order.token}
-                <span className="ml-3 font-sans text-lg font-medium tracking-normal not-italic">
-                  {live.order.item}
-                </span>
-              </p>
+        <div className="fixed inset-x-0 bottom-0 z-30 px-4 pb-4 sm:px-6">
+          <div className="glass-frame mx-auto max-w-6xl rounded-[40px] border-2 border-solid p-2 text-ready-fg">
+            <div className="flex items-center justify-between gap-4 rounded-[32px] bg-gradient-to-r from-ready to-ready-2 px-4 py-4 sm:px-6">
+              <div>
+                <p className="text-sm font-semibold tracking-widest uppercase">Your token is ready</p>
+                <p className="font-display text-5xl leading-none font-semibold tabular-nums lining-nums">
+                  {live.order.token}
+                  <span className="ml-3 font-sans text-lg font-medium tracking-normal not-italic">
+                    {live.order.item}
+                  </span>
+                </p>
+              </div>
+              <p className="hidden text-base sm:block">Come to the pickup counter now.</p>
             </div>
-            <p className="hidden text-base sm:block">Come to the pickup counter now.</p>
           </div>
         </div>
       ) : null}
@@ -353,14 +355,15 @@ function BoardView({
 
   return (
     <div className="grid min-w-0 grid-cols-1 gap-6 lg:grid-cols-5">
+      <div className="glass-frame min-w-0 rounded-[40px] border-2 border-solid p-2 lg:col-span-full">
       <section
         aria-label="Now serving"
-        className="relative overflow-hidden rounded-[40px] lg:col-span-full flex justify-center"
+        className="glass relative overflow-hidden rounded-[32px] flex justify-center"
       >
         <img
           src={featured ? "/now-serving.jpg" : "/no-order.jpg"}
           alt={featured ? `Now serving token ${featured.token}` : "Pickup counter is clear"}
-          className="w-full max-w-lg mx-auto h-auto object-cover rounded-[40px]"
+          className="w-full max-w-lg mx-auto h-auto object-cover rounded-[32px]"
           loading="lazy"
         />
         {!featured && (
@@ -386,6 +389,7 @@ function BoardView({
           </div>
         )}
       </section>
+      </div>
 
       <div className="glass-frame flex min-w-0 flex-col rounded-[40px] border-2 border-solid border-[#bca28b] p-2 lg:col-span-3">
         <section className="glass flex-1 min-w-0 rounded-[32px] p-5 sm:p-6" aria-labelledby="ready-heading">
