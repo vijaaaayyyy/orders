@@ -363,7 +363,7 @@ function BoardView({
         <img
           src={featured ? "/now-serving.jpg" : "/no-order.jpg"}
           alt={featured ? `Now serving token ${featured.token}` : "Pickup counter is clear"}
-          className="-mt-[9px] -mb-[9px] w-full max-w-lg mx-auto h-auto object-cover rounded-[32px]"
+          className="-mt-[9px] -mb-[9px] w-full max-w-lg mx-auto h-auto object-cover rounded-[32px] opacity-60"
           loading="lazy"
         />
         {!featured && (
