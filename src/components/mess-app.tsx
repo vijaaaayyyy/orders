@@ -209,7 +209,7 @@ export function MessApp({ initial }: { initial: Board }) {
     <div className="relative z-10 min-h-dvh">
       <div className = "header1">
         <header className="sticky top-0 z-20 mx-auto max-w-6xl overflow-hidden rounded-[40px] glass-frame border-2 border-solid border-[#b59c7d] p-2">
-          <div className="glass !border-[rgba(220,152,88,1)] flex flex-col gap-3 overflow-hidden rounded-[32px] px-4 py-3 sm:px-6 lg:flex-row lg:items-center lg:justify-between">
+          <div className="glass !bg-transparent !border-[rgba(220,152,88,1)] flex flex-col gap-3 overflow-hidden rounded-[32px] px-4 py-3 sm:px-6 lg:flex-row lg:items-center lg:justify-between">
             {/* Brand */}
             <div className="flex items-center justify-between gap-3">
               <div className="flex min-w-0 items-center gap-3">
