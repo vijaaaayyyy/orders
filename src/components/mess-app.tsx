@@ -434,17 +434,17 @@ function BoardView({
                   </div>
                   <div className="p-3">
                     <p className="truncate text-lg font-semibold">{order.item}</p>
-                    <div className="mt-1.5 flex min-w-0 items-center justify-between gap-2">
+                    <div className="mt-1.5 flex flex-wrap items-center justify-between gap-x-2 gap-y-1">
                       {station ? (
                         <span
-                          className={`inline-flex min-w-0 truncate items-center rounded-full px-2.5 py-0.5 text-[11px] font-semibold tracking-wide uppercase ${tone.chip}`}
+                          className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-semibold tracking-wide uppercase ${tone.chip}`}
                         >
                           {station}
                         </span>
                       ) : (
                         <span />
                       )}
-                      <span className={`shrink-0 whitespace-nowrap text-xs font-semibold tracking-widest uppercase ${tone.text}`}>
+                      <span className={`whitespace-nowrap text-xs font-semibold tracking-widest uppercase ${tone.text}`}>
                         Pick up
                       </span>
                     </div>
@@ -522,17 +522,17 @@ function BoardView({
                   </div>
                   <div className="p-3">
                     <p className="truncate text-lg font-semibold">{order.item}</p>
-                    <div className="mt-1.5 flex min-w-0 items-center justify-between gap-2">
+                    <div className="mt-1.5 flex flex-wrap items-center justify-between gap-x-2 gap-y-1">
                       {station ? (
                         <span
-                          className={`inline-flex min-w-0 truncate items-center rounded-full px-2.5 py-0.5 text-[11px] font-semibold tracking-wide uppercase ${tone.chip}`}
+                          className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-semibold tracking-wide uppercase ${tone.chip}`}
                         >
                           {station}
                         </span>
                       ) : (
                         <span />
                       )}
-                      <span className={`shrink-0 whitespace-nowrap text-xs font-semibold tracking-widest uppercase ${tone.text}`}>
+                      <span className={`whitespace-nowrap text-xs font-semibold tracking-widest uppercase ${tone.text}`}>
                         Cooking
                       </span>
                     </div>
