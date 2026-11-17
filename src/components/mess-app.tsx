@@ -363,7 +363,7 @@ function BoardView({
         <img
           src={featured ? "/now-serving.jpg" : "/no-order.jpg"}
           alt={featured ? `Now serving token ${featured.token}` : "Pickup counter is clear"}
-          className="w-full max-w-lg mx-auto h-auto object-cover rounded-[32px]"
+          className="-mt-[9px] -mb-[9px] w-full max-w-lg mx-auto h-auto object-cover rounded-[32px]"
           loading="lazy"
         />
         {!featured && (
@@ -374,7 +374,7 @@ function BoardView({
           </div>
         )}
         {featured && (
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-lg flex items-end justify-start p-5 sm:p-7">
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 mt-[21px] mb-[21px] w-full max-w-lg flex items-end justify-start p-5 sm:p-7">
             <div className="min-w-0">
               <p className="font-display text-7xl leading-[0.82] font-semibold tabular-nums sm:text-8xl text-black drop-shadow-lg">
                 {featured.token}
