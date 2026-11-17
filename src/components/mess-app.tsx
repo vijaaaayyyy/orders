@@ -208,7 +208,7 @@ export function MessApp({ initial }: { initial: Board }) {
   return (
     <div className="relative z-10 min-h-dvh">
       <div className = "header1">
-        <header className="sticky top-0 z-20 mx-auto max-w-6xl overflow-hidden rounded-[40px] glass-frame border-2 border-solid p-2">
+        <header className="sticky top-0 z-20 mx-auto max-w-6xl overflow-hidden rounded-[40px] glass-frame border-2 border-solid border-[#b59c7d] p-2">
           <div className="glass flex flex-col gap-3 overflow-hidden rounded-[32px] px-4 py-3 sm:px-6 lg:flex-row lg:items-center lg:justify-between">
             {/* Brand */}
             <div className="flex items-center justify-between gap-3">
@@ -387,7 +387,7 @@ function BoardView({
         )}
       </section>
 
-      <div className="glass-frame flex min-w-0 flex-col rounded-[40px] border-2 border-solid p-2 lg:col-span-3">
+      <div className="glass-frame flex min-w-0 flex-col rounded-[40px] border-2 border-solid border-[#bca28b] p-2 lg:col-span-3">
         <section className="glass flex-1 min-w-0 rounded-[32px] p-5 sm:p-6" aria-labelledby="ready-heading">
         <SectionHead
           id="ready-heading"
@@ -460,8 +460,8 @@ function BoardView({
         </section>
       </div>
 
-      <div className="flex min-w-0 flex-col gap-6 lg:col-span-2">
-        <div className="glass-frame min-w-0 rounded-[40px] border-2 border-solid p-2">
+      <div className="flex min-w-0 flex-col gap-6 overflow-hidden rounded-[29px] border border-solid border-[#e5e595] lg:col-span-2">
+        <div className="glass-frame min-w-0 rounded-[40px] border-2 border-solid border-[#bca228] p-2">
         <section className="glass min-w-0 rounded-[32px] p-5 sm:p-6" aria-labelledby="cook-heading">
           <SectionHead
             id="cook-heading"
