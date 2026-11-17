@@ -285,7 +285,7 @@ export function MessApp({ initial }: { initial: Board }) {
         </header>
       </div>
 
-      <main className={`mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-8 ${watchedReady ? "pb-44" : "pb-[49px]"}`}>
+      <main className={`mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-8 ${watchedReady ? "pb-44" : "pb-[85px]"}`}>
         <p className="sr-only" aria-live="polite">
           {announcement}
         </p>
